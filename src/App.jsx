@@ -1,11 +1,12 @@
 import logo from '@assets/logo.svg';
+import theme from '@styles/theme';
+import { ThemeProvider } from 'styled-components';
 
 function App() {
   return (
-    <>
-      <h1>폰트 적용 되었는지 테스트</h1>
+    <ThemeProvider theme={theme}>
       <img src={logo} alt="책꼬지 로고" />
-    </>
+    </ThemeProvider>
   );
 }
 
