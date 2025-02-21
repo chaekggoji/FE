@@ -3,7 +3,7 @@ import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 
 export default [
   { ignores: ['dist'] }, // 'dist' 폴더 내의 파일은 ESLint 검사에서 제외
@@ -55,5 +55,5 @@ export default [
       ],
     },
   },
-  eslintConfigPrettier,
+  eslintPluginPrettier,
 ];
