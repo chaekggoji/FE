@@ -43,6 +43,7 @@ export default [
       'space-infix-ops': 'error', // 연산자(`+`, `-`, `*`, `=` 등) 앞뒤 공백 강제 (`a + b` ✅ / `a+b` ❌)
       'no-var': 'error', // `var` 사용 금지 (let 또는 const 사용 필수)
       'prefer-const': 'error', // 변경되지 않는 변수는 `const` 사용 강제 (`let` 대신)
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
 
       // 네이밍 컨벤션 규칙
       camelcase: [
