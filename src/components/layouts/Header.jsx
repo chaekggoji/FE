@@ -33,7 +33,6 @@ const LogoImage = styled.img`
 
 const LogoText = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
-  color: ${({ theme }) => theme.colors.black};
 
   ${({ theme }) => theme.breakpoints.medium} {
     font-size: ${({ theme }) => theme.fontSizes.title.xl};
@@ -50,16 +49,16 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.title.xl};
+  font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
   text-decoration: none;
   color: ${({ theme }) => theme.colors.black};
 
   ${({ theme }) => theme.breakpoints.medium} {
-    font-size: ${({ theme }) => theme.fontSizes.title.md};
+    font-size: ${({ theme }) => theme.fontSizes.title.xl};
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    font-size: ${({ theme }) => theme.fontSizes.title.sm};
+    font-size: ${({ theme }) => theme.fontSizes.title.lg};
   }
 `;
 

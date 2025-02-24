@@ -10,7 +10,6 @@ const FooterContainer = styled.footer`
   justify-content: center;
   padding: 20px 0;
   height: auto;
-  min-height: 100px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25) inset;
 
   ${({ theme }) => theme.breakpoints.large} {
@@ -49,12 +48,10 @@ const FooterLinks = styled.div`
   align-items: center;
 
   ${({ theme }) => theme.breakpoints.medium} {
-    flex-direction: column;
     gap: 20px;
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    flex-direction: row;
     gap: 15px;
   }
 `;
@@ -72,7 +69,7 @@ const IconTextLink = styled(Link)`
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    font-size: 0;
+    font-size: ${({ theme }) => theme.fontSizes.text.md};
   }
 `;
 
@@ -95,6 +92,14 @@ const FooterLink = styled(Link)`
   font-size: ${({ theme }) => theme.fontSizes.text['xl']};
   text-decoration: none;
   color: ${({ theme }) => theme.colors.black};
+
+  ${({ theme }) => theme.breakpoints.medium} {
+    font-size: ${({ theme }) => theme.fontSizes.text.lg};
+  }
+
+  ${({ theme }) => theme.breakpoints.small} {
+    font-size: ${({ theme }) => theme.fontSizes.text.md};
+  }
 `;
 
 const Footer = () => {
