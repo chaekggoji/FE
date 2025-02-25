@@ -15,6 +15,11 @@ const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.textColor};
   }
 
+  /* 텍스트 요소 기본 스타일 */
+  h1, h2, h3, h4, h5, h6, p, span, a, strong, em {
+    font-weight: normal; 
+  }
+
   /* 링크 스타일 */
   a {
     text-decoration: none;
@@ -32,11 +37,6 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     outline: none;
     background: none;
-  }
-
-  /* 헤딩 태그 유지 */
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
   }
 
   /* 테이블 초기화 */
