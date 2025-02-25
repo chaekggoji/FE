@@ -10,10 +10,12 @@ const HeaderContainer = styled.header`
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
-const LogoContainer = styled.div`
+const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 6px;
+  text-decoration: none;
+  color: inherit;
 `;
 
 const LogoImage = styled.img`
@@ -49,16 +51,16 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled(Link)`
-  font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
+  font-size: ${({ theme }) => theme.fontSizes.title.xl};
   text-decoration: none;
   color: ${({ theme }) => theme.colors.black};
 
   ${({ theme }) => theme.breakpoints.medium} {
-    font-size: ${({ theme }) => theme.fontSizes.title.xl};
+    font-size: ${({ theme }) => theme.fontSizes.title.lg};
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    font-size: ${({ theme }) => theme.fontSizes.title.lg};
+    font-size: ${({ theme }) => theme.fontSizes.title.md};
   }
 `;
 
@@ -71,12 +73,10 @@ const StudyLink = styled(NavLink)`
 const Header = () => {
   return (
     <HeaderContainer>
-      <LogoContainer>
-        <Link to="/">
-          <LogoImage src={logo} alt="책꼬지 로고" />
-        </Link>
+      <StyledLink to="/">
+        <LogoImage src={logo} alt="책꼬지 로고" />
         <LogoText>책꼬지</LogoText>
-      </LogoContainer>
+      </StyledLink>
 
       <Nav>
         <StudyLink to="#">스터디 생성</StudyLink>
