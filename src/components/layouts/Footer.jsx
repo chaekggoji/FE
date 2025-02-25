@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import githubIco from '@assets/icons/github.svg';
-import mailIco from '@assets/icons/mail.svg';
+import githubIco from '@assets/icons/icon_github_16.svg';
+import mailIco from '@assets/icons/icon_mail_16.svg';
 
 const FooterContainer = styled.footer`
   display: flex;
