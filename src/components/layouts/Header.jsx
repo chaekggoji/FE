@@ -1,6 +1,10 @@
 import { Link } from 'react-router';
 import logo from '@assets/logo.svg';
 import styled from 'styled-components';
+import alarm from '@assets/icons/icon_alarm_37.svg';
+import noAlarm from '@assets/icons/icon_no_alarm_37.svg';
+import noProfile from '@assets/icons/icon_no_profile_24.svg';
+import { useState } from 'react';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -19,9 +23,6 @@ const StyledLink = styled(Link)`
 `;
 
 const LogoImage = styled.img`
-  width: 40px;
-  height: 42px;
-
   ${({ theme }) => theme.breakpoints.medium} {
     width: 30px;
     height: 32px;
@@ -34,19 +35,24 @@ const LogoImage = styled.img`
 `;
 
 const LogoText = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
+  line-height: 1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: ${({ theme }) => theme.fontSizes.title.xl};
 
   ${({ theme }) => theme.breakpoints.medium} {
-    font-size: ${({ theme }) => theme.fontSizes.title.xl};
+    font-size: ${({ theme }) => theme.fontSizes.title.lg};
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    font-size: ${({ theme }) => theme.fontSizes.title.lg};
+    font-size: ${({ theme }) => theme.fontSizes.title.md};
   }
 `;
 
 const Nav = styled.nav`
   display: flex;
+  align-items: center;
   gap: 20px;
 `;
 
@@ -70,7 +76,40 @@ const StudyLink = styled(NavLink)`
   }
 `;
 
+const AlarmIcon = styled.img`
+  display: block;
+  align-self: center;
+  width: 36px;
+
+  ${({ theme }) => theme.breakpoints.medium} {
+    width: 30px;
+  }
+
+  ${({ theme }) => theme.breakpoints.small} {
+    width: 26px;
+  }
+`;
+
+const UserImage = styled.img`
+  display: block;
+  align-self: center;
+  width: 42px;
+
+  ${({ theme }) => theme.breakpoints.medium} {
+    width: 38px;
+  }
+
+  ${({ theme }) => theme.breakpoints.small} {
+    width: 34px;
+  }
+`;
+
 const Header = () => {
+  // 로그인 개발 전 useState로.. true면 로그인 상태, false면 로그아웃 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  // 알림 상태.. true면 알림 있음, false는 알림 없음..
+  const [isAlarm, setIsAlarm] = useState(false);
   return (
     <HeaderContainer>
       <StyledLink to="/">
@@ -79,8 +118,22 @@ const Header = () => {
       </StyledLink>
 
       <Nav>
-        <StudyLink to="#">스터디 생성</StudyLink>
-        <NavLink to="#">로그인</NavLink>
+        {isLoggedIn ? (
+          <>
+            <StudyLink to="#">스터디 생성</StudyLink>
+            {isAlarm ? (
+              <AlarmIcon src={alarm} alt="알림 있음" />
+            ) : (
+              <AlarmIcon src={noAlarm} alt="알림 없음" />
+            )}
+            <UserImage src={noProfile} alt="유저이미지" />
+          </>
+        ) : (
+          <>
+            <StudyLink to="#">스터디 생성</StudyLink>
+            <NavLink to="#">로그인</NavLink>
+          </>
+        )}
       </Nav>
     </HeaderContainer>
   );
