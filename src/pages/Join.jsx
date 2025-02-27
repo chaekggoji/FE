@@ -1,6 +1,7 @@
 import noProfile from '@assets/icons/icon_no_profile_24.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import CustomButton from '@components/common/Button';
+import InterestSelect from '@components/common/InterestSelect';
 import styled from 'styled-components';
 
 const JoinContainer = styled.div`
@@ -81,17 +82,6 @@ const JoinInput = styled.input`
   font-size: ${({ theme }) => theme.fontSizes.text.md};
 `;
 
-const SelectInput = styled.select`
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.text.md};
-  appearance: none;
-  cursor: pointer;
-`;
-
 const Join = () => {
   return (
     <JoinContainer as="form">
@@ -143,13 +133,7 @@ const Join = () => {
 
       <InputGroup>
         <LabelText>관심 분야 설정</LabelText>
-        <SelectInput name="filter" defaultValue="">
-          <option value="">관심 분야를 선택하세요</option>
-          <option value="one">관심분야 1</option>
-          <option value="two">관심분야 2</option>
-          <option value="three">관심분야 3</option>
-          <option value="four">관심분야 4</option>
-        </SelectInput>
+        <InterestSelect />
       </InputGroup>
       <CustomButton size="large" type="CTA Disabled">
         회원가입
