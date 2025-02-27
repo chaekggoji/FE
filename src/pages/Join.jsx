@@ -37,29 +37,29 @@ const LoginLink = styled.a`
 `;
 
 const ProfileUploadContainer = styled.div`
+  display: flex;
+  justify-content: center;
   position: relative;
   width: 150px;
   height: 150px;
-  margin: 0 auto;
+  margin: 20px auto;
 `;
 
 const ProfileImage = styled.div`
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-items: center;
 `;
 
 const CameraIconWrapper = styled.div`
   position: absolute;
-  right: 0;
-  bottom: 0;
+  bottom: 5px;
+  right: 5px;
   width: 50px;
-  height: 50px;
   cursor: pointer;
+`;
+
+// 파일 입력을 위한 숨겨진 input 추가
+const HiddenFileInput = styled.input`
+  display: none; // 시각적으로 숨김
 `;
 
 const InputGroup = styled.div`
@@ -88,16 +88,17 @@ const SelectInput = styled.select`
   border: 1px solid ${({ theme }) => theme.colors.gray[300]};
   border-radius: 12px;
   font-size: ${({ theme }) => theme.fontSizes.text.md};
+  appearance: none;
   cursor: pointer;
 `;
 
 const Join = () => {
   return (
-    <JoinContainer>
+    <JoinContainer as="form">
       <JoinTitle>회원가입</JoinTitle>
       <QuestionGroup>
         <QuestionText>계정이 이미 있으신가요?</QuestionText>
-        <LoginLink href="#">로그인</LoginLink>
+        <LoginLink href="/users/login">로그인</LoginLink>
       </QuestionGroup>
 
       <ProfileUploadContainer>
@@ -108,13 +109,22 @@ const Join = () => {
             style={{ width: '100%', height: '100%' }}
           />
         </ProfileImage>
-        <CameraIconWrapper>
-          <img src={profileUpload} alt="이미지 업로드" />
-        </CameraIconWrapper>
+
+        <label htmlFor="profile-upload">
+          <CameraIconWrapper>
+            <img src={profileUpload} alt="이미지 업로드" />
+          </CameraIconWrapper>
+        </label>
+
+        <HiddenFileInput
+          id="profile-upload"
+          type="file"
+          accept="image/*" // 이미지 파일만 선택 가능하도록
+        />
       </ProfileUploadContainer>
 
       <InputGroup>
-        <LabelText>닉네임임</LabelText>
+        <LabelText>닉네임</LabelText>
         <JoinInput type="text" placeholder="닉네임을 입력하세요" />
       </InputGroup>
       <InputGroup>
@@ -133,10 +143,8 @@ const Join = () => {
 
       <InputGroup>
         <LabelText>관심 분야 설정</LabelText>
-        <SelectInput name="filter">
-          <option value="" disabled selected>
-            관심 분야를 선택하세요
-          </option>
+        <SelectInput name="filter" defaultValue="">
+          <option value="">관심 분야를 선택하세요</option>
           <option value="one">관심분야 1</option>
           <option value="two">관심분야 2</option>
           <option value="three">관심분야 3</option>
