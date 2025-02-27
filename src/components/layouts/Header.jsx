@@ -93,14 +93,14 @@ const AlarmIcon = styled.img`
 const UserImage = styled.img`
   display: block;
   align-self: center;
-  width: 42px;
+  width: 50px;
 
   ${({ theme }) => theme.breakpoints.medium} {
-    width: 38px;
+    width: 48px;
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    width: 34px;
+    width: 44px;
   }
 `;
 
@@ -131,7 +131,7 @@ const Header = () => {
         ) : (
           <>
             <StudyLink to="#">스터디 생성</StudyLink>
-            <NavLink to="#">로그인</NavLink>
+            <NavLink to="/users/login">로그인</NavLink>
           </>
         )}
       </Nav>
