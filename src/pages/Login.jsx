@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 const LoginContainer = styled.div`
-  width: 100%; /* 부모 크기만큼 늘어나도록 설정 */
+  width: 100%;
   max-width: 580px;
   margin: 0 auto;
   padding: 20px;
