@@ -1,5 +1,6 @@
 import CustomButton from '@components/common/Button';
 import { useState } from 'react';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 
 const LoginContainer = styled.div`
@@ -125,12 +126,12 @@ const Login = () => {
         type={isCTAActive ? 'CTA Active' : 'CTA Abled'}
         onClick={() => setIsCTAActive((prev) => !prev)}
       >
-        로그인
+        <Link to="/">로그인</Link>
       </CustomButton>
       <hr />
       <QuestionText>계정이 없으신가요?</QuestionText>
       <CustomButton size="large" type="CTA Lined">
-        회원가입
+        <Link to="/users/join">회원가입</Link>
       </CustomButton>
     </LoginContainer>
   );

@@ -106,7 +106,7 @@ const UserImage = styled.img`
 
 const Header = () => {
   // 로그인 개발 전 useState로.. true면 로그인 상태, false면 로그아웃 상태
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 알림 상태.. true면 알림 있음, false는 알림 없음..
   const [isAlarm, setIsAlarm] = useState(false);
