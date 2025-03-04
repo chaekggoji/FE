@@ -61,9 +61,8 @@ const DropdownItem = styled.li`
   }
 `;
 
-const InterestSelect = () => {
+const InterestSelect = ({ selectedInterests, setSelectedInterests }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedInterests, setSelectedInterests] = useState([]);
   const selectBoxRef = useRef(null);
 
   const options = ['관심분야 1', '관심분야 2', '관심분야 3', '관심분야 4'];

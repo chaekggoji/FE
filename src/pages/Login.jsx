@@ -81,7 +81,7 @@ const AutoLoginWrapper = styled.label`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-size: ${({ theme }) => theme.fontSizes.title.sm};
+  font-size: ${({ theme }) => theme.fontSizes.title.md};
   color: #333333;
 `;
 

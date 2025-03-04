@@ -3,6 +3,8 @@ import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import CustomButton from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
 import styled from 'styled-components';
+import { useState } from 'react';
+import { Link } from 'react-router';
 
 const JoinContainer = styled.div`
   width: 100%;
@@ -32,7 +34,7 @@ const QuestionText = styled.p`
   justify-content: center;
 `;
 
-const LoginLink = styled.a`
+const LoginLink = styled(Link)`
   align-items: center;
   text-decoration: underline;
 `;
@@ -94,12 +96,25 @@ const PasswordRequirement = styled.p`
 `;
 
 const Join = () => {
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [selectedInterests, setSelectedInterests] = useState([]);
+
+  const isFormValid =
+    nickname.trim() !== '' &&
+    email.trim() !== '' &&
+    password.trim() !== '' &&
+    confirmPassword.trim() !== '' &&
+    selectedInterests.length === 3;
+
   return (
     <JoinContainer as="form">
       <JoinTitle>회원가입</JoinTitle>
       <QuestionGroup>
         <QuestionText>계정이 이미 있으신가요?</QuestionText>
-        <LoginLink href="/users/login">로그인</LoginLink>
+        <LoginLink to="/users/login">로그인</LoginLink>
       </QuestionGroup>
 
       <ProfileUploadContainer>
@@ -110,13 +125,11 @@ const Join = () => {
             style={{ width: '100%', height: '100%' }}
           />
         </ProfileImage>
-
         <label htmlFor="profile-upload">
           <CameraIconWrapper>
             <img src={profileUpload} alt="이미지 업로드" />
           </CameraIconWrapper>
         </label>
-
         <HiddenFileInput
           id="profile-upload"
           type="file"
@@ -126,19 +139,39 @@ const Join = () => {
 
       <InputGroup>
         <LabelText>닉네임</LabelText>
-        <JoinInput type="text" placeholder="닉네임을 입력하세요" />
+        <JoinInput
+          type="text"
+          placeholder="닉네임을 입력하세요"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+        />
       </InputGroup>
       <InputGroup>
         <LabelText>이메일 주소</LabelText>
-        <JoinInput type="email" placeholder="이메일 주소를 입력하세요" />
+        <JoinInput
+          type="email"
+          placeholder="이메일 주소를 입력하세요"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호</LabelText>
-        <JoinInput type="password" placeholder="비밀번호를 입력하세요" />
+        <JoinInput
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호 확인</LabelText>
-        <JoinInput type="password" placeholder="비밀번호를 다시 입력하세요" />
+        <JoinInput
+          type="password"
+          placeholder="비밀번호를 다시 입력하세요"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         <PasswordRequirement>
           필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
         </PasswordRequirement>
@@ -146,10 +179,18 @@ const Join = () => {
 
       <InputGroup>
         <LabelText>관심 분야 설정</LabelText>
-        <InterestSelect />
+        <InterestSelect
+          selectedInterests={selectedInterests}
+          setSelectedInterests={setSelectedInterests}
+        />
       </InputGroup>
-      <CustomButton size="large" type="CTA Disabled">
-        회원가입
+
+      <CustomButton
+        size="large"
+        type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
+        disabled={!isFormValid}
+      >
+        {isFormValid ? <Link to="/users/login">회원가입</Link> : '회원가입'}
       </CustomButton>
     </JoinContainer>
   );
