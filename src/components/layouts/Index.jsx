@@ -1,6 +1,6 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
@@ -30,13 +30,19 @@ const MainContent = styled.main`
 `;
 
 const Index = () => {
+  const location = useLocation();
+  const noFooterPageList = ['/study'];
+  const hideFooter = noFooterPageList.some((page) =>
+    location.pathname.startsWith(page),
+  );
+
   return (
     <LayoutContainer>
       <Header />
       <MainContent>
         <Outlet />
       </MainContent>
-      <Footer />
+      {!hideFooter && <Footer />}
     </LayoutContainer>
   );
 };
