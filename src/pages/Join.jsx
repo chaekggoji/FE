@@ -107,7 +107,7 @@ const Join = () => {
     email.trim() !== '' &&
     password.trim() !== '' &&
     confirmPassword.trim() !== '' &&
-    selectedInterestList.length === 3;
+    selectedInterestList.length > 0;
 
   return (
     <JoinContainer as="form">
