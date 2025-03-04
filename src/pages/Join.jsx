@@ -41,8 +41,8 @@ const ProfileUploadContainer = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   margin: 20px auto;
 `;
 
@@ -71,6 +71,7 @@ const InputGroup = styled.div`
 
 const LabelText = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.title.sm};
+  color: #666666;
 `;
 
 const JoinInput = styled.input`
@@ -80,6 +81,16 @@ const JoinInput = styled.input`
   border: 1px solid ${({ theme }) => theme.colors.gray[300]};
   border-radius: 12px;
   font-size: ${({ theme }) => theme.fontSizes.text.md};
+
+  &::placeholder {
+    color: rgba(102, 102, 102, 0.6);
+    opacity: 1;
+  }
+`;
+
+const PasswordRequirement = styled.p`
+  color: #666666;
+  font-size: ${({ theme }) => theme.fontSizes.text.sm};
 `;
 
 const Join = () => {
@@ -128,8 +139,10 @@ const Join = () => {
       <InputGroup>
         <LabelText>비밀번호 확인</LabelText>
         <JoinInput type="password" placeholder="비밀번호를 다시 입력하세요" />
+        <PasswordRequirement>
+          필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
+        </PasswordRequirement>
       </InputGroup>
-      <p>필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상</p>
 
       <InputGroup>
         <LabelText>관심 분야 설정</LabelText>

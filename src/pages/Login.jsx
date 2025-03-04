@@ -58,6 +58,7 @@ const OrDivder = styled.div`
 
 const LabelText = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.title.sm};
+  color: #666666;
 `;
 
 const LoginInput = styled.input`
@@ -81,6 +82,7 @@ const AutoLoginWrapper = styled.label`
   gap: 8px;
   cursor: pointer;
   font-size: ${({ theme }) => theme.fontSizes.title.sm};
+  color: #333333;
 `;
 
 const FindPasswordLink = styled.a`
@@ -95,6 +97,12 @@ const QuestionText = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const HR = styled.hr`
+  background: rgba(102, 102, 102, 0.25);
+  height: 2px;
+  border: 0px;
 `;
 const Login = () => {
   const [isCTAActive, setIsCTAActive] = useState(false);
@@ -128,7 +136,7 @@ const Login = () => {
       >
         <Link to="/">로그인</Link>
       </CustomButton>
-      <hr />
+      <HR />
       <QuestionText>계정이 없으신가요?</QuestionText>
       <CustomButton size="large" type="CTA Lined">
         <Link to="/users/join">회원가입</Link>

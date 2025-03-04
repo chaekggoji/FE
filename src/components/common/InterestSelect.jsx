@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import tagDelete from '@assets/icons/icon_x_24.svg';
 
 const MultiSelectContainer = styled.div`
   position: relative;
@@ -13,6 +14,7 @@ const SelectBox = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray[300]};
   border-radius: 12px;
   font-size: ${({ theme }) => theme.fontSizes.text.md};
+  color: rgba(102, 102, 102, 0.6);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -74,7 +76,21 @@ const InterestSelect = () => {
     if (selectedInterests.includes(option)) {
       setSelectedInterests(selectedInterests.filter((item) => item !== option));
     } else if (selectedInterests.length < 3) {
+      const newSelection = [...selectedInterests, option];
       setSelectedInterests([...selectedInterests, option]);
+
+      if (newSelection.length === 3) {
+        setIsOpen(false); // 3개 선택되면 드롭다운 자동 닫기
+      }
+    }
+  };
+
+  const handleRemoveTag = (option) => {
+    const updateSelection = selectedInterests.filter((item) => item !== option);
+    setSelectedInterests(updateSelection);
+
+    if (updateSelection.length < 3) {
+      setIsOpen(true); // 하나라도 삭제되면 드롭다운 다시 열기
     }
   };
 
@@ -82,7 +98,19 @@ const InterestSelect = () => {
     <MultiSelectContainer>
       <SelectBox ref={selectBoxRef} onClick={toggleDropdown}>
         {selectedInterests.length > 0
-          ? selectedInterests.map((item) => <Tag key={item}>{item}</Tag>)
+          ? selectedInterests.map((item) => (
+              <Tag key={item}>
+                {item}
+                <img
+                  src={tagDelete}
+                  alt="삭제"
+                  onClick={(e) => {
+                    e.stopPropagation(); // 드롭다운이 닫히는 것을 방지
+                    handleRemoveTag(item);
+                  }}
+                />
+              </Tag>
+            ))
           : '관심 분야를 선택하세요'}
       </SelectBox>
       <DropdownList isOpen={isOpen}>
