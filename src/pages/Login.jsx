@@ -32,7 +32,7 @@ const SocialLoginBtn = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.title.md};
 `;
 
-const OrDivder = styled.div`
+const OrDivider = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
@@ -85,7 +85,7 @@ const AutoLoginWrapper = styled.label`
   color: #333333;
 `;
 
-const FindPasswordLink = styled.a`
+const FindPasswordLink = styled(Link)`
   text-decoration: underline;
   cursor: pointer;
   display: flex;
@@ -105,7 +105,17 @@ const HR = styled.hr`
   border: 0px;
 `;
 const Login = () => {
-  const [isCTAActive, setIsCTAActive] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoginButtonActive, setIsLoginButtonActive] = useState(false);
+
+  const handleInputChange = (e, setState) => {
+    setState(e.target.value);
+  };
+
+  const handleLoginClick = () => {
+    setIsLoginButtonActive((prev) => !prev);
+  };
 
   return (
     <LoginContainer>
@@ -115,24 +125,32 @@ const Login = () => {
         <SocialLoginBtn>카카오 로그인</SocialLoginBtn>
         <SocialLoginBtn>애플 로그인</SocialLoginBtn>
       </SocialLoginGroup>
-      <OrDivder>OR</OrDivder>
+      <OrDivider>OR</OrDivider>
       <InputGroup>
         <LabelText>이메일 주소</LabelText>
-        <LoginInput type="email" />
+        <LoginInput
+          type="email"
+          value={email}
+          onChange={(e) => handleInputChange(e, setEmail)}
+        />
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호</LabelText>
-        <LoginInput type="password" />
+        <LoginInput
+          type="password"
+          value={password}
+          onChange={(e) => handleInputChange(e, setPassword)}
+        />
       </InputGroup>
-      <FindPasswordLink href="#">비밀번호 찾기</FindPasswordLink>
+      <FindPasswordLink to="#">비밀번호 찾기</FindPasswordLink>
       <AutoLoginWrapper>
         <input type="checkbox" />
         자동 로그인
       </AutoLoginWrapper>
       <CustomButton
         size="large"
-        type={isCTAActive ? 'CTA Active' : 'CTA Abled'}
-        onClick={() => setIsCTAActive((prev) => !prev)}
+        type={isLoginButtonActive ? 'CTA Active' : 'CTA Abled'}
+        onClick={() => setisLoginButtonActive((prev) => !prev)}
       >
         <Link to="/">로그인</Link>
       </CustomButton>

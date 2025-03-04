@@ -100,14 +100,14 @@ const Join = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedInterestList, setSelectedInterestList] = useState([]);
 
   const isFormValid =
     nickname.trim() !== '' &&
     email.trim() !== '' &&
     password.trim() !== '' &&
     confirmPassword.trim() !== '' &&
-    selectedInterests.length === 3;
+    selectedInterestList.length === 3;
 
   return (
     <JoinContainer as="form">
@@ -180,8 +180,8 @@ const Join = () => {
       <InputGroup>
         <LabelText>관심 분야 설정</LabelText>
         <InterestSelect
-          selectedInterests={selectedInterests}
-          setSelectedInterests={setSelectedInterests}
+          selectedInterestList={selectedInterestList}
+          setSelectedInterestList={setSelectedInterestList}
         />
       </InputGroup>
 

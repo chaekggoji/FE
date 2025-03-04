@@ -46,7 +46,7 @@ const DropdownList = styled.ul`
   list-style: none;
   max-height: 200px;
   overflow-y: auto;
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ isDropdownOpen }) => (isDropdownOpen ? 'block' : 'none')};
   z-index: 1000;
 `;
 
@@ -61,43 +61,52 @@ const DropdownItem = styled.li`
   }
 `;
 
-const InterestSelect = ({ selectedInterests, setSelectedInterests }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
+  const [isDropdownOpen, setisDropdownOpen] = useState(false);
   const selectBoxRef = useRef(null);
 
-  const options = ['관심분야 1', '관심분야 2', '관심분야 3', '관심분야 4'];
+  const interestOptions = [
+    '관심분야 1',
+    '관심분야 2',
+    '관심분야 3',
+    '관심분야 4',
+  ];
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setisDropdownOpen(!isDropdownOpen);
   };
 
-  const handleSelect = (option) => {
-    if (selectedInterests.includes(option)) {
-      setSelectedInterests(selectedInterests.filter((item) => item !== option));
-    } else if (selectedInterests.length < 3) {
-      const newSelection = [...selectedInterests, option];
-      setSelectedInterests([...selectedInterests, option]);
+  const handleInterestSelect = (option) => {
+    if (selectedInterestList.includes(option)) {
+      setSelectedInterestList(
+        selectedInterestList.filter((item) => item !== option),
+      );
+    } else if (selectedInterestList.length < 3) {
+      const newSelection = [...selectedInterestList, option];
+      setSelectedInterestList([...selectedInterestList, option]);
 
       if (newSelection.length === 3) {
-        setIsOpen(false); // 3개 선택되면 드롭다운 자동 닫기
+        setisDropdownOpen(false); // 3개 선택되면 드롭다운 자동 닫기
       }
     }
   };
 
-  const handleRemoveTag = (option) => {
-    const updateSelection = selectedInterests.filter((item) => item !== option);
-    setSelectedInterests(updateSelection);
+  const handleRemoveInterestTag = (option) => {
+    const updateSelection = selectedInterestList.filter(
+      (item) => item !== option,
+    );
+    setSelectedInterestList(updateSelection);
 
     if (updateSelection.length < 3) {
-      setIsOpen(true); // 하나라도 삭제되면 드롭다운 다시 열기
+      setisDropdownOpen(true); // 하나라도 삭제되면 드롭다운 다시 열기
     }
   };
 
   return (
     <MultiSelectContainer>
       <SelectBox ref={selectBoxRef} onClick={toggleDropdown}>
-        {selectedInterests.length > 0
-          ? selectedInterests.map((item) => (
+        {selectedInterestList.length > 0
+          ? selectedInterestList.map((item) => (
               <Tag key={item}>
                 {item}
                 <img
@@ -105,19 +114,19 @@ const InterestSelect = ({ selectedInterests, setSelectedInterests }) => {
                   alt="삭제"
                   onClick={(e) => {
                     e.stopPropagation(); // 드롭다운이 닫히는 것을 방지
-                    handleRemoveTag(item);
+                    handleRemoveInterestTag(item);
                   }}
                 />
               </Tag>
             ))
           : '관심 분야를 선택하세요'}
       </SelectBox>
-      <DropdownList isOpen={isOpen}>
-        {options.map((option) => (
+      <DropdownList isDropdownOpen={isDropdownOpen}>
+        {interestOptions.map((option) => (
           <DropdownItem
             key={option}
-            isSelected={selectedInterests.includes(option)}
-            onClick={() => handleSelect(option)}
+            isSelected={selectedInterestList.includes(option)}
+            onClick={() => handleInterestSelect(option)}
           >
             {option}
           </DropdownItem>
