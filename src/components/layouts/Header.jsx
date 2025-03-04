@@ -12,6 +12,7 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   padding: 15px 20px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 `;
 
 const StyledLink = styled(Link)`
