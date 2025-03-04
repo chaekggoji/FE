@@ -31,6 +31,7 @@ const Tag = styled.span`
   border-radius: 8px;
   display: flex;
   align-items: center;
+  gap: 6px;
 `;
 
 const DropdownList = styled.ul`
@@ -61,8 +62,14 @@ const DropdownItem = styled.li`
   }
 `;
 
+const SelectionInfo = styled.span`
+  margin-left: auto;
+  font-size: ${({ theme }) => theme.fontSizes.text.xs};
+  color: ${({ theme }) => theme.colors.gray[400]};
+`;
+
 const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
-  const [isDropdownOpen, setisDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const selectBoxRef = useRef(null);
 
   const interestOptions = [
@@ -73,7 +80,7 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
   ];
 
   const toggleDropdown = () => {
-    setisDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleInterestSelect = (option) => {
@@ -83,43 +90,41 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
       );
     } else if (selectedInterestList.length < 3) {
       const newSelection = [...selectedInterestList, option];
-      setSelectedInterestList([...selectedInterestList, option]);
+      setSelectedInterestList(newSelection);
 
-      if (newSelection.length === 3) {
-        setisDropdownOpen(false); // 3개 선택되면 드롭다운 자동 닫기
-      }
+      // 하나 이상 선택되면 드롭다운 닫기
+      setIsDropdownOpen(false);
     }
   };
 
-  const handleRemoveInterestTag = (option) => {
+  const handleRemoveInterestTag = (option, e) => {
+    e.stopPropagation(); // 드롭다운이 열리는 것을 방지
     const updateSelection = selectedInterestList.filter(
       (item) => item !== option,
     );
     setSelectedInterestList(updateSelection);
-
-    if (updateSelection.length < 3) {
-      setisDropdownOpen(true); // 하나라도 삭제되면 드롭다운 다시 열기
-    }
   };
 
   return (
     <MultiSelectContainer>
       <SelectBox ref={selectBoxRef} onClick={toggleDropdown}>
-        {selectedInterestList.length > 0
-          ? selectedInterestList.map((item) => (
+        {selectedInterestList.length > 0 ? (
+          <>
+            {selectedInterestList.map((item) => (
               <Tag key={item}>
                 {item}
                 <img
                   src={tagDelete}
                   alt="삭제"
-                  onClick={(e) => {
-                    e.stopPropagation(); // 드롭다운이 닫히는 것을 방지
-                    handleRemoveInterestTag(item);
-                  }}
+                  onClick={(e) => handleRemoveInterestTag(item, e)}
                 />
               </Tag>
-            ))
-          : '관심 분야를 선택하세요'}
+            ))}
+            <SelectionInfo>{selectedInterestList.length}/3</SelectionInfo>
+          </>
+        ) : (
+          '관심 분야를 선택하세요'
+        )}
       </SelectBox>
       <DropdownList isDropdownOpen={isDropdownOpen}>
         {interestOptions.map((option) => (

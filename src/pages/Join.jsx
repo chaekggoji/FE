@@ -178,7 +178,7 @@ const Join = () => {
       </InputGroup>
 
       <InputGroup>
-        <LabelText>관심 분야 설정</LabelText>
+        <LabelText>관심 분야 설정 (최소 1개, 최대 3개)</LabelText>
         <InterestSelect
           selectedInterestList={selectedInterestList}
           setSelectedInterestList={setSelectedInterestList}
