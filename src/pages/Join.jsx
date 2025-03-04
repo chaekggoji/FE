@@ -4,7 +4,7 @@ import CustomButton from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 const JoinContainer = styled.div`
   width: 100%;
@@ -95,29 +95,9 @@ const PasswordRequirement = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.text.sm};
 `;
 
-// 링크를 버튼 전체에 적용하기 위한 스타일 수정
-const StyledLink = styled(Link)`
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  width: 100%; // 전체 너비를 사용하도록 설정
-`;
-
-// 버튼 크기 유지를 위한 추가 스타일
-const ButtonWrapper = styled.div`
-  width: 100%;
-
-  & > a {
-    width: 100%;
-    display: block;
-  }
-
-  & button {
-    width: 100%;
-  }
-`;
-
 const Join = () => {
+  const navigate = useNavigate();
+
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -207,19 +187,14 @@ const Join = () => {
         />
       </InputGroup>
 
-      <ButtonWrapper>
-        {isFormValid ? (
-          <StyledLink to="/users/login">
-            <CustomButton size="large" type="CTA Active">
-              회원가입
-            </CustomButton>
-          </StyledLink>
-        ) : (
-          <CustomButton size="large" type="CTA Disabled" disabled>
-            회원가입
-          </CustomButton>
-        )}
-      </ButtonWrapper>
+      <CustomButton
+        size="large"
+        type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
+        disabled={!isFormValid}
+        onClick={() => isFormValid && navigate('/users/login')}
+      >
+        회원가입
+      </CustomButton>
     </JoinContainer>
   );
 };

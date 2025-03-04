@@ -1,6 +1,6 @@
 import CustomButton from '@components/common/Button';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const LoginContainer = styled.div`
@@ -104,30 +104,9 @@ const HR = styled.hr`
   height: 2px;
   border: 0px;
 `;
-
-// 링크를 버튼 전체에 적용하기 위한 스타일 수정
-const StyledLink = styled(Link)`
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  width: 100%; // 전체 너비를 사용하도록 설정
-`;
-
-// 버튼 크기 유지를 위한 추가 스타일
-const ButtonWrapper = styled.div`
-  width: 100%;
-
-  & > a {
-    width: 100%;
-    display: block;
-  }
-
-  & button {
-    width: 100%;
-  }
-`;
-
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginButtonActive, setIsLoginButtonActive] = useState(false);
@@ -172,31 +151,19 @@ const Login = () => {
         <input type="checkbox" />
         자동 로그인
       </AutoLoginWrapper>
-
-      <ButtonWrapper>
-        {isFormValid ? (
-          <StyledLink to="/">
-            <CustomButton size="large" type="CTA Active">
-              로그인
-            </CustomButton>
-          </StyledLink>
-        ) : (
-          <CustomButton size="large" type="CTA Disabled" disabled>
-            로그인
-          </CustomButton>
-        )}
-      </ButtonWrapper>
+      <CustomButton
+        size="large"
+        type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
+        onClick={() => isFormValid && navigate('/')}
+      >
+        로그인
+      </CustomButton>
 
       <HR />
       <QuestionText>계정이 없으신가요?</QuestionText>
-
-      <ButtonWrapper>
-        <StyledLink to="/users/join">
-          <CustomButton size="large" type="CTA Lined">
-            회원가입
-          </CustomButton>
-        </StyledLink>
-      </ButtonWrapper>
+      <CustomButton size="large" type="CTA Lined">
+        <Link to="/users/join">회원가입</Link>
+      </CustomButton>
     </LoginContainer>
   );
 };
