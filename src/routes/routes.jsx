@@ -1,12 +1,14 @@
 import Layout from '@components/layouts';
-import Home from '@pages/study/Home';
+import StudyHome from '@pages/study/StudyHome';
+import Notices from '@pages/study/Notices';
+import StudyLayout from '@pages/study/StudyLayout';
 import Supabase from '@pages/Supabase';
 import Test from '@pages/Test';
 import { createBrowserRouter } from 'react-router';
 
 const router = createBrowserRouter([
   {
-    index: '/',
+    path: '/',
     element: <Layout />,
     children: [
       {
@@ -18,11 +20,16 @@ const router = createBrowserRouter([
         element: <Supabase />,
       },
       {
-        path: 'study',
+        path: 'study/:id',
+        element: <StudyLayout />,
         children: [
           {
-            index: true,
-            element: <Home />,
+            path: 'home',
+            element: <StudyHome />,
+          },
+          {
+            path: 'notices',
+            element: <Notices />,
           },
         ],
       },
