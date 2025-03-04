@@ -117,6 +117,8 @@ const Login = () => {
     setIsLoginButtonActive((prev) => !prev);
   };
 
+  const isFormValid = email.trim() !== '' && password.trim() !== '';
+
   return (
     <LoginContainer>
       <LoginTitle>로그인</LoginTitle>
@@ -149,11 +151,11 @@ const Login = () => {
       </AutoLoginWrapper>
       <CustomButton
         size="large"
-        type={isLoginButtonActive ? 'CTA Active' : 'CTA Abled'}
-        onClick={() => setisLoginButtonActive((prev) => !prev)}
+        type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
       >
-        <Link to="/">로그인</Link>
+        {isFormValid ? <Link to="/">로그인</Link> : '로그인'}
       </CustomButton>
+
       <HR />
       <QuestionText>계정이 없으신가요?</QuestionText>
       <CustomButton size="large" type="CTA Lined">
