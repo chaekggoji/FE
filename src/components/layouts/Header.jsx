@@ -93,20 +93,20 @@ const AlarmIcon = styled.img`
 const UserImage = styled.img`
   display: block;
   align-self: center;
-  width: 42px;
+  width: 50px;
 
   ${({ theme }) => theme.breakpoints.medium} {
-    width: 38px;
+    width: 48px;
   }
 
   ${({ theme }) => theme.breakpoints.small} {
-    width: 34px;
+    width: 44px;
   }
 `;
 
 const Header = () => {
   // 로그인 개발 전 useState로.. true면 로그인 상태, false면 로그아웃 상태
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 알림 상태.. true면 알림 있음, false는 알림 없음..
   const [isAlarm, setIsAlarm] = useState(false);
@@ -131,7 +131,7 @@ const Header = () => {
         ) : (
           <>
             <StudyLink to="#">스터디 생성</StudyLink>
-            <NavLink to="#">로그인</NavLink>
+            <NavLink to="/users/login">로그인</NavLink>
           </>
         )}
       </Nav>
