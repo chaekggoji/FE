@@ -85,24 +85,34 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
 
   const handleInterestSelect = (option) => {
     if (selectedInterestList.includes(option)) {
-      setSelectedInterestList(
-        selectedInterestList.filter((item) => item !== option),
+      console.log('이미 선택된 항목 제거:', option);
+      const updatedList = selectedInterestList.filter(
+        (item) => item !== option,
       );
+      setSelectedInterestList(updatedList);
+      console.log('현재 관심 분야 리스트:', updatedList);
     } else if (selectedInterestList.length < 3) {
+      console.log('새로운 관심 분야 추가됨:', option);
       const newSelection = [...selectedInterestList, option];
       setSelectedInterestList(newSelection);
+      console.log('현재 관심 분야 리스트:', newSelection);
 
-      // 하나 이상 선택되면 드롭다운 닫기
-      setIsDropdownOpen(false);
+      // 3개 선택되면 드롭다운 닫기
+      if (newSelection.length === 3) {
+        setIsDropdownOpen(false);
+        console.log('3개 모두 선택 완료, 드롭다운 닫기');
+      }
     }
   };
 
   const handleRemoveInterestTag = (option, e) => {
     e.stopPropagation(); // 드롭다운이 열리는 것을 방지
+    console.log('관심 분야 태그 삭제됨:', option);
     const updateSelection = selectedInterestList.filter(
       (item) => item !== option,
     );
     setSelectedInterestList(updateSelection);
+    console.log('현재 관심 분야 리스트:', updateSelection);
   };
 
   return (

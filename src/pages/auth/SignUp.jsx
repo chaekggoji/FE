@@ -145,7 +145,10 @@ const SignUp = () => {
           type="text"
           placeholder="닉네임을 입력하세요"
           value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            console.log('닉네임 : ', e.target.value);
+          }}
         />
       </InputGroup>
       <InputGroup>
@@ -154,7 +157,10 @@ const SignUp = () => {
           type="email"
           placeholder="이메일 주소를 입력하세요"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            console.log('이메일 : ', e.target.value);
+          }}
         />
       </InputGroup>
       <InputGroup>
@@ -163,7 +169,10 @@ const SignUp = () => {
           type="password"
           placeholder="비밀번호를 입력하세요"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            console.log('비밀번호 : ', e.target.value);
+          }}
         />
       </InputGroup>
       <InputGroup>
@@ -172,7 +181,10 @@ const SignUp = () => {
           type="password"
           placeholder="비밀번호를 다시 입력하세요"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            console.log('비밀번호 재확인 : ', e.target.value);
+          }}
         />
         <PasswordRequirement>
           필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
