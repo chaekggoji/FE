@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const InputField = styled.div`
@@ -9,6 +10,7 @@ const InputField = styled.div`
     return theme.colors.gray[200];
   }}
     1px solid;
+  border-radius: 12px;
   font-size: ${({ theme, fontSize }) => {
     return theme.fontSizes.text[fontSize];
   }};
@@ -37,7 +39,7 @@ const SearchField = ({
   placeholder,
   fontSize = 'xl',
   labelText,
-  labelSize = '2xl',
+  labelSize,
 }) => {
   return (
     <>
@@ -56,6 +58,14 @@ const SearchField = ({
       </InputLabel>
     </>
   );
+};
+
+SearchField.propTypes = {
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  fontSize: PropTypes.string,
+  labelText: PropTypes.string,
+  labelSize: PropTypes.string,
 };
 
 export default SearchField;
