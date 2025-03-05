@@ -2,14 +2,23 @@ import CustomButton from '@components/common/Button';
 import SearchField from '@components/common/SearchField';
 import styled from 'styled-components';
 
-const MainContainer = styled.main`
-  margin: 80px 130px;
+const MainContainer = styled.div`
+  margin: 80px clamp(0px, 9vw, 130px);
   border: ${({ theme }) => {
       return theme.colors.gray[200];
     }}
     1px solid;
   border-radius: 12px;
   padding: 60px;
+
+  ${({ theme }) => {
+    return theme.breakpoints['medium'];
+  }} {
+    border: none;
+    padding: 60px 0;
+    margin: 0;
+  }
+
   display: flex;
   flex-direction: column;
   gap: 40px;
