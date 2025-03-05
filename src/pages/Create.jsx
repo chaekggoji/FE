@@ -1,4 +1,5 @@
 import CustomButton from '@components/common/Button';
+import CustomInputField from '@components/common/InputField';
 import SearchField from '@components/common/SearchField';
 import styled from 'styled-components';
 
@@ -12,7 +13,7 @@ const MainContainer = styled.div`
   padding: 60px;
 
   ${({ theme }) => {
-    return theme.breakpoints['medium'];
+    return theme.breakpoints.medium;
   }} {
     border: none;
     padding: 60px 0;
@@ -28,6 +29,12 @@ const SearchResult = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    gap: 24px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -47,24 +54,67 @@ const BookCard = styled.article`
     }}
     1px solid;
   border-radius: 12px;
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    gap: 20px;
+    padding: 16px;
+  }
 `;
 
 const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    gap: 15px;
+  }
 `;
 
 const BookTitle = styled.h2`
   font-size: ${({ theme }) => {
     return theme.fontSizes.title['2xl'];
   }};
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    font-size: ${({ theme }) => {
+      return theme.fontSizes.title['xl'];
+    }};
+  }
 `;
 
 const BookInfoText = styled.p`
+  color: ${({ theme }) => {
+    return theme.colors.gray[500];
+  }};
   font-size: ${({ theme }) => {
     return theme.fontSizes.text['xl'];
   }};
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    font-size: ${({ theme }) => {
+      return theme.fontSizes.text['md'];
+    }};
+  }
+`;
+
+const BookCover = styled.img`
+  max-width: 112;
+  aspect-ratio: 112/160;
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    max-width: 76px;
+    aspect-ratio: 7 / 10;
+  }
 `;
 
 const Create = () => {
@@ -78,7 +128,23 @@ const Create = () => {
         <SectionTitle>검색 결과</SectionTitle>
         <SearchResult>
           <BookCard>
-            <img
+            <BookCover src="https://picsum.photos/120/160" />
+            <BookInfo>
+              <BookTitle>도서 제목</BookTitle>
+              <BookInfoText>저자 | 출판사</BookInfoText>
+              <BookInfoText>도서 정보</BookInfoText>
+            </BookInfo>
+          </BookCard>
+          <BookCard>
+            <BookCover src="https://picsum.photos/120/160" />
+            <BookInfo>
+              <BookTitle>도서 제목</BookTitle>
+              <BookInfoText>저자 | 출판사</BookInfoText>
+              <BookInfoText>도서 정보</BookInfoText>
+            </BookInfo>
+          </BookCard>
+          <BookCard>
+            <BookCover
               src="https://picsum.photos/120/160"
               style={{ width: 112, aspectRatio: '112 / 160' }}
             />
@@ -89,7 +155,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <img
+            <BookCover
               src="https://picsum.photos/120/160"
               style={{ width: 112, aspectRatio: '112 / 160' }}
             />
@@ -100,7 +166,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <img
+            <BookCover
               src="https://picsum.photos/120/160"
               style={{ width: 112, aspectRatio: '112 / 160' }}
             />
@@ -111,29 +177,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <img
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
-            <BookInfo>
-              <BookTitle>도서 제목</BookTitle>
-              <BookInfoText>저자 | 출판사</BookInfoText>
-              <BookInfoText>도서 정보</BookInfoText>
-            </BookInfo>
-          </BookCard>
-          <BookCard>
-            <img
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
-            <BookInfo>
-              <BookTitle>도서 제목</BookTitle>
-              <BookInfoText>저자 | 출판사</BookInfoText>
-              <BookInfoText>도서 정보</BookInfoText>
-            </BookInfo>
-          </BookCard>
-          <BookCard>
-            <img
+            <BookCover
               src="https://picsum.photos/120/160"
               style={{ width: 112, aspectRatio: '112 / 160' }}
             />
@@ -150,9 +194,11 @@ const Create = () => {
           </CustomButton>
           <CustomButton type="CTA Able" size="large">
             다음
-            <img src="src/assets/icons/icon_arrow_right_24.svg" />
+            <BookCover src="src/assets/icons/icon_arrow_right_24.svg" />
           </CustomButton>
         </div>
+
+        <CustomInputField labelText="label 테스트" placeholder="placeholder" />
       </MainContainer>
     </>
   );
