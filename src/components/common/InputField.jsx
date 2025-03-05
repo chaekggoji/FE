@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const InputField = styled.div`
@@ -9,6 +10,7 @@ const InputField = styled.div`
     return theme.colors.gray[200];
   }}
     1px solid;
+  border-radius: 12px;
   font-size: ${({ theme, fontSize }) => {
     return theme.fontSizes.text[fontSize];
   }};
@@ -34,10 +36,10 @@ const InputLabel = styled.label`
 
 const CustomInputField = ({
   type = 'text',
-  placeholder = '텍스트 입력 필드',
-  fontSize = 'xl',
+  placeholder,
+  fontSize,
   labelText,
-  labelSize = '2xl',
+  labelSize = 'md',
   children,
 }) => {
   return (
@@ -55,6 +57,15 @@ const CustomInputField = ({
       </InputLabel>
     </>
   );
+};
+
+CustomInputField.propTypes = {
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  fontSize: PropTypes.string,
+  labelText: PropTypes.string,
+  labelSize: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default CustomInputField;
