@@ -164,7 +164,7 @@ const Login = () => {
       <CustomButton
         size="large"
         type="CTA Lined"
-        onClick={() => navigate('/users/join')}
+        onClick={() => navigate('/users/signup')}
       >
         회원가입
       </CustomButton>

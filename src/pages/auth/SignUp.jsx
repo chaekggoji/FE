@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
-const JoinContainer = styled.div`
+const SignUpContainer = styled.div`
   width: 100%;
   max-width: 580px;
   margin: 0 auto;
@@ -16,7 +16,7 @@ const JoinContainer = styled.div`
   gap: 20px;
 `;
 
-const JoinTitle = styled.h1`
+const SignUpTitle = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
   text-align: center;
 `;
@@ -76,7 +76,7 @@ const LabelText = styled.label`
   color: #666666;
 `;
 
-const JoinInput = styled.input`
+const SignUpInput = styled.input`
   width: 100%;
   height: 48px;
   padding: 0 16px;
@@ -95,7 +95,7 @@ const PasswordRequirement = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.text.sm};
 `;
 
-const Join = () => {
+const SignUp = () => {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState('');
@@ -112,8 +112,8 @@ const Join = () => {
     selectedInterestList.length > 0;
 
   return (
-    <JoinContainer as="form">
-      <JoinTitle>회원가입</JoinTitle>
+    <SignUpContainer as="form">
+      <SignUpTitle>회원가입</SignUpTitle>
       <QuestionGroup>
         <QuestionText>계정이 이미 있으신가요?</QuestionText>
         <LoginLink to="/users/login">로그인</LoginLink>
@@ -141,7 +141,7 @@ const Join = () => {
 
       <InputGroup>
         <LabelText>닉네임</LabelText>
-        <JoinInput
+        <SignUpInput
           type="text"
           placeholder="닉네임을 입력하세요"
           value={nickname}
@@ -150,7 +150,7 @@ const Join = () => {
       </InputGroup>
       <InputGroup>
         <LabelText>이메일 주소</LabelText>
-        <JoinInput
+        <SignUpInput
           type="email"
           placeholder="이메일 주소를 입력하세요"
           value={email}
@@ -159,7 +159,7 @@ const Join = () => {
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호</LabelText>
-        <JoinInput
+        <SignUpInput
           type="password"
           placeholder="비밀번호를 입력하세요"
           value={password}
@@ -168,7 +168,7 @@ const Join = () => {
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호 확인</LabelText>
-        <JoinInput
+        <SignUpInput
           type="password"
           placeholder="비밀번호를 다시 입력하세요"
           value={confirmPassword}
@@ -195,8 +195,8 @@ const Join = () => {
       >
         회원가입
       </CustomButton>
-    </JoinContainer>
+    </SignUpContainer>
   );
 };
 
-export default Join;
+export default SignUp;

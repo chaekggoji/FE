@@ -1,6 +1,6 @@
 import Layout from '@components/layouts';
-import Join from '@pages/Join';
-import Login from '@pages/Login';
+import Login from '@pages/auth/Login';
+import SignUp from '@pages/auth/SignUp';
 import Supabase from '@pages/Supabase';
 import Test from '@pages/Test';
 import { createBrowserRouter } from 'react-router';
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
         element: <Test />,
       },
       { path: 'users/login', element: <Login /> },
-      { path: 'users/join', element: <Join /> },
+      { path: 'users/signup', element: <SignUp /> },
       {
         path: 'supabase',
         element: <Supabase />,
