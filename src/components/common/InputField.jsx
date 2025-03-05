@@ -11,9 +11,17 @@ const InputField = styled.div`
   }}
     1px solid;
   border-radius: 12px;
-  font-size: ${({ theme, fontSize }) => {
-    return theme.fontSizes.text[fontSize];
+  font-size: ${({ theme }) => {
+    return theme.fontSizes.text['xl'];
   }};
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    font-size: ${({ theme }) => {
+      return theme.fontSizes.text['md'];
+    }}
+  }
 `;
 
 const Input = styled.input`
@@ -26,27 +34,33 @@ const Input = styled.input`
 
 const InputLabel = styled.label`
   margin-bottom: 4px;
-  font-size: ${({ theme, labelSize }) => {
-    return theme.fontSizes.text[labelSize];
+  font-size: ${({ theme }) => {
+    return theme.fontSizes.text['3xl'];
   }};
   color: ${({ theme }) => {
     return theme.colors.gray[400];
   }};
+
+  ${({ theme }) => {
+    return theme.breakpoints.small;
+  }} {
+    font-size: ${({ theme }) => {
+      return theme.fontSizes.text['xl'];
+    }};
+  }
 `;
 
 const CustomInputField = ({
   type = 'text',
   placeholder,
-  fontSize,
   labelText,
-  labelSize = 'md',
   children,
 }) => {
   return (
     <>
-      <InputLabel labelSize={labelSize}>
+      <InputLabel>
         {labelText || null}
-        <InputField fontSize={fontSize}>
+        <InputField>
           <Input
             type={type}
             placeholder={placeholder}
