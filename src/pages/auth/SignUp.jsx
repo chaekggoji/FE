@@ -95,6 +95,15 @@ const PasswordRequirement = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.text.sm};
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: ${({ theme }) => theme.fontSizes.text.sm};
+`;
+
+const PasswordConfirm = styled.p`
+  color: green;
+  font-size: ${({ theme }) => theme.fontSizes.text.sm};
+`;
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -102,13 +111,80 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(true);
+
   const [selectedInterestList, setSelectedInterestList] = useState([]);
+
+  // 비밀번호 유효성 검사 함수
+  const checkPasswordValid = (password) => {
+    // 비밀번호가 비어있으면 검사하지 않음
+    if (!password) {
+      setPasswordValid(true); // 기본값을 true로 설정
+      return true;
+    }
+
+    // 최소 8자, 대문자, 소문자, 숫자, 특수문자 포함 검사
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+
+    const isValid = regex.test(password);
+
+    setPasswordValid(isValid);
+
+    console.log('비밀번호 유효성:', isValid ? '유효함' : '유효하지 않음');
+
+    return isValid;
+  };
+
+  // 비밀번호 일치 여부 확인 함수
+  const checkPasswordMatch = (pass, confirmPass) => {
+    // 비밀번호 확인이 비어있지 않고, 비밀번호가 입력된 경우에만 검사
+    if (confirmPass !== '' && pass !== '') {
+      if (pass === confirmPass) {
+        setPasswordMatch(true);
+        setPasswordError(false);
+        console.log('비밀번호 일치');
+      } else {
+        setPasswordMatch(false);
+        setPasswordError(true);
+        console.log('비밀번호 불일치');
+      }
+    } else {
+      // 비밀번호 확인 비어있는 경우 메시지 표시하지 않음
+      setPasswordMatch(false);
+      setPasswordError(false);
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // 비밀번호 유효성 검사
+    checkPasswordValid(newPassword);
+
+    // 비밀번호 일치 여부 검사
+    checkPasswordMatch(newPassword, confirmPassword);
+    console.log('비밀번호 입력: ', newPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const newConfirmPassword = e.target.value;
+    setConfirmPassword(newConfirmPassword);
+
+    checkPasswordMatch(password, newConfirmPassword);
+    console.log('비밀번호 확인 입력: ', newConfirmPassword);
+  };
 
   const isFormValid =
     nickname.trim() !== '' &&
     email.trim() !== '' &&
     password.trim() !== '' &&
     confirmPassword.trim() !== '' &&
+    !passwordError &&
+    passwordValid &&
     selectedInterestList.length > 0;
 
   return (
@@ -145,10 +221,7 @@ const SignUp = () => {
           type="text"
           placeholder="닉네임을 입력하세요"
           value={nickname}
-          onChange={(e) => {
-            setNickname(e.target.value);
-            console.log('닉네임 : ', e.target.value);
-          }}
+          onChange={(e) => setNickname(e.target.value)}
         />
       </InputGroup>
       <InputGroup>
@@ -157,10 +230,7 @@ const SignUp = () => {
           type="email"
           placeholder="이메일 주소를 입력하세요"
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            console.log('이메일 : ', e.target.value);
-          }}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </InputGroup>
       <InputGroup>
@@ -169,11 +239,14 @@ const SignUp = () => {
           type="password"
           placeholder="비밀번호를 입력하세요"
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            console.log('비밀번호 : ', e.target.value);
-          }}
+          onChange={handlePasswordChange}
         />
+        {password && !passwordValid && (
+          <ErrorMessage>
+            비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8자 이상이어야
+            합니다.
+          </ErrorMessage>
+        )}
       </InputGroup>
       <InputGroup>
         <LabelText>비밀번호 확인</LabelText>
@@ -181,11 +254,16 @@ const SignUp = () => {
           type="password"
           placeholder="비밀번호를 다시 입력하세요"
           value={confirmPassword}
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            console.log('비밀번호 재확인 : ', e.target.value);
-          }}
+          onChange={handleConfirmPasswordChange}
         />
+        {confirmPassword &&
+          (passwordError ? (
+            <ErrorMessage>비밀번호가 일치하지 않습니다</ErrorMessage>
+          ) : (
+            passwordMatch && (
+              <PasswordConfirm>비밀번호가 일치합니다.</PasswordConfirm>
+            )
+          ))}
         <PasswordRequirement>
           필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
         </PasswordRequirement>
