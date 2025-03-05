@@ -161,8 +161,12 @@ const Login = () => {
 
       <HR />
       <QuestionText>계정이 없으신가요?</QuestionText>
-      <CustomButton size="large" type="CTA Lined">
-        <Link to="/users/join">회원가입</Link>
+      <CustomButton
+        size="large"
+        type="CTA Lined"
+        onClick={() => navigate('/users/join')}
+      >
+        회원가입
       </CustomButton>
     </LoginContainer>
   );
