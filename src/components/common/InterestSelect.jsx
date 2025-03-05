@@ -47,7 +47,7 @@ const DropdownList = styled.ul`
   list-style: none;
   max-height: 200px;
   overflow-y: auto;
-  display: ${({ isDropdownOpen }) => (isDropdownOpen ? 'block' : 'none')};
+  display: ${({ $isDropdownOpen }) => ($isDropdownOpen ? 'block' : 'none')};
   z-index: 1000;
 `;
 
@@ -55,7 +55,7 @@ const DropdownItem = styled.li`
   padding: 10px 16px;
   font-size: ${({ theme }) => theme.fontSizes.text.md};
   cursor: pointer;
-  background-color: ${({ isSelected }) => (isSelected ? '#DDEEDC' : '#fff')};
+  background-color: ${({ $isSelected }) => ($isSelected ? '#DDEEDC' : '#fff')};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.gray[100]};
@@ -126,11 +126,11 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
           '관심 분야를 선택하세요'
         )}
       </SelectBox>
-      <DropdownList isDropdownOpen={isDropdownOpen}>
+      <DropdownList $isDropdownOpen={isDropdownOpen}>
         {interestOptions.map((option) => (
           <DropdownItem
             key={option}
-            isSelected={selectedInterestList.includes(option)}
+            $isSelected={selectedInterestList.includes(option)}
             onClick={() => handleInterestSelect(option)}
           >
             {option}
