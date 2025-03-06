@@ -106,8 +106,11 @@ const BookInfoText = styled.p`
 `;
 
 const BookCover = styled.img`
-  max-width: 112;
-  aspect-ratio: 112/160;
+  width: 100%;
+  height: 100%;
+  max-width: 112px;
+  aspect-ratio: 7/10;
+  object-fit: cover;
 
   ${({ theme }) => {
     return theme.breakpoints.small;
@@ -144,10 +147,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <BookCover
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
+            <BookCover src="https://picsum.photos/120/160" />
             <BookInfo>
               <BookTitle>도서 제목</BookTitle>
               <BookInfoText>저자 | 출판사</BookInfoText>
@@ -155,10 +155,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <BookCover
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
+            <BookCover src="https://picsum.photos/120/160" />
             <BookInfo>
               <BookTitle>도서 제목</BookTitle>
               <BookInfoText>저자 | 출판사</BookInfoText>
@@ -166,10 +163,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <BookCover
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
+            <BookCover src="https://picsum.photos/120/160" />
             <BookInfo>
               <BookTitle>도서 제목</BookTitle>
               <BookInfoText>저자 | 출판사</BookInfoText>
@@ -177,10 +171,7 @@ const Create = () => {
             </BookInfo>
           </BookCard>
           <BookCard>
-            <BookCover
-              src="https://picsum.photos/120/160"
-              style={{ width: 112, aspectRatio: '112 / 160' }}
-            />
+            <BookCover src="https://picsum.photos/120/160" />
             <BookInfo>
               <BookTitle>도서 제목</BookTitle>
               <BookInfoText>저자 | 출판사</BookInfoText>
@@ -192,9 +183,9 @@ const Create = () => {
           <CustomButton type="CTA Lined" size="large">
             취소
           </CustomButton>
-          <CustomButton type="CTA Able" size="large">
+          <CustomButton type="CTA Able" size="large" style={{ gap: '10px' }}>
             다음
-            <BookCover src="src/assets/icons/icon_arrow_right_24.svg" />
+            <img src="src/assets/icons/icon_arrow_right_24.svg" />
           </CustomButton>
         </div>
 
