@@ -4,15 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "react-router dev",
-    "vite": "vite",
+    "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
-    "@tailwindcss/vite": "^4.0.10",
+    "@tailwindcss/vite": "^4.0.11",
     "@tanstack/react-query": "^5.66.5",
     "@tanstack/react-query-devtools": "^5.66.5",
     "axios": "^1.7.9",
@@ -21,7 +19,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "react-router": "^7.2.0",
-    "tailwindcss": "^4.0.10",
+    "tailwindcss": "^4.0.11",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
