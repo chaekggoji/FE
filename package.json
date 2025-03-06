@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
+    "@tailwindcss/vite": "^4.0.10",
     "@tanstack/react-query": "^5.66.5",
     "@tanstack/react-query-devtools": "^5.66.5",
     "axios": "^1.7.9",
@@ -20,6 +21,7 @@
     "react-hook-form": "^7.54.2",
     "react-router": "^7.1.5",
     "styled-components": "^6.1.15",
+    "tailwindcss": "^4.0.10",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
