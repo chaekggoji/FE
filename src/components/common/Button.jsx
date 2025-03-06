@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Button = styled.button`
   display: inline-flex;
-  gap: 10px; // 버튼 내부에 아이콘이 포함된 경우, 텍스트와 아이콘 사이의 간격 유지
   align-items: center;
   justify-content: center;
   font-size: 1rem;
