@@ -1,70 +1,22 @@
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Button = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 12px;
-  border: none;
-  transition: 0.2s;
+const buttonSizes = {
+  large: 'h-12 px-9 text-lg',
+  medium: 'h-9 px-6 text-base',
+  small: 'h-6 px-5 text-sm',
+};
 
-  ${({ size }) => {
-    switch (size) {
-      case 'large':
-        return `height: 48px; padding: 12px 36px;`;
-      case 'medium':
-        return `height: 36px; padding: 8px 36px;`;
-      case 'small':
-        return `height: 24px; padding: 4px 20px;`;
-      default:
-        return `height: 36px; padding: 8px 36px;`;
-    }
-  }}
+const buttonTypes = {
+  'CTA Abled': 'bg-primary-300 text-white',
+  'CTA Active': 'bg-primary-400 text-white',
+  'CTA Delete': 'bg-secondary-300 text-white',
+  'CTA Delete Active': 'bg-secondary-400 text-white',
+  'CTA Disabled': 'bg-gray-300 text-white cursor-not-allowed opacity-60',
+  'CTA Lined':
+    'bg-white text-gray-400 border border-gray-400 hover:bg-gray-100',
+};
 
-  ${({ theme, type }) => {
-    const colors = theme.colors;
-    switch (type) {
-      case 'CTA Abled':
-      case 'CTA Active':
-        return `
-          background-color: ${type === 'CTA Active' ? colors.primary[400] : colors.primary[300]};
-          color: ${colors.white};
-        `;
-      case 'CTA Delete':
-      case 'CTA Delete Active':
-        return `
-          background-color: ${type === 'CTA Delete Active' ? colors.secondary[400] : colors.secondary[300]};
-          color: ${colors.white};
-        `;
-      case 'CTA Disabled':
-        return `
-          background-color: ${colors.gray[300]};
-          color: ${colors.white};
-          cursor: not-allowed;
-          opacity: 0.6;
-        `;
-      case 'CTA Lined':
-        return `
-          background-color: ${colors.white};
-          color: ${colors.gray[400]};
-          border: 1px solid ${colors.gray[400]};
-          &:hover {
-            background-color: ${colors.gray[100]};
-          }
-        `;
-      default:
-        return `
-          background-color: ${colors.primary[300]};
-          color: ${colors.white};
-        `;
-    }
-  }}
-`;
-
-const CustomButton = ({
+const Button = ({
   size = 'medium',
   type = 'CTA Abled',
   children,
@@ -72,13 +24,17 @@ const CustomButton = ({
   ...props
 }) => {
   return (
-    <Button size={size} type={type} onClick={onClick} {...props}>
+    <button
+      className={`inline-flex items-center justify-center rounded-lg transition duration-200 ${buttonSizes[size]} ${buttonTypes[type]}`}
+      onClick={onClick}
+      {...props}
+    >
       {children}
-    </Button>
+    </button>
   );
 };
 
-CustomButton.propTypes = {
+Button.propTypes = {
   size: PropTypes.oneOf(['large', 'medium', 'small']),
   type: PropTypes.oneOf([
     'CTA Abled',
@@ -92,4 +48,4 @@ CustomButton.propTypes = {
   onClick: PropTypes.func,
 };
 
-export default CustomButton;
+export default Button;
