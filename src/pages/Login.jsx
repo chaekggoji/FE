@@ -19,7 +19,7 @@ const Login = () => {
         {['구글', '카카오', '애플'].map((provider) => (
           <button
             key={provider}
-            className="py-3 px-5 border border-gray-300 rounded-xl text-base transition hover:bg-gray-100"
+            className="py-3 px-5 border border-gray-300 rounded-xl text-lg md:text-base transition duration-200 hover:bg-gray-200"
           >
             {provider} 로그인
           </button>
@@ -61,10 +61,10 @@ const Login = () => {
       </Link>
 
       {/* 자동 로그인 체크박스 */}
-      <label className="flex items-center gap-2 cursor-pointer text-base text-gray-700">
-        <input type="checkbox" />
-        자동 로그인
-      </label>
+      <div className="flex items-center gap-2 cursor-pointer text-base text-gray-700">
+        <input id="auto-login" type="checkbox" />
+        <label htmlFor="auto-login">자동 로그인</label>
+      </div>
 
       {/* 로그인 버튼 */}
       <Button
@@ -80,7 +80,11 @@ const Login = () => {
       <div className="flex items-center justify-center text-gray-700 my-4">
         <span className="text-base">계정이 없으신가요?</span>
       </div>
-      <Button size="large" type="CTA Lined" onClick={() => navigate('/signup')}>
+      <Button
+        size="large"
+        type="CTA Lined"
+        onClick={() => navigate('/users/join')}
+      >
         회원가입
       </Button>
     </div>
