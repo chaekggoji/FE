@@ -5,7 +5,8 @@ import { useState } from 'react';
 const PostWrite = () => {
   const [value, setValue] = useState('');
 
-  const uploadPost = async (content) => {
+  // content 포함한 테스트 데이터 삽입
+  const insertPost = async (content) => {
     const { data, error } = await supabase
       .from('posts')
       .insert([
@@ -27,7 +28,7 @@ const PostWrite = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    uploadPost(value);
+    insertPost(value);
   };
 
   return (
