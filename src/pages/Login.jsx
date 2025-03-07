@@ -80,11 +80,7 @@ const Login = () => {
       <div className="flex items-center justify-center text-gray-700 my-4">
         <span className="text-base">계정이 없으신가요?</span>
       </div>
-      <Button
-        size="large"
-        type="CTA Lined"
-        onClick={() => navigate('/users/join')}
-      >
+      <Button size="large" type="CTA Lined" onClick={() => navigate('/signup')}>
         회원가입
       </Button>
     </div>
