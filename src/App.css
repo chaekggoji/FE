@@ -1,10 +1,26 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Ownglyph_StudyHard-Rg';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_StudyHard-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
   --color-white: #ffffff;
   --color-black: #000000;
 
-  /* Primary Colors */
+  /* Primary 색상 */
   --color-primary-100: #ddeedc;
   --color-primary-200: #afc8ad;
   --color-primary-300: #8ca08a;
@@ -13,7 +29,7 @@
   --color-primary-600: #2d352c;
   --color-primary-700: #121611;
 
-  /* Secondary Colors */
+  /* Secondary 색상 */
   --color-secondary-100: #e5d9df;
   --color-secondary-200: #c8adbc;
   --color-secondary-300: #ad829b;
@@ -26,6 +42,10 @@
   --breakpoint-sm: 23.4375rem; /* 375px */
   --breakpoint-md: 48rem; /* 768px */
   --breakpoint-lg: 90rem; /* 1440px */
+
+  /* 폰트 */
+  --font-ownglyph: 'Ownglyph_StudyHard-Rg', sans-serif;
+  --font-gowunbatang: 'GowunBatang-Regular', serif;
 }
 
 @layer base {
@@ -61,5 +81,10 @@
   /* 테이블 초기화 */
   table {
     @apply border-collapse border-spacing-0;
+  }
+
+  /* 기본 폰트 지정 */
+  body {
+    @apply font-ownglyph;
   }
 }
