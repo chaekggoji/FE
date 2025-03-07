@@ -27,3 +27,39 @@
   --breakpoint-md: 48rem; /* 768px */
   --breakpoint-lg: 90rem; /* 1440px */
 }
+
+@layer base {
+  /* 텍스트 요소 기본 스타일 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  strong,
+  em {
+    @apply font-normal;
+  }
+
+  /* 링크 스타일 */
+  a {
+    text-decoration-line: underline;
+    color: inherit;
+  }
+
+  /* 기본적인 버튼 스타일 유지 */
+  button,
+  input,
+  textarea,
+  select {
+    @apply border-none outline-none bg-transparent;
+  }
+
+  /* 테이블 초기화 */
+  table {
+    @apply border-collapse border-spacing-0;
+  }
+}
