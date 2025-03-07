@@ -130,7 +130,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            <StudyLink to="/create">스터디 생성</StudyLink>
+            <StudyLink to="/study/create">스터디 생성</StudyLink>
             <NavLink to="/users/login">로그인</NavLink>
           </>
         )}
