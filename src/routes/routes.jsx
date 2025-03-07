@@ -6,10 +6,8 @@ import Login from '@pages/Login';
 import Books from '@pages/profile/Books';
 import Edit from '@pages/profile/Edit';
 import Studies from '@pages/profile/Studies';
-import Debates from '@pages/study/detail/Debates';
 import StudyDetailHome from '@pages/study/detail/Index';
 import Manage from '@pages/study/detail/Manage';
-import Notices from '@pages/study/detail/Notices';
 import Phrases from '@pages/study/detail/Phrases';
 import StudyHome from '@pages/study/Index';
 import Supabase from '@pages/Supabase';
@@ -18,6 +16,7 @@ import ProtectedRoute from '@routes/ProtectedRoute';
 import { createBrowserRouter } from 'react-router';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
+import Posts from '@pages/study/detail/Posts';
 
 const router = createBrowserRouter([
   {
@@ -49,11 +48,11 @@ const router = createBrowserRouter([
               },
               {
                 path: 'notices',
-                element: <Notices />,
+                element: <Posts />,
               },
               {
                 path: 'debates',
-                element: <Debates />,
+                element: <Posts />,
               },
               {
                 path: 'phrases',
