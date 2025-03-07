@@ -1,7 +1,7 @@
 import Layout from '@components/layouts';
 import Create from '@pages/study/Create';
 import Guide from '@pages/Guide';
-import Join from '@pages/Join';
+import SignUp from '@pages/SignUp';
 import Login from '@pages/Login';
 import Books from '@pages/profile/Books';
 import Edit from '@pages/profile/Edit';
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         element: <Guide />,
       },
       { path: 'login', element: <Login /> },
-      { path: 'join', element: <Join /> },
+      { path: 'signup', element: <SignUp /> },
 
       /* 로그인 후 접근 가능 */
       {

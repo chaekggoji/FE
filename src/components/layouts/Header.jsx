@@ -45,7 +45,7 @@ const Header = () => {
               스터디 생성
             </Link>
             <Link
-              to="/users/login"
+              to="/login"
               className="text-lg font-semibold text-primary-400"
             >
               로그인
