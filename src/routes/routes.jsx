@@ -18,6 +18,7 @@ import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import Posts from '@pages/study/detail/Posts';
 import PostWrite from '@pages/study/detail/PostWrite';
+import PostDetail from '@pages/study/detail/PostDeail';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
                     element: <Posts />,
                   },
                   { path: 'write', element: <PostWrite /> },
+                  { path: ':postId', element: <PostDetail /> },
                 ],
               },
               {
@@ -65,6 +67,7 @@ const router = createBrowserRouter([
                     element: <Posts />,
                   },
                   { path: 'write', element: <PostWrite /> },
+                  { path: ':postId', element: <PostDetail /> },
                 ],
               },
               {
