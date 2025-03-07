@@ -17,6 +17,7 @@ import { createBrowserRouter } from 'react-router';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import Posts from '@pages/study/detail/Posts';
+import PostWrite from '@pages/study/detail/PostWrite';
 
 const router = createBrowserRouter([
   {
@@ -48,11 +49,23 @@ const router = createBrowserRouter([
               },
               {
                 path: 'notices',
-                element: <Posts />,
+                children: [
+                  {
+                    index: true,
+                    element: <Posts />,
+                  },
+                  { path: 'write', element: <PostWrite /> },
+                ],
               },
               {
                 path: 'debates',
-                element: <Posts />,
+                children: [
+                  {
+                    index: true,
+                    element: <Posts />,
+                  },
+                  { path: 'write', element: <PostWrite /> },
+                ],
               },
               {
                 path: 'phrases',
