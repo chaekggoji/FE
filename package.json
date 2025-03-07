@@ -15,6 +15,7 @@
     "@tanstack/react-query-devtools": "^5.66.5",
     "axios": "^1.7.9",
     "prop-types": "^15.8.1",
+    "quill": "^2.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
