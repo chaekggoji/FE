@@ -9,7 +9,7 @@ const Index = () => {
       <Header />
 
       {/* 메인 컨텐츠 */}
-      <main className="flex flex-1 flex-col w-full max-w-5xl mx-auto px-10 md:px-8 sm:px-6">
+      <main className="flex flex-1 flex-col px-10 md:px-8 sm:px-6">
         <Outlet />
       </main>
 
