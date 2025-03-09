@@ -13,10 +13,10 @@ const Footer = () => {
       {/* 링크 목록 */}
       <div className="flex gap-10 md:gap-6 sm:gap-4 items-center mt-4">
         <Link
-          to="#"
+          to="/guide"
           className="text-lg md:text-base sm:text-sm text-gray-700 hover:text-gray-900"
         >
-          개인정보처리방침
+          책꼬지 이용안내
         </Link>
 
         <Link
