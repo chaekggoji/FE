@@ -16,9 +16,7 @@ const Header = () => {
       {/* 로고 섹션 */}
       <Link to="/" className="flex items-center gap-2 text-inherit">
         <img src={logo} alt="책꼬지 로고" className="w-12 md:w-10 sm:w-8" />
-        <h1 className="m-0 text-xl md:text-lg sm:text-base font-bold">
-          책꼬지
-        </h1>
+        <h1 className="m-0 text-xl md:text-lg sm:text-base">책꼬지</h1>
       </Link>
 
       {/* 네비게이션 */}
@@ -44,10 +42,7 @@ const Header = () => {
             <Link to="#" className="hidden sm:block text-lg">
               스터디 생성
             </Link>
-            <Link
-              to="/login"
-              className="text-lg font-semibold text-primary-400"
-            >
+            <Link to="/login" className="text-lg">
               로그인
             </Link>
           </>

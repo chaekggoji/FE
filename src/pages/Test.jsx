@@ -8,9 +8,7 @@ const Test = () => {
   const [isDeleteActive, setIsDeleteActive] = useState(false);
   return (
     <div className="flex flex-col gap-4 items-center text-center">
-      <h1 className="text-lg md:text-base sm:text-sm font-semibold">
-        Outlet 영역 테스트
-      </h1>
+      <h1 className="text-lg md:text-base sm:text-sm">Outlet 영역 테스트</h1>
       <p className="text-gray-600">푸터는 항상 브라우저 하단에 고정됩니다</p>
 
       {/* 버튼 테스트 */}

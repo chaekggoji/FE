@@ -12,7 +12,7 @@ const Login = () => {
 
   return (
     <div className="w-full max-w-[580px] mx-auto p-5 flex flex-col gap-5">
-      <h1 className="text-2xl text-center font-bold">로그인</h1>
+      <h1 className="text-2xl text-center">로그인</h1>
 
       {/* 소셜 로그인 버튼 */}
       <div className="flex flex-col gap-4">
@@ -56,7 +56,7 @@ const Login = () => {
       </div>
 
       {/* 비밀번호 찾기 */}
-      <Link to="#" className="text-primary-400 text-right text-sm">
+      <Link to="#" className="text-right text-sm">
         비밀번호 찾기
       </Link>
 
