@@ -2,7 +2,7 @@ import noProfile from '@assets/icons/icon_no_profile_24.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import Button from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 const SignUp = () => {
@@ -15,12 +15,12 @@ const SignUp = () => {
   const [selectedInterestList, setSelectedInterestList] = useState([]);
   const [passwordError, setPasswordError] = useState(false);
 
-  // 비밀번호 확인 로직
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordError(password !== e.target.value);
-  };
+  // 비밀번호 확인 로직 (비밀번호와 일치 여부 감지)
+  useEffect(() => {
+    setPasswordError(confirmPassword !== '' && confirmPassword !== password);
+  }, [confirmPassword, password]);
 
+  // 회원가입 폼 유효성 검사
   const isFormValid =
     nickname.trim() !== '' &&
     email.trim() !== '' &&
@@ -29,6 +29,7 @@ const SignUp = () => {
     selectedInterestList.length > 0 &&
     !passwordError;
 
+  // 회원가입 버튼 클릭 시 처리
   const handleSignUp = () => {
     if (isFormValid) {
       // TODO: 회원가입 API 요청 (이후 navigate)
@@ -38,12 +39,12 @@ const SignUp = () => {
 
   return (
     <form className="w-full max-w-[580px] mx-auto py-5 px-4 flex flex-col gap-5">
-      <h1 className="text-center text-2xl font-bold">회원가입</h1>
+      <h1 className="text-center text-2xl">회원가입</h1>
 
       {/* 로그인 유도 */}
       <div className="flex items-center justify-center gap-2">
-        <p className="text-gray-600">계정이 이미 있으신가요?</p>
-        <Link to="/login" className="text-primary-400 font-semibold">
+        <p>계정이 이미 있으신가요?</p>
+        <Link to="/login" className="underline">
           로그인
         </Link>
       </div>
@@ -96,7 +97,7 @@ const SignUp = () => {
           label: '비밀번호 확인',
           type: 'password',
           value: confirmPassword,
-          setter: handleConfirmPasswordChange,
+          setter: setConfirmPassword,
           placeholder: '비밀번호를 다시 입력하세요',
         },
       ].map(({ label, type, value, setter, placeholder }, index) => (
@@ -109,11 +110,14 @@ const SignUp = () => {
             onChange={(e) => setter(e.target.value)}
             className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
           />
+
+          {/* 비밀번호 불일치 에러 메시지 */}
           {label === '비밀번호 확인' && passwordError && (
             <p className="text-red-500 text-sm">
               비밀번호가 일치하지 않습니다.
             </p>
           )}
+
           {label === '비밀번호 확인' && (
             <p className="text-gray-500 text-sm">
               필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
@@ -136,10 +140,9 @@ const SignUp = () => {
       {/* 회원가입 버튼 */}
       <Button
         size="large"
-        type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
+        type={isFormValid ? 'CTA Abled' : 'CTA Disabled'}
         disabled={!isFormValid}
         onClick={handleSignUp}
-        className={!isFormValid ? 'opacity-50 cursor-not-allowed' : ''}
       >
         회원가입
       </Button>
