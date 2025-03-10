@@ -58,7 +58,7 @@ const SignUp = () => {
         />
         <label
           htmlFor="profile-upload"
-          className="absolute bottom-1 right-1 cursor-pointer"
+          className="absolute bottom-3 right-1 cursor-pointer"
         >
           <img src={profileUpload} alt="이미지 업로드" className="w-12 h-12" />
         </label>
@@ -108,17 +108,21 @@ const SignUp = () => {
             placeholder={placeholder}
             value={value}
             onChange={(e) => setter(e.target.value)}
-            className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400 focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
+            className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400 transition"
           />
 
           {/* 비밀번호 불일치 에러 메시지 */}
-          {label === '비밀번호 확인' && passwordError && (
-            <p className="text-red-500 text-sm">
-              비밀번호가 일치하지 않습니다.
-            </p>
-          )}
+          {label === '비밀번호 확인' &&
+            confirmPassword !== '' &&
+            (passwordError ? (
+              <p className="text-red-500 text-sm">
+                비밀번호가 일치하지 않습니다.
+              </p>
+            ) : (
+              <p className="text-primary-300 text-sm">비밀번호가 일치합니다.</p>
+            ))}
 
-          {label === '비밀번호 확인' && (
+          {label === '비밀번호' && (
             <p className="text-gray-500 text-sm">
               필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
             </p>
