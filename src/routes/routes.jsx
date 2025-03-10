@@ -18,7 +18,7 @@ import ProtectedRoute from '@routes/ProtectedRoute';
 import { createBrowserRouter } from 'react-router';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
-import StudyLayout from '@pages/study/StudyLayout';
+import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
 
 const router = createBrowserRouter([
   {
@@ -43,9 +43,10 @@ const router = createBrowserRouter([
           // 스터디 상세 페이지
           {
             path: 'study/:studyId',
+            element: <StudyDetailLayout />,
             children: [
               {
-                index: true,
+                path: 'home',
                 element: <StudyDetailHome />,
               },
               {
@@ -108,17 +109,6 @@ const router = createBrowserRouter([
       },
       {
         path: 'study/:id',
-        element: <StudyLayout />,
-        children: [
-          {
-            path: 'home',
-            element: <StudyHome />,
-          },
-          {
-            path: 'notices',
-            element: <Notices />,
-          },
-        ],
       },
     ],
   },
