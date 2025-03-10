@@ -1,33 +1,6 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { Outlet, useLocation } from 'react-router';
-import styled from 'styled-components';
-
-const LayoutContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-
-const MainContent = styled.main`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 40px;
-
-  ${({ theme }) => theme.breakpoints.medium} {
-    max-width: 900px;
-    padding: 0 32px;
-  }
-
-  ${({ theme }) => theme.breakpoints.small} {
-    max-width: 100%;
-    padding: 0 24px;
-  }
-`;
+import { Outlet } from 'react-router';
 
 const Index = () => {
   const location = useLocation();
@@ -37,13 +10,18 @@ const Index = () => {
   );
 
   return (
-    <LayoutContainer>
+    <div className="flex flex-col min-h-screen">
+      {/* 헤더 */}
       <Header />
-      <MainContent>
+
+      {/* 메인 컨텐츠 */}
+      <main className="flex flex-1 flex-col px-10 md:px-8 sm:px-6">
         <Outlet />
-      </MainContent>
-      {!hideFooter && <Footer />}
-    </LayoutContainer>
+      </main>
+
+      {/* 푸터 */}
+      <Footer />
+    </div>
   );
 };
 
