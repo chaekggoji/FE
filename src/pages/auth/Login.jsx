@@ -1,174 +1,89 @@
-import CustomButton from '@components/common/Button';
+import Button from '@components/common/Button';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import styled from 'styled-components';
 
-const LoginContainer = styled.div`
-  width: 100%;
-  max-width: 580px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const LoginTitle = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes.title['2xl']};
-  text-align: center;
-`;
-
-const SocialLoginGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const SocialLoginBtn = styled.button`
-  border: 1px solid black;
-  border-radius: 12px;
-  cursor: pointer;
-  padding: 15px 0;
-  font-size: ${({ theme }) => theme.fontSizes.title.md};
-`;
-
-const OrDivider = styled.div`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 32px 0;
-
-  font-size: ${({ theme }) => theme.fontSizes.text.xl};
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
-  }
-
-  &::before {
-    margin-right: 1em;
-  }
-
-  &::after {
-    margin-left: 1em;
-  }
-`;
-
-const LabelText = styled.label`
-  font-size: ${({ theme }) => theme.fontSizes.title.sm};
-  color: #666666;
-`;
-
-const LoginInput = styled.input`
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.text.md};
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const AutoLoginWrapper = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: ${({ theme }) => theme.fontSizes.title.md};
-  color: #333333;
-`;
-
-const FindPasswordLink = styled(Link)`
-  text-decoration: underline;
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const QuestionText = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.text['3xl']};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HR = styled.hr`
-  background: rgba(102, 102, 102, 0.25);
-  height: 2px;
-  border: 0px;
-`;
 const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoginButtonActive, setIsLoginButtonActive] = useState(false);
-
-  const handleInputChange = (e, setState) => {
-    setState(e.target.value);
-  };
-
-  const handleLoginClick = () => {
-    setIsLoginButtonActive((prev) => !prev);
-  };
 
   const isFormValid = email.trim() !== '' && password.trim() !== '';
 
   return (
-    <LoginContainer>
-      <LoginTitle>로그인</LoginTitle>
-      <SocialLoginGroup>
-        <SocialLoginBtn>구글 로그인</SocialLoginBtn>
-        <SocialLoginBtn>카카오 로그인</SocialLoginBtn>
-        <SocialLoginBtn>애플 로그인</SocialLoginBtn>
-      </SocialLoginGroup>
-      <OrDivider>OR</OrDivider>
-      <InputGroup>
-        <LabelText>이메일 주소</LabelText>
-        <LoginInput
+    <div className="w-full max-w-[580px] mx-auto p-5 flex flex-col gap-5">
+      <h1 className="text-2xl text-center">로그인</h1>
+
+      {/* 소셜 로그인 버튼 */}
+      <div className="flex flex-col gap-4">
+        {['구글', '카카오', '애플'].map((provider) => (
+          <button
+            key={provider}
+            className="py-3 px-5 border border-gray-300 rounded-xl text-lg md:text-base transition duration-200 hover:bg-gray-200"
+          >
+            {provider} 로그인
+          </button>
+        ))}
+      </div>
+
+      {/* OR 구분선 */}
+      <div className="flex items-center justify-center text-gray-500 my-4 text-lg">
+        <span className="w-1/3 border-t border-gray-300"></span>
+        <span className="mx-4">OR</span>
+        <span className="w-1/3 border-t border-gray-300"></span>
+      </div>
+
+      {/* 이메일 입력 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-600">이메일 주소</label>
+        <input
           type="email"
           value={email}
-          onChange={(e) => handleInputChange(e, setEmail)}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
         />
-      </InputGroup>
-      <InputGroup>
-        <LabelText>비밀번호</LabelText>
-        <LoginInput
+      </div>
+
+      {/* 비밀번호 입력 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-600">비밀번호</label>
+        <input
           type="password"
           value={password}
-          onChange={(e) => handleInputChange(e, setPassword)}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
         />
-      </InputGroup>
-      <FindPasswordLink to="#">비밀번호 찾기</FindPasswordLink>
-      <AutoLoginWrapper>
-        <input type="checkbox" />
-        자동 로그인
-      </AutoLoginWrapper>
-      <CustomButton
+      </div>
+
+      {/* 비밀번호 찾기 */}
+      <Link to="#" className="text-right text-sm">
+        비밀번호 찾기
+      </Link>
+
+      {/* 자동 로그인 체크박스 */}
+      <div className="flex items-center gap-2 cursor-pointer text-base text-gray-700">
+        <input id="auto-login" type="checkbox" />
+        <label htmlFor="auto-login">자동 로그인</label>
+      </div>
+
+      {/* 로그인 버튼 */}
+      <Button
         size="large"
         type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
-        onClick={() => isFormValid && navigate('/')}
+        disabled={!isFormValid}
+        onClick={isFormValid ? () => navigate('/') : undefined}
       >
         로그인
-      </CustomButton>
+      </Button>
 
-      <HR />
-      <QuestionText>계정이 없으신가요?</QuestionText>
-      <CustomButton
-        size="large"
-        type="CTA Lined"
-        onClick={() => navigate('/users/signup')}
-      >
+      {/* 회원가입 유도 */}
+      <div className="flex items-center justify-center text-gray-700 my-4">
+        <span className="text-base">계정이 없으신가요?</span>
+      </div>
+      <Button size="large" type="CTA Lined" onClick={() => navigate('/signup')}>
         회원가입
-      </CustomButton>
-    </LoginContainer>
+      </Button>
+    </div>
   );
 };
 

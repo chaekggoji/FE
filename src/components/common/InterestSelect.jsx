@@ -1,72 +1,5 @@
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
 import tagDelete from '@assets/icons/icon_x_24.svg';
-
-const MultiSelectContainer = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const SelectBox = styled.div`
-  width: 100%;
-  min-height: 48px;
-  padding: 8px 16px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.text.md};
-  color: rgba(102, 102, 102, 0.6);
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  cursor: pointer;
-  background-color: #fff;
-  gap: 6px;
-`;
-
-const Tag = styled.span`
-  background-color: ${({ theme }) => theme.colors.primary[300]};
-  color: #fff;
-  padding: 6px 10px;
-  font-size: ${({ theme }) => theme.fontSizes.text.sm};
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const DropdownList = styled.ul`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
-  border-radius: 12px;
-  margin-top: 4px;
-  padding: 8px 0;
-  list-style: none;
-  max-height: 200px;
-  overflow-y: auto;
-  display: ${({ $isDropdownOpen }) => ($isDropdownOpen ? 'block' : 'none')};
-  z-index: 1000;
-`;
-
-const DropdownItem = styled.li`
-  padding: 10px 16px;
-  font-size: ${({ theme }) => theme.fontSizes.text.md};
-  cursor: pointer;
-  background-color: ${({ $isSelected }) => ($isSelected ? '#DDEEDC' : '#fff')};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.gray[100]};
-  }
-`;
-
-const SelectionInfo = styled.span`
-  margin-left: auto;
-  font-size: ${({ theme }) => theme.fontSizes.text.xs};
-  color: ${({ theme }) => theme.colors.gray[400]};
-`;
 
 const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -95,13 +28,7 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
       console.log('새로운 관심 분야 추가됨:', option);
       const newSelection = [...selectedInterestList, option];
       setSelectedInterestList(newSelection);
-      console.log('현재 관심 분야 리스트:', newSelection);
-
-      // 3개 선택되면 드롭다운 닫기
-      if (newSelection.length === 3) {
-        setIsDropdownOpen(false);
-        console.log('3개 모두 선택 완료, 드롭다운 닫기');
-      }
+      setIsDropdownOpen(false); // 하나 이상 선택되면 드롭다운 닫기
     }
   };
 
@@ -116,38 +43,51 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
   };
 
   return (
-    <MultiSelectContainer>
-      <SelectBox ref={selectBoxRef} onClick={toggleDropdown}>
+    <div className="relative w-full">
+      <div
+        ref={selectBoxRef}
+        className="w-full min-h-[48px] px-4 border border-gray-300 rounded-lg text-gray-600 flex flex-wrap items-center gap-2 cursor-pointer bg-white"
+        onClick={toggleDropdown}
+      >
         {selectedInterestList.length > 0 ? (
           <>
             {selectedInterestList.map((item) => (
-              <Tag key={item}>
+              <span
+                key={item}
+                className="bg-primary-300 text-white px-3 py-1 text-sm rounded-md flex items-center gap-2"
+              >
                 {item}
                 <img
                   src={tagDelete}
-                  alt="삭제"
+                  alt="관심분야 삭제"
+                  className="cursor-pointer"
                   onClick={(e) => handleRemoveInterestTag(item, e)}
                 />
-              </Tag>
+              </span>
             ))}
-            <SelectionInfo>{selectedInterestList.length}/3</SelectionInfo>
+            <span className="ml-auto text-xs text-gray-400">
+              {selectedInterestList.length}/3
+            </span>
           </>
         ) : (
           '관심 분야를 선택하세요'
         )}
-      </SelectBox>
-      <DropdownList $isDropdownOpen={isDropdownOpen}>
+      </div>
+
+      <ul
+        className={`absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-1 py-2 max-h-[200px] overflow-y-auto z-50 ${isDropdownOpen ? 'block' : 'hidden'}`}
+      >
         {interestOptions.map((option) => (
-          <DropdownItem
+          <li
             key={option}
-            $isSelected={selectedInterestList.includes(option)}
+            className={`px-4 py-2 text-md cursor-pointer ${selectedInterestList.includes(option) ? 'bg-primary-100' : 'bg-white'} hover:bg-gray-100`}
             onClick={() => handleInterestSelect(option)}
           >
             {option}
-          </DropdownItem>
+          </li>
         ))}
-      </DropdownList>
-    </MultiSelectContainer>
+      </ul>
+    </div>
   );
 };
 
