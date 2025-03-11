@@ -1,5 +1,6 @@
 // 리액트, 라이브러리
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 // 외부 패키지
 import { useNavigate } from 'react-router-dom';
 // 이미지
@@ -15,7 +16,7 @@ const sections = Array.from({ length: 6 }, (_, index) => ({
 }));
 
 // ❓ FAQ 데이터 배열 (질문 & 답변)
-const faqData = [
+const faqDataList = [
   { question: 'Q. 스터디 인원은 몇 명인가요?', answer: 'A. 스터디 인원은 최소 1명부터 최대 8명까지 가능합니다. 추후 인원이 늘어난다면 최대 인원이 수정될 수 있으며, 답변 길이를 길게 했을 때 디자인이 어떻게 바뀌는지 체크 중입니다 오바. 21억명이면 스터디 최대 인원은 어디까지 올라가는 거예요?' },
   { question: 'Q. 흔한 질문이 뭐가 있을까요?', answer: 'A. NOT NULL 믿었던 만큼 내 친구도 믿었기에' },
   { question: 'Q. 오늘 점심은 뭐 먹을까요?', answer: 'A. 핀볼 게임으로 정해보아용.' }
@@ -26,7 +27,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
   <div className=' bg-[#FFF5E4] rounded-lg shadow-xl text-left text-[3rem] pl-8 pr-8'>
     {/* 질문 부분 */}
     <button
-      className='w-full p-6 text-[2rem] flex justify-between items-center'
+      className='w-full p-6 text-[2rem] flex justify-between items-center cursor-pointer'
       onClick={onClick}
     >
       {question}
@@ -42,6 +43,14 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
   </div>
 );
 
+// FAQItem의 PropTypes 정의
+FAQItem.propTypes = {
+  question: PropTypes.string.isRequired,
+  answer: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
 // ❓ 스터디 역할별 진행 방법
 const StudyStep = ({ number, text }) => (
   <div className='flex items-center gap-4'>
@@ -54,6 +63,11 @@ const StudyStep = ({ number, text }) => (
   </div>
 );
 
+// StudyStep의 PropTypes 정의
+StudyStep.propTypes = {
+  number: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 const Guide = () => {
   const [activeTab, setActiveTab] = useState(1); // 스터디 역할 탭(디폴트: 스터디 멤버)
@@ -97,9 +111,13 @@ const Guide = () => {
               // 1️⃣ 대문 섹션
               <div className='w-full flex flex-row justify-between items-center'>
                 { /* 왼쪽 텍스트 영역 */}
-                <div className='flex flex-col text-left w-[55%]'>
-                  <h1 className='text-white [-webkit-text-stroke:2px_black] text-[5rem] mb-8'>우리들의 독서 공간</h1>
-                  <p className='text-[2rem]'>독서 좋아하는 사람들 여기여기 붙어라 👍🏻</p>
+                <div className='w-[75%] flex flex-col text-left'>
+                  <h1 className='text-white [-webkit-text-stroke:2px_black] text-[5rem] mb-8'>
+                    우리들의 독서 공간
+                  </h1>
+                  <p className='text-[2rem]'>
+                    독서 좋아하는 사람들 여기여기 붙어라 👍🏻
+                  </p>
                 </div>
                 { /* 오른쪽 이미지 */}
                 <div className='w-[25%] flex justify-end'>
@@ -114,9 +132,9 @@ const Guide = () => {
                   <img src={introImg} alt='Intro Icon' className='w-[20rem] object-contain' />
                 </div>
                 { /* 오른쪽 텍스트 영역 */}
-                <div className='flex flex-col text-right w-[55%]'>
+                <div className='w-[75%] flex flex-col text-right'>
                   <h1 className='[-webkit-text-stroke:2px_black] text-[5rem] text-primary-200 mb-8'>책꼬지가 뭔가요?</h1>
-                  <p className='text-[2rem] mb-4'>‘책꼬지’는 책과 모꼬지의 합성어로, 독서 모임을 뜻하는 말이에요.</p>
+                  <p className='text-[2rem] mb-4 pl-8'>‘책꼬지’는 책과 모꼬지의 합성어로, 독서 모임을 뜻하는 말이에요.</p>
                   <p className='text-[1.5rem] text-gray-500'>*책꼬지하다: 독서 스터디를 위해 모이다.</p>
                 </div>
               </div>
@@ -127,13 +145,13 @@ const Guide = () => {
                 { /* 탭 영역 */}
                 <div className='flex w-full max-w-[1200px] h-[40%]rounded-t-lg'>
                   <button
-                    className={`flex-1 py-4 rounded-t-2xl ${activeTab === 1 ? 'bg-[#FFF5E4]' : 'bg-primary-300'}`}
+                    className={`flex-1 py-4 rounded-t-2xl cursor-pointer ${activeTab === 1 ? 'bg-[#FFF5E4]' : 'bg-primary-300'}`}
                     onClick={() => setActiveTab(1)}
                   >
                     <h2 className='text-[2.5rem]'>📚 스터디에 참여할래요!</h2>
                   </button>
                   <button
-                    className={`flex-1 py-4 rounded-t-2xl ${activeTab === 2 ? 'bg-[#FFF5E4]' : 'bg-primary-300'}`}
+                    className={`flex-1 py-4 rounded-t-2xl cursor-pointer ${activeTab === 2 ? 'bg-[#FFF5E4]' : 'bg-primary-300'}`}
                     onClick={() => setActiveTab(2)}
                   >
                     <h2 className='text-[2.5rem]'>🦁 스터디를 만들고 싶어요!</h2>
@@ -155,7 +173,7 @@ const Guide = () => {
                   <img src={debateImg} alt='Debate Icon' className='w-[20rem] object-contain' />
                 </div>
                 { /* 오른쪽 텍스트 영역 */}
-                <div className='flex flex-col text-left w-[55%]'>
+                <div className='w-[75%] flex flex-col text-left'>
                   <h1 className='[-webkit-text-stroke:2px_black] -webkit-text-stroke: 2px black text-[5rem] text-right text-primary-200 mb-8'>토론과 메모로 인증해요!</h1>
                   <p className='text-[3rem] text-right'>🍯 스터디를 더 알차게 즐기는 꿀팁</p>
                   { /* 토론 & 메모 설명 */}
@@ -175,7 +193,7 @@ const Guide = () => {
 
                 { /* FAQ 목록 */}
                 <div className='w-full max-w-[1000px] flex flex-col gap-8'>
-                  {faqData.map((faq, i) => (
+                  {faqDataList.map((faq, i) => (
                     <FAQItem
                       key={i}
                       question={faq.question}
@@ -191,7 +209,7 @@ const Guide = () => {
               // 6️⃣ 서비스 시작 섹션
               <>
                 <div className='flex items-center gap-4'>
-                  <h1 className='text-[5rem] [-webkit-text-stroke:2px_black] text-primary-200'>두근두근 책꼬지하러 가기</h1>
+                  <h1 className='[-webkit-text-stroke:2px_black] text-[5rem] text-primary-200'>두근두근 책꼬지하러 가기</h1>
 
                   { /* 로그인 페이지로 이동 */}
                   <button
