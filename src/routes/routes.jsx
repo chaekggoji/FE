@@ -105,10 +105,6 @@ const router = createBrowserRouter([
         path: 'supabase',
         element: <Supabase />,
       },
-      {
-        path: 'create',
-        element: <Create />,
-      },
     ],
   },
 ]);
