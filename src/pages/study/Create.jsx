@@ -1,4 +1,6 @@
 import Button from '@components/common/Button';
+import CustomInputField from '@components/common/CustomInputField';
+import CustomTextarea from '@components/common/CustomTextarea';
 import { NavLink } from 'react-router';
 
 const Create = () => {
@@ -8,48 +10,54 @@ const Create = () => {
   const isStepOneFilled = true;
 
   const isStepTwo = true;
-  const isStepTwoFilled = true;
+  const isStepTwoFilled = false;
 
   const isStepThree = false;
 
+  const ProgressBar = () => {
+    return (
+      <div className="flex justify-center gap-x-10 sm:gap-x-28 relative w-fit mx-auto">
+        <NavLink className="text-center flex flex-col items-center gap-2">
+          <div
+            className={`flex justify-center items-center ${isStepOne || isStepOneFilled ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+          >
+            {isStepOneFilled ? (
+              <img src="/src/assets/icons/icon_check_24.svg" />
+            ) : (
+              '1'
+            )}
+          </div>
+          <p>도서 검색</p>
+        </NavLink>
+        <NavLink className="text-center flex flex-col items-center gap-2">
+          <div
+            className={`flex justify-center items-center ${isStepTwo || isStepTwoFilled ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+          >
+            {isStepTwoFilled ? (
+              <img src="/src/assets/icons/icon_check_24.svg" />
+            ) : (
+              '2'
+            )}
+          </div>
+          <p>스터디 정보 입력</p>
+        </NavLink>
+        <NavLink className="text-center flex flex-col items-center gap-2">
+          <div
+            className={`flex justify-center items-center ${isStepThree ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+          >
+            3
+          </div>
+          <p>미리보기</p>
+        </NavLink>
+        <div className="hidden absolute top-5 w-11/12 h-[2px] bg-primary-300 -z-10 sm:block"></div>
+      </div>
+    );
+  };
+
   return (
     <>
-      <div className="my-20 mx-auto w-full max-w-[1100px] p-15 flex flex-col gap-y-10">
-        <div className="flex justify-center gap-x-28 relative w-fit mx-auto">
-          <NavLink className="text-center flex flex-col items-center gap-2">
-            <div
-              className={`flex justify-center items-center ${isStepOne ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-            >
-              {isStepOneFilled ? (
-                <img src="/src/assets/icons/icon_check_24.svg" />
-              ) : (
-                '1'
-              )}
-            </div>
-            <p>도서 검색</p>
-          </NavLink>
-          <NavLink className="text-center flex flex-col items-center gap-2">
-            <div
-              className={`flex justify-center items-center ${isStepTwo ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-            >
-              {isStepTwoFilled ? (
-                <img src="/src/assets/icons/icon_check_24.svg" />
-              ) : (
-                '2'
-              )}
-            </div>
-            <p>스터디 정보 입력</p>
-          </NavLink>
-          <NavLink className="text-center flex flex-col items-center gap-2">
-            <div
-              className={`flex justify-center items-center ${isStepThree ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-            >
-              3
-            </div>
-            <p>미리보기</p>
-          </NavLink>
-          <div className="absolute top-5 w-11/12 h-[2px] bg-gray-400 -z-10"></div>
-        </div>
+      <div className="my-6 md:my-10 md:mx-auto w-full max-w-[1100px] md:p-15 flex flex-col gap-y-10">
+        <ProgressBar />
         {isStepOne && (
           <>
             <input type="text" placeholder="검색어를 입력해주세요." />
@@ -71,60 +79,58 @@ const Create = () => {
         )}
         {isStepTwo && (
           <>
-            <form>
-              <label>스터디 이름</label>
-              <div>
-                <input type="text" placeholder="스터디 이름을 입력해주세요." />
-              </div>
-              <div className="flex">
-                <label>스터디 시작일</label>
-                <div>
-                  <input
-                    type="date"
-                    placeholder="스터디 시작일을 선택해주세요."
-                  />
-                </div>
-                <label>스터디 시작일</label>
-                <div>
-                  <input
-                    type="date"
-                    placeholder="스터디 종료일을 입력해주세요."
-                  />
-                </div>
-              </div>
-              <label>
-                스터디 모집 인원 <span>(최소 1명, 최대 8명)</span>
-              </label>
-              <div>
-                <input
-                  type="number"
-                  min="1"
-                  max="8"
-                  placeholder="참여인원을 입력해주세요."
-                  className="w-full"
+            <form className="flex flex-col gap-y-6 sm:gap-y-10">
+              <CustomInputField
+                labelText="스터디 이름"
+                type="text"
+                placeholder="스터디 이름을 입력해주세요."
+                id="studyName"
+              />
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-10">
+                <CustomInputField
+                  labelText="스터디 시작일"
+                  type="date"
+                  placeholder="스터디 시작일을 선택해주세요."
+                  id="studyStartDate"
+                />
+                <CustomInputField
+                  labelText="스터디 종료일"
+                  type="date"
+                  placeholder="스터디 종료일을 선택해주세요."
+                  id="studyEndDate"
                 />
               </div>
-              <label>도서 카테고리</label>
+              <CustomInputField
+                labelText={`스터디 모집 인원`}
+                type="number"
+                min="1"
+                max="8"
+                placeholder="참여인원을 입력해주세요."
+                id="studyCapacity"
+              />
               <div>
-                <select
-                  placeholder="카테고리를 선택해주세요."
-                  className="placeholder-gray-500"
-                >
-                  <option>도서 카테고리</option>
-                  <option>도서 카테고리</option>
-                  <option>도서 카테고리</option>
-                  <option>도서 카테고리</option>
-                  <option>도서 카테고리</option>
-                </select>
+                <label>도서 카테고리</label>
+                <div>
+                  <select
+                    placeholder="카테고리를 선택해주세요."
+                    className="placeholder-gray-500"
+                  >
+                    <option>도서 카테고리</option>
+                    <option>도서 카테고리</option>
+                    <option>도서 카테고리</option>
+                    <option>도서 카테고리</option>
+                    <option>도서 카테고리</option>
+                  </select>
+                </div>
               </div>
-              <label>스터디 소개</label>
-              <div>
-                <textarea placeholder="스터디 소개를 입력해주세요." />
-              </div>
-              <label>스터디 소개</label>
-              <div>
-                <textarea placeholder="스터디 소개를 입력해주세요." />
-              </div>
+              <CustomTextarea
+                labelText="스터디 소개"
+                placeholder="스터디 소개를 입력해주세요."
+              />
+              <CustomTextarea
+                labelText="스터디 규칙"
+                placeholder="스터디 규칙을 입력해주세요."
+              />
             </form>
           </>
         )}
@@ -136,7 +142,7 @@ const Create = () => {
           <Button
             size="large"
             type={
-              isStepOneFilled || isStepTwoFilled || isStepThreeFilled
+              isStepOneFilled || isStepTwoFilled || isStepThree
                 ? 'CTA Abled'
                 : 'CTA Disabled'
             }
@@ -145,8 +151,6 @@ const Create = () => {
             <img src="/src/assets/icons/icon_arrow_right_24.svg" />
           </Button>
         </div>
-
-        <input placeholder="placeholder" />
       </div>
     </>
   );
