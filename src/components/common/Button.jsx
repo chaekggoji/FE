@@ -14,13 +14,13 @@ const Button = ({
   }[size];
 
   const typeClass = {
-    'CTA Abled': 'bg-primary-300 text-white',
-    'CTA Active': 'bg-primary-400 text-white',
-    'CTA Delete': 'bg-secondary-300 text-white',
-    'CTA Delete Active': 'bg-secondary-400 text-white',
+    'CTA Abled': 'bg-primary-300 text-white cursor-pointer',
+    'CTA Active': 'bg-primary-400 text-white cursor-pointer',
+    'CTA Delete': 'bg-secondary-300 text-white cursor-pointer',
+    'CTA Delete Active': 'bg-secondary-400 text-white cursor-pointer',
     'CTA Disabled': 'bg-gray-300 text-white cursor-not-allowed opacity-60',
     'CTA Lined':
-      'bg-white text-gray-400 border border-gray-400 hover:bg-gray-100',
+      'bg-white text-gray-400 border border-gray-400 hover:bg-gray-100 cursor-pointer',
   }[type];
 
   return (

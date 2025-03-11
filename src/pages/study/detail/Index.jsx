@@ -1,15 +1,32 @@
-import profileImg from '@assets/icons/icon_no_profile_24.svg';
-import Button from '@components/common/Button';
+import StudyBook from '@pages/study/detail/components/StudyBook';
+import StudyInfo from '@pages/study/detail/components/StudyInfo';
+import StudyIntro from '@pages/study/detail/components/StudyIntro';
+import StudyLeader from '@pages/study/detail/components/StudyLeader';
+import StudyRules from '@pages/study/detail/components/StudyRules';
+
+const leader = {
+  id: 1,
+  img_url: null,
+  nickname: '나리더',
+  intro: '안녕하세요 스터디 리더 나리더입니다.',
+};
 
 const StudyDetailHome = () => {
   return (
-    <div>
-      <div className="bg-amber-200 w-full">
-        <img className="size-16" src={profileImg} />
-        <div></div>
-        <Button>프로필 보기</Button>
+    <>
+      <StudyLeader
+        userId={leader.id}
+        profileURL={leader.img_url}
+        nickname={leader.nickname}
+        intro={leader.intro}
+      />
+      <div className="px-24 flex py-12 border-b-1 border-slate-200">
+        <StudyInfo />
+        <StudyBook />
       </div>
-    </div>
+      <StudyIntro />
+      <StudyRules />
+    </>
   );
 };
 
