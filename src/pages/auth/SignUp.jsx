@@ -2,43 +2,34 @@ import noProfile from '@assets/icons/icon_no_profile_24.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import Button from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
-import { useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedInterestList, setSelectedInterestList] = useState([]);
-  const [passwordError, setPasswordError] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+  });
 
-  // 비밀번호 확인 로직 (비밀번호와 일치 여부 감지)
-  useEffect(() => {
-    setPasswordError(confirmPassword !== '' && confirmPassword !== password);
-  }, [confirmPassword, password]);
+  const password = watch('password');
 
-  // 회원가입 폼 유효성 검사
-  const isFormValid =
-    nickname.trim() !== '' &&
-    email.trim() !== '' &&
-    password.trim() !== '' &&
-    confirmPassword.trim() !== '' &&
-    selectedInterestList.length > 0 &&
-    !passwordError;
-
-  // 회원가입 버튼 클릭 시 처리
-  const handleSignUp = () => {
-    if (isFormValid) {
-      // TODO: 회원가입 API 요청 (이후 navigate)
-      navigate('/login');
-    }
+  const onSubmit = (data) => {
+    console.log(data); // TODO : 회원가입 API 요청
+    navigate('/login');
   };
 
   return (
-    <form className="w-full max-w-[580px] mx-auto py-5 px-4 flex flex-col gap-5">
+    <form
+      className="w-full max-w-[580px] mx-auto py-5 px-4 flex flex-col gap-5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h1 className="text-center text-2xl">회원가입</h1>
 
       {/* 로그인 유도 */}
@@ -70,83 +61,114 @@ const SignUp = () => {
         />
       </div>
 
-      {/* 입력 필드 */}
-      {[
-        {
-          label: '닉네임',
-          type: 'text',
-          value: nickname,
-          setter: setNickname,
-          placeholder: '닉네임을 입력하세요',
-        },
-        {
-          label: '이메일 주소',
-          type: 'email',
-          value: email,
-          setter: setEmail,
-          placeholder: '이메일 주소를 입력하세요',
-        },
-        {
-          label: '비밀번호',
-          type: 'password',
-          value: password,
-          setter: setPassword,
-          placeholder: '비밀번호를 입력하세요',
-        },
-        {
-          label: '비밀번호 확인',
-          type: 'password',
-          value: confirmPassword,
-          setter: setConfirmPassword,
-          placeholder: '비밀번호를 다시 입력하세요',
-        },
-      ].map(({ label, type, value, setter, placeholder }, index) => (
-        <div key={index} className="flex flex-col gap-2">
-          <label className="text-gray-600">{label}</label>
-          <input
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            onChange={(e) => setter(e.target.value)}
-            className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400 transition"
-          />
+      {/* 닉네임 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-gray-600">닉네임</label>
+        <input
+          {...register('nickname', { required: '닉네임을 입력하세요' })}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
+          placeholder="닉네임을 입력하세요"
+        />
+        {errors.nickname && (
+          <p className="text-secondary-300 text-sm">
+            {errors.nickname.message}
+          </p>
+        )}
+      </div>
 
-          {/* 비밀번호 불일치 에러 메시지 */}
-          {label === '비밀번호 확인' &&
-            confirmPassword !== '' &&
-            (passwordError ? (
-              <p className="text-red-500 text-sm">
-                비밀번호가 일치하지 않습니다.
-              </p>
-            ) : (
-              <p className="text-primary-300 text-sm">비밀번호가 일치합니다.</p>
-            ))}
+      {/* 이메일 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-gray-600">이메일 주소</label>
+        <input
+          {...register('email', {
+            required: '이메일을 입력하세요',
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: '유효한 이메일을 입력하세요',
+            },
+          })}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
+          placeholder="이메일 주소를 입력하세요"
+        />
+        {errors.email && (
+          <p className="text-secondary-300 text-sm">{errors.email.message}</p>
+        )}
+      </div>
 
-          {label === '비밀번호' && (
-            <p className="text-gray-500 text-sm">
-              필수 조건: 대소문자, 숫자, 특수문자 조합 8자 이상
-            </p>
-          )}
-        </div>
-      ))}
+      {/* 비밀번호 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-gray-600">비밀번호</label>
+        <input
+          type="password"
+          {...register('password', {
+            required: '비밀번호를 다시 입력하세요',
+            minLength: {
+              value: 8,
+              message: '비밀번호는 최소 8자 이상이어야 합니다.',
+            },
+          })}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
+          placeholder="비밀번호를 입력하세요"
+        />
+        {errors.password && (
+          <p className="text-secondary-300 text-sm">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
+
+      {/* 비밀번호 확인 */}
+      <div className="flex flex-col gap-2">
+        <label className="text-gray-600">비밀번호 확인</label>
+        <input
+          type="password"
+          {...register('confirmPassword', {
+            required: '비밀번호를 다시 입력하세요',
+            validate: (value) =>
+              value === password
+                ? '비밀번호가 일치합니다.'
+                : '비밀번호가 일치하지 않습니다.',
+          })}
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
+          placeholder="비밀번호를 다시 입력하세요"
+        />
+        {errors.confirmPassword && (
+          <p
+            className={`text-sm ${errors.confirmPassword.message === '비밀번호가 일치합니다.' ? 'text-primary-300' : 'text-red-500'}`}
+          >
+            {errors.confirmPassword.message}
+          </p>
+        )}
+      </div>
 
       {/* 관심 분야 선택 */}
       <div className="flex flex-col gap-2">
         <label className="text-gray-600">
           관심 분야 설정 (최소 1개, 최대 3개)
         </label>
-        <InterestSelect
-          selectedInterestList={selectedInterestList}
-          setSelectedInterestList={setSelectedInterestList}
+        <Controller
+          name="interests"
+          control={control}
+          rules={{ required: '관심 분야를 선택하세요' }}
+          render={({ field }) => (
+            <InterestSelect
+              selectedInterestList={field.value || []}
+              setSelectedInterestList={field.onChange}
+            />
+          )}
         />
+        {errors.interests && (
+          <p className="text-secondary-300 text-sm">
+            {errors.interests.message}
+          </p>
+        )}
       </div>
 
       {/* 회원가입 버튼 */}
       <Button
         size="large"
-        type={isFormValid ? 'CTA Abled' : 'CTA Disabled'}
-        disabled={!isFormValid}
-        onClick={handleSignUp}
+        type="CTA Abled"
+        disabled={Object.keys(errors).length > 0}
       >
         회원가입
       </Button>
