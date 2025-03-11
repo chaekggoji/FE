@@ -1,13 +1,18 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { Outlet, useLocation } from 'react-router';
+import { matchPath, Outlet, useLocation } from 'react-router';
 
 const Index = () => {
   const location = useLocation();
-  const noFooterPageList = ['/study'];
-  const hideFooter = noFooterPageList.some((page) =>
-    location.pathname.startsWith(page),
-  );
+
+  // const noFooterPageList = ['/study'];
+  // const hideFooter = noFooterPageList.some((page) =>
+  //   location.pathname.startsWith(page),
+  // );
+
+  let hideFooter;
+  hideFooter = !!matchPath('/study/*', location.pathname);
+  hideFooter = !!matchPath('/mypage/*', location.pathname);
 
   return (
     <div className="flex flex-col min-h-screen">
