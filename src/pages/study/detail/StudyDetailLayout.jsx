@@ -63,7 +63,7 @@ const StudyDetailLayout = () => {
           스터디원 관리
         </NavLink>
       </nav>
-      <main className="">
+      <main className="grow">
         <Outlet />
       </main>
     </div>
