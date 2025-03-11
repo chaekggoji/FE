@@ -6,8 +6,8 @@ import { NavLink, Outlet, useParams } from 'react-router';
 const StudyDetailLayout = () => {
   const { studyId } = useParams();
   return (
-    <div className="flex">
-      <nav className="w-[220px] bg-primary-100">
+    <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
+      <nav className="w-[220px] bg-primary-100 shrink-0">
         <NavLink
           to="home"
           className={({ isActive }) =>
@@ -64,7 +64,7 @@ const StudyDetailLayout = () => {
           스터디원 관리
         </NavLink>
       </nav>
-      <main className="grow basis-0">
+      <main className="">
         <Outlet />
       </main>
     </div>
