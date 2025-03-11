@@ -213,7 +213,7 @@ const Guide = () => {
 
                   { /* 로그인 페이지로 이동 */}
                   <button
-                    className='p-4 ml-6 rounded-lg bg-primary-200 hover:bg-primary-300 transition-all flex items-center justify-center shadow-2xl hover:shadow-3xl translate-y-0 hover:-translate-y-[2px]'
+                    className='p-4 ml-6 rounded-lg bg-primary-200 hover:bg-primary-300 transition-all flex items-center justify-center shadow-2xl hover:shadow-3xl translate-y-0 hover:-translate-y-[2px] cursor-pointer'
                     onClick={() => navigate('/login')}
                   >
                     <img src={arrowImg} alt='arrow icon' className='w-[2rem] h-[2rem] filter brightness-0 invert' />
