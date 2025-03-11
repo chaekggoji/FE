@@ -1,67 +1,18 @@
-import { NavLink, Outlet } from 'react-router';
+import StudyNavLink from '@pages/study/detail/components/StudyNavLink';
+import { Outlet } from 'react-router-dom';
 
 // Todo
 // 1. home 없이 nav active 구현 방법 찾기
-// 2. 기본 좌우 여백 해결하기
+// 2. 기본 좌우 여백 해결하기 => ngative margin 사용
 const StudyDetailLayout = () => {
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
       <nav className="w-[220px] bg-primary-100 shrink-0">
-        <NavLink
-          to="home"
-          className={({ isActive }) =>
-            [
-              'block h-[52px] px-[20px] py-[14px]',
-              isActive ? 'bg-primary-200' : '',
-            ].join(' ')
-          }
-        >
-          스터디 홈
-        </NavLink>
-        <NavLink
-          to="notices"
-          className={({ isActive }) =>
-            [
-              'block h-[52px] px-[20px] py-[14px]',
-              isActive ? 'bg-primary-200' : '',
-            ].join(' ')
-          }
-        >
-          공지사항
-        </NavLink>
-        <NavLink
-          to="debates"
-          className={({ isActive }) =>
-            [
-              'block h-[52px] px-[20px] py-[14px]',
-              isActive ? 'bg-primary-200' : '',
-            ].join(' ')
-          }
-        >
-          토론 나눠요
-        </NavLink>
-        <NavLink
-          to="phrases"
-          className={({ isActive }) =>
-            [
-              'block h-[52px] px-[20px] py-[14px]',
-              isActive ? 'bg-primary-200' : '',
-            ].join(' ')
-          }
-        >
-          구절 공유해요
-        </NavLink>
-        <NavLink
-          to="manage"
-          className={({ isActive }) =>
-            [
-              'block h-[52px] px-[20px] py-[14px]',
-              isActive ? 'bg-primary-200' : '',
-            ].join(' ')
-          }
-        >
-          스터디원 관리
-        </NavLink>
+        <StudyNavLink to="home">스터디 홈</StudyNavLink>
+        <StudyNavLink to="notices">공지사항</StudyNavLink>
+        <StudyNavLink to="debates">토론 나눠요</StudyNavLink>
+        <StudyNavLink to="phrases">구절 공유해요</StudyNavLink>
+        <StudyNavLink to="manage">스터디원 관리</StudyNavLink>
       </nav>
       <main className="grow">
         <Outlet />

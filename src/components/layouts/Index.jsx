@@ -1,6 +1,6 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { matchPath, Outlet, useLocation } from 'react-router';
+import { matchPath, Outlet, useLocation } from 'react-router-dom';
 
 const Index = () => {
   const location = useLocation();

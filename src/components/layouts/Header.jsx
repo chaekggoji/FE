@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import logo from '@assets/logo.svg';
 import alarm from '@assets/icons/icon_alarm_37.svg';
 import noAlarm from '@assets/icons/icon_no_alarm_37.svg';

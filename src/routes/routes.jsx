@@ -15,10 +15,10 @@ import StudyHome from '@pages/study/Index';
 import Supabase from '@pages/Supabase';
 import Test from '@pages/Test';
 import ProtectedRoute from '@routes/ProtectedRoute';
-import { createBrowserRouter } from 'react-router';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
+import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
