@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import tagDelete from '@assets/icons/icon_x_24.svg';
 
-const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
+const InterestSelect = ({ value = [], onChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const selectBoxRef = useRef(null);
 
@@ -17,29 +17,17 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
   };
 
   const handleInterestSelect = (option) => {
-    if (selectedInterestList.includes(option)) {
-      console.log('이미 선택된 항목 제거:', option);
-      const updatedList = selectedInterestList.filter(
-        (item) => item !== option,
-      );
-      setSelectedInterestList(updatedList);
-      console.log('현재 관심 분야 리스트:', updatedList);
-    } else if (selectedInterestList.length < 3) {
-      console.log('새로운 관심 분야 추가됨:', option);
-      const newSelection = [...selectedInterestList, option];
-      setSelectedInterestList(newSelection);
-      setIsDropdownOpen(false); // 하나 이상 선택되면 드롭다운 닫기
+    if (value.includes(option)) {
+      onChange(value.filter((item) => item !== option));
+    } else if (value.length < 3) {
+      onChange([...value, option]);
+      setIsDropdownOpen(false);
     }
   };
 
   const handleRemoveInterestTag = (option, e) => {
     e.stopPropagation(); // 드롭다운이 열리는 것을 방지
-    console.log('관심 분야 태그 삭제됨:', option);
-    const updateSelection = selectedInterestList.filter(
-      (item) => item !== option,
-    );
-    setSelectedInterestList(updateSelection);
-    console.log('현재 관심 분야 리스트:', updateSelection);
+    onChange(value.filter((item) => item !== option));
   };
 
   return (
@@ -49,9 +37,9 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
         className="w-full min-h-[48px] px-4 border border-gray-300 rounded-lg text-gray-600 flex flex-wrap items-center gap-2 cursor-pointer bg-white"
         onClick={toggleDropdown}
       >
-        {selectedInterestList.length > 0 ? (
+        {value.length > 0 ? (
           <>
-            {selectedInterestList.map((item) => (
+            {value.map((item) => (
               <span
                 key={item}
                 className="bg-primary-300 text-white px-3 py-1 text-sm rounded-md flex items-center gap-2"
@@ -66,7 +54,7 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
               </span>
             ))}
             <span className="ml-auto text-xs text-gray-400">
-              {selectedInterestList.length}/3
+              {value.length}/3
             </span>
           </>
         ) : (
@@ -80,7 +68,7 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
         {interestOptions.map((option) => (
           <li
             key={option}
-            className={`px-4 py-2 text-md cursor-pointer ${selectedInterestList.includes(option) ? 'bg-primary-100' : 'bg-white'} hover:bg-gray-100`}
+            className={`px-4 py-2 text-md cursor-pointer ${value.includes(option) ? 'bg-primary-100' : 'bg-white'} hover:bg-gray-100`}
             onClick={() => handleInterestSelect(option)}
           >
             {option}

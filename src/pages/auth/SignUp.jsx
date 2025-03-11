@@ -152,11 +152,12 @@ const SignUp = () => {
           rules={{ required: '관심 분야를 선택하세요' }}
           render={({ field }) => (
             <InterestSelect
-              selectedInterestList={field.value || []}
-              setSelectedInterestList={field.onChange}
+              value={field.value || []}
+              onChange={field.onChange}
             />
           )}
         />
+
         {errors.interests && (
           <p className="text-secondary-300 text-sm">
             {errors.interests.message}
