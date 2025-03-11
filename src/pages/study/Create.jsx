@@ -4,24 +4,40 @@ import { NavLink } from 'react-router';
 const Create = () => {
   const BookInfo = [];
 
+  const isFilled = true;
+
+  const isStepOne = true;
+  const isStepTwo = false;
+  const isStepThree = false;
+
   return (
     <>
       <div className="my-20 mx-auto w-full max-w-[1100px] p-15 flex flex-col gap-y-10">
         <div className="flex justify-center gap-x-28 relative w-fit mx-auto">
           <NavLink className="text-center flex flex-col items-center gap-2">
-            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
-              1
+            <div
+              className={`flex justify-center items-center ${isStepOne ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+            >
+              {isFilled ? (
+                <img src="/src/assets/icons/icon_check_24.svg" />
+              ) : (
+                '1'
+              )}
             </div>
             <p>도서 검색</p>
           </NavLink>
           <NavLink className="text-center flex flex-col items-center gap-2">
-            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
+            <div
+              className={`flex justify-center items-center ${isStepTwo ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+            >
               2
             </div>
             <p>스터디 정보 입력</p>
           </NavLink>
           <NavLink className="text-center flex flex-col items-center gap-2">
-            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
+            <div
+              className={`flex justify-center items-center ${isStepThree ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
+            >
               3
             </div>
             <p>미리보기</p>
@@ -47,7 +63,7 @@ const Create = () => {
           <Button size="large" type="CTA Lined">
             취소
           </Button>
-          <Button size="large">
+          <Button size="large" type={isFilled ? 'CTA Abled' : 'CTA Disabled'}>
             다음
             <img src="/src/assets/icons/icon_arrow_right_24.svg" />
           </Button>
