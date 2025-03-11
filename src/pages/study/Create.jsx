@@ -1,4 +1,5 @@
 import Button from '@components/common/Button';
+import { NavLink } from 'react-router';
 
 const Create = () => {
   const BookInfo = [];
@@ -6,7 +7,27 @@ const Create = () => {
   return (
     <>
       <div className="my-20 mx-auto w-full max-w-[1100px] p-15 flex flex-col gap-y-10">
-        <div className="h-20 bg-gray-400">page navigation</div>
+        <div className="flex justify-center gap-x-28 relative w-fit mx-auto">
+          <NavLink className="text-center flex flex-col items-center gap-2">
+            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
+              1
+            </div>
+            <p>도서 검색</p>
+          </NavLink>
+          <NavLink className="text-center flex flex-col items-center gap-2">
+            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
+              2
+            </div>
+            <p>스터디 정보 입력</p>
+          </NavLink>
+          <NavLink className="text-center flex flex-col items-center gap-2">
+            <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
+              3
+            </div>
+            <p>미리보기</p>
+          </NavLink>
+          <div className="absolute top-5 w-11/12 h-[2px] bg-gray-400 -z-10"></div>
+        </div>
         <input type="text" placeholder="검색어를 입력해주세요." />
         <h1 className="text-4xl">검색 결과</h1>
         <ul className="flex flex-col gap-y-10">
