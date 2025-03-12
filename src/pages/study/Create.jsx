@@ -6,6 +6,26 @@ import { NavLink } from 'react-router';
 const Create = () => {
   const BookInfo = [];
 
+  const BookCategoryList = [
+    { id: 1, title: '자기계발' },
+    { id: 2, title: '인문' },
+    { id: 3, title: '경제/경영' },
+    { id: 4, title: '처세' },
+    { id: 5, title: 'IT' },
+    { id: 6, title: '소설' },
+    { id: 7, title: '과학' },
+    { id: 8, title: '시/에세이' },
+    { id: 9, title: '역사/문화' },
+    { id: 10, title: '건강' },
+    { id: 11, title: '요리' },
+  ];
+
+  const BookCategoryOption = BookCategoryList.map((item) => (
+    <option id={item.title} key={item.id} value={item.id}>
+      {item.title}
+    </option>
+  ));
+
   const isStepOne = false;
   const isStepOneFilled = true;
 
@@ -109,17 +129,19 @@ const Create = () => {
                 id="studyCapacity"
               />
               <div>
-                <label>도서 카테고리</label>
-                <div>
+                <label
+                  htmlFor="bookCategory"
+                  className="mb-1 text-gray-400 sm:text-2xl"
+                >
+                  도서 카테고리
+                </label>
+                <div className="flex w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl has-focus-within:border-primary-300 has-focus-within:shadow has-focus-within:shadow-primary-300">
                   <select
+                    id="bookCategory"
                     placeholder="카테고리를 선택해주세요."
-                    className="placeholder-gray-500"
+                    className="w-full placeholder-gray-500 focus:outline-hidden"
                   >
-                    <option>도서 카테고리</option>
-                    <option>도서 카테고리</option>
-                    <option>도서 카테고리</option>
-                    <option>도서 카테고리</option>
-                    <option>도서 카테고리</option>
+                    {BookCategoryOption}
                   </select>
                 </div>
               </div>
