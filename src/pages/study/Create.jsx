@@ -29,10 +29,10 @@ const Create = () => {
   const isStepOne = false;
   const isStepOneFilled = true;
 
-  const isStepTwo = true;
-  const isStepTwoFilled = false;
+  const isStepTwo = false;
+  const isStepTwoFilled = true;
 
-  const isStepThree = false;
+  const isStepThree = true;
 
   const ProgressBar = () => {
     return (
@@ -156,7 +156,61 @@ const Create = () => {
             </form>
           </>
         )}
-        {isStepThree && <>Step3</>}
+        {isStepThree && (
+          <>
+            <h1 className="text-4xl">스터디 미리보기</h1>
+            <div className="flex flex-col gap-y-6 sm:gap-y-10 sm:border border-gray-200 sm:p-10 rounded-xl">
+              <div className="sm:grid grid-cols-3 ">
+                <div className="col-start-1 col-end-3 flex flex-col gap-y-6">
+                  <hr className="text-gray-200 sm:hidden" />
+                  <h2 className="md:text-3xl w-fit mx-auto text-2xl">
+                    스터디 정보
+                  </h2>
+                  <h2 className="text-2xl w-fit mx-auto">스터디 제목</h2>
+                  <div className="grid grid-cols-2">
+                    <p className="justify-self-center">스터디 제목</p>
+                    <p className="justify-self-start">스터디 진행 도서</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p className="justify-self-center">스터디 제목</p>
+                    <p className="justify-self-start">스터디 진행 도서</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p className="justify-self-center">스터디 제목</p>
+                    <p className="justify-self-start">스터디 진행 도서</p>
+                  </div>
+                </div>
+                <hr className="text-gray-200 sm:hidden" />
+                <div className="mx-auto">
+                  <h2 className="text-3xl w-fit mx-auto mb-5">도서 정보</h2>
+                  <figure className="w-[210px]">
+                    <img
+                      src="https://picsum.photos/120/160"
+                      className="w-full h-full aspect-[7/10] max-w-[210px] object-cover"
+                    />
+                    <figcaption>
+                      <p>책 제목: 다슬이가 괜찮을까요?</p>
+                      <p>저자명: 김용희</p>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+              <hr className="text-gray-200" />
+              <div className="mx-auto text-center">
+                <h2 className="text-3xl mb-6 sm:mb-10">스터디 소개</h2>
+                <p className="whitespace-pre-line">
+                  소개소개소개소개소개 소개소개소개소개소개 소개소개소개소개소개
+                  소개소개소개소개소개
+                </p>
+              </div>
+              <hr className="text-gray-200" />
+              <div className="mx-auto text-center">
+                <h2 className="text-3xl mb-6 sm:mb-10">스터디 규칙</h2>
+                <p className="whitespace-pre-line">1. 규칙 1. 규칙</p>
+              </div>
+            </div>
+          </>
+        )}
         <div className="flex justify-between">
           <Button size="large" type="CTA Lined">
             취소
