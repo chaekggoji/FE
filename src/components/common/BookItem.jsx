@@ -19,7 +19,6 @@ const BookItem = ({
 
   const captionFontSizeClass = size === 'medium' ? 'text-xs' : '';
 
-  // https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F3691137
   return (
     <>
       <div
