@@ -125,9 +125,7 @@ const SignUp = () => {
           {...register('confirmPassword', {
             required: '비밀번호를 다시 입력하세요',
             validate: (value) =>
-              value === password
-                ? '비밀번호가 일치합니다.'
-                : '비밀번호가 일치하지 않습니다.',
+              value === password || '비밀번호가 일치하지 않습니다.',
           })}
           className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
           placeholder="비밀번호를 다시 입력하세요"
@@ -152,8 +150,8 @@ const SignUp = () => {
           rules={{ required: '관심 분야를 선택하세요' }}
           render={({ field }) => (
             <InterestSelect
-              value={field.value || []}
-              onChange={field.onChange}
+              value={field.value ?? []}
+              onChange={(newValues) => field.onChange(newValues)}
             />
           )}
         />
