@@ -20,7 +20,7 @@ const Button = ({
     'CTA Delete Active': 'bg-secondary-400 text-white cursor-pointer',
     'CTA Disabled': 'bg-gray-300 text-white cursor-not-allowed opacity-60',
     'CTA Lined': 'bg-white text-gray-400 border border-gray-400 hover:bg-gray-100 cursor-pointer',
-  };[type];
+  }[type];
 
   return (
     <button
