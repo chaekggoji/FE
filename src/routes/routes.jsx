@@ -18,7 +18,7 @@ import ProtectedRoute from '@routes/ProtectedRoute';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
 
 const router = createBrowserRouter([
   {

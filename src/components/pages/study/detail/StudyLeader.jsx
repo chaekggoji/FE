@@ -1,7 +1,7 @@
 import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
 import Button from '@components/common/Button';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const StudyLeader = ({ userId, profileURL, nickname, intro }) => {
   const navigate = useNavigate();

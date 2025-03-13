@@ -1,5 +1,5 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 const StudyDetailLayout = () => {
   return (

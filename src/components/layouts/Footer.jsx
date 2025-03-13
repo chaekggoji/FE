@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import githubIco from '@assets/icons/icon_github_16.svg';
 import mailIco from '@assets/icons/icon_mail_16.svg';
 

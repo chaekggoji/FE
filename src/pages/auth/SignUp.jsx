@@ -3,7 +3,7 @@ import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import Button from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
 const SignUp = () => {
   const navigate = useNavigate();
