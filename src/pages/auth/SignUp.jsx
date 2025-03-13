@@ -13,9 +13,9 @@ const SignUp = () => {
     handleSubmit,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
-    mode: 'onBlur',
+    mode: 'onChange', // 입력할 때마다 유효성 검사 수행
   });
 
   const password = watch('password');
@@ -101,7 +101,7 @@ const SignUp = () => {
         <input
           type="password"
           {...register('password', {
-            required: '비밀번호를 다시 입력하세요',
+            required: '비밀번호를 입력하세요',
             minLength: {
               value: 8,
               message: '비밀번호는 최소 8자 이상이어야 합니다.',
@@ -134,7 +134,7 @@ const SignUp = () => {
         />
         {errors.confirmPassword && (
           <p
-            className={`text-sm ${errors.confirmPassword.message === '비밀번호가 일치합니다.' ? 'text-primary-300' : 'text-red-500'}`}
+            className={`text-sm ${errors.confirmPassword.message === '비밀번호가 일치합니다.' ? 'text-primary-300' : 'text-secondary-300'}`}
           >
             {errors.confirmPassword.message}
           </p>
@@ -166,11 +166,7 @@ const SignUp = () => {
       </div>
 
       {/* 회원가입 버튼 */}
-      <Button
-        size="large"
-        type="CTA Abled"
-        disabled={Object.keys(errors).length > 0}
-      >
+      <Button size="large" type={isValid ? 'CTA Abled' : 'CTA Disabled'}>
         회원가입
       </Button>
     </form>
