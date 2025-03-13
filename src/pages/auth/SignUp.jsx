@@ -25,6 +25,20 @@ const SignUp = () => {
     navigate('/login');
   };
 
+  const ProfileImgUpload = () => {
+    const [uploadImgUrl, setUploadImgUrl] = useState('');
+
+    const onChangeImgUpload = (e) => {
+      const { files } = e.target;
+      const uploadFile = files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadFile);
+      reader.onloadend = () => {
+        setUploadImgUrl(reader.result);
+      };
+    };
+  };
+
   return (
     <form
       className="w-full max-w-[580px] mx-auto py-5 px-4 flex flex-col gap-5"
@@ -44,9 +58,10 @@ const SignUp = () => {
       <div className="relative w-44 h-44 mx-auto">
         <img
           src={noProfile}
-          alt="프로필 이미지"
+          alt="기본 프로필 이미지"
           className="w-full h-full object-cover rounded-full"
         />
+        <img src={uploadImgUrl} alt="유저가 업로드한 프로필 이미지" img="img" />
         <label
           htmlFor="profile-upload"
           className="absolute bottom-3 right-1 cursor-pointer"
@@ -58,6 +73,7 @@ const SignUp = () => {
           type="file"
           accept="image/*"
           className="hidden"
+          onChange={onChangeImgUpload}
         />
       </div>
 
