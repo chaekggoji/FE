@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import logo from '@assets/logo.svg';
 import alarm from '@assets/icons/icon_alarm_37.svg';
 import noAlarm from '@assets/icons/icon_no_alarm_37.svg';
@@ -12,7 +12,7 @@ const Header = () => {
   // 알림 상태.. true면 알림 있음, false는 알림 없음..
   const [isAlarm, setIsAlarm] = useState(false);
   return (
-    <header className="flex items-center justify-between px-6 py-4 shadow-md text-2xl md:text-xl sm:text-lg">
+    <header className="flex items-center justify-between px-6 py-4 shadow-md text-2xl md:text-xl sm:text-lg z-10">
       {/* 로고 섹션 */}
       <Link to="/" className="flex items-center gap-2 text-inherit">
         <img src={logo} alt="책꼬지 로고" className="w-12 md:w-10 sm:w-8" />

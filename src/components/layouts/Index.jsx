@@ -1,20 +1,26 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { Outlet } from 'react-router';
+import { matchPath, Outlet, useLocation } from 'react-router-dom';
 
 const Index = () => {
+  const location = useLocation();
+
+  const hideFooter =
+    !!matchPath('/study/*', location.pathname) ||
+    !!matchPath('/mypage/*', location.pathname);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* 헤더 */}
       <Header />
 
       {/* 메인 컨텐츠 */}
-      <main className="flex flex-1 flex-col px-10 md:px-8 sm:px-6">
+      <main className="flex flex-1 flex-col lg:px-10 md:px-8 sm:px-6">
         <Outlet />
       </main>
 
       {/* 푸터 */}
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 };
