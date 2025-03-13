@@ -1,13 +1,12 @@
 import Footer from '@components/layouts/Footer';
 import Header from '@components/layouts/Header';
-import { matchPath, Outlet, useLocation } from 'react-router';
+import { Outlet, useMatch } from 'react-router';
 
 const Index = () => {
-  const location = useLocation();
+  const matchStudyDetail = useMatch('/study/*');
+  const matchProfile = useMatch('/profile/*');
 
-  const hideFooter =
-    !!matchPath('/study/*', location.pathname) ||
-    !!matchPath('/mypage/*', location.pathname);
+  const hasFooter = matchStudyDetail || matchProfile;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,7 +19,7 @@ const Index = () => {
       </main>
 
       {/* 푸터 */}
-      {!hideFooter && <Footer />}
+      {!hasFooter && <Footer />}
     </div>
   );
 };
