@@ -2,6 +2,7 @@ import noProfile from '@assets/icons/icon_no_profile_24.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import Button from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 
@@ -25,17 +26,15 @@ const SignUp = () => {
     navigate('/login');
   };
 
-  const ProfileImgUpload = () => {
-    const [uploadImgUrl, setUploadImgUrl] = useState('');
+  const [uploadImgUrl, setUploadImgUrl] = useState('');
 
-    const onChangeImgUpload = (e) => {
-      const { files } = e.target;
-      const uploadFile = files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadFile);
-      reader.onloadend = () => {
-        setUploadImgUrl(reader.result);
-      };
+  const onChangeImgUpload = (e) => {
+    const { files } = e.target;
+    const uploadFile = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadFile);
+    reader.onloadend = () => {
+      setUploadImgUrl(reader.result);
     };
   };
 
@@ -57,11 +56,14 @@ const SignUp = () => {
       {/* 프로필 이미지 업로드 */}
       <div className="relative w-44 h-44 mx-auto">
         <img
-          src={noProfile}
-          alt="기본 프로필 이미지"
+          src={uploadImgUrl || noProfile}
+          alt={
+            uploadImgUrl
+              ? '유저가 업로드한 프로필 이미지'
+              : '기본 프로필 이미지'
+          }
           className="w-full h-full object-cover rounded-full"
         />
-        <img src={uploadImgUrl} alt="유저가 업로드한 프로필 이미지" img="img" />
         <label
           htmlFor="profile-upload"
           className="absolute bottom-3 right-1 cursor-pointer"
