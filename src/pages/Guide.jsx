@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router';
 const sections = Array.from({ length: 6 }, (_, index) => ({
   id: index + 1,
   title: `섹션 ${index + 1}`,
-  title: `섹션 ${index + 1}`,
 }));
 
 // ❓ FAQ 데이터 배열 (질문 & 답변)
