@@ -1,4 +1,4 @@
-import StudyNavLink from '@pages/study/detail/components/StudyNavLink';
+import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import { Outlet } from 'react-router-dom';
 
 // Todo
