@@ -102,9 +102,10 @@ const SignUp = () => {
           type="password"
           {...register('password', {
             required: '비밀번호를 입력하세요',
-            minLength: {
-              value: 8,
-              message: '비밀번호는 최소 8자 이상이어야 합니다.',
+            pattern: {
+              value:
+                /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+              message: '영문, 숫자, 특수문자 포함 8 ~ 20자로 입력해주세요',
             },
           })}
           className="w-full h-12 px-4 border border-gray-300 rounded-xl placeholder:text-gray-400"
