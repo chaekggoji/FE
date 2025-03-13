@@ -1,9 +1,6 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import { Outlet } from 'react-router-dom';
 
-// Todo
-// 1. home 없이 nav active 구현 방법 찾기
-// 2. 기본 좌우 여백 해결하기 => ngative margin 사용
 const StudyDetailLayout = () => {
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
