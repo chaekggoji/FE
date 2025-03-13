@@ -58,7 +58,7 @@ const InterestSelect = ({ value = [], onChange }) => {
             </span>
           </>
         ) : (
-          '관심 분야를 선택하세요'
+          <span className="text-gray-400">관심 분야를 선택하세요</span>
         )}
       </div>
 
