@@ -1,5 +1,5 @@
 import Button from '@components/common/Button';
-import MemberList from '@components/common/MemberList';
+import MemberList from '@components/pages/study/detail/MemberList';
 
 const StudyInfo = () => {
   return (
