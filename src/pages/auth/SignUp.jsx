@@ -1,5 +1,7 @@
 import noProfile from '@assets/icons/icon_no_profile_24.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
+import profileUpdate from '@assets/icons/icon_profile_update_50.svg';
+import deleteProfile from '@assets/icons/icon_x_24.svg';
 import Button from '@components/common/Button';
 import InterestSelect from '@components/common/InterestSelect';
 import { useState } from 'react';
@@ -54,7 +56,17 @@ const SignUp = () => {
       </div>
 
       {/* 프로필 이미지 업로드 */}
-      <div className="relative w-44 h-44 mx-auto">
+      <div className="relative w-[150px] h-[150px] mx-auto">
+        {uploadImgUrl && (
+          <button
+            onClick={() => setUploadImgUrl('')}
+            className="absolute top-0 right-0 translate-x-1/4 translate-y-[-1/4]"
+          >
+            <img src={deleteProfile} alt="프로필 이미지 초기화" />
+          </button>
+        )}
+
+        {/* 프로필 이미지 */}
         <img
           src={uploadImgUrl || noProfile}
           alt={
@@ -62,13 +74,18 @@ const SignUp = () => {
               ? '유저가 업로드한 프로필 이미지'
               : '기본 프로필 이미지'
           }
-          className="w-full h-full object-cover rounded-full"
+          className="w-[150px] h-[150px] object-cover rounded-full"
         />
         <label
           htmlFor="profile-upload"
-          className="absolute bottom-3 right-1 cursor-pointer"
+          className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 cursor-pointer"
         >
-          <img src={profileUpload} alt="이미지 업로드" className="w-12 h-12" />
+          <img
+            src={uploadImgUrl ? profileUpdate : profileUpload}
+            alt={
+              uploadImgUrl ? '프로필 이미지 업데이트' : '프로필 이미지 업로드'
+            }
+          />
         </label>
         <input
           id="profile-upload"
