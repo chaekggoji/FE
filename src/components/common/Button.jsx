@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 const Button = ({
   size = 'medium',
   type = 'CTA Abled',
+  className,
   children,
   onClick,
   ...props
@@ -25,7 +26,7 @@ const Button = ({
 
   return (
     <button
-      className={`inline-flex items-center justify-center font-normal transition duration-200 rounded-lg ${sizeClass} ${typeClass}`}
+      className={`inline-flex items-center justify-center font-normal transition duration-200 rounded-lg ${sizeClass} ${typeClass} ${className}`}
       onClick={onClick}
       {...props}
     >
@@ -44,6 +45,7 @@ Button.propTypes = {
     'CTA Disabled',
     'CTA Lined',
   ]),
+  className: PropTypes.string,
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
 };
