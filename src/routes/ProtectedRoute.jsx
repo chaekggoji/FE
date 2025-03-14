@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router';
 
 const ProtectedRoute = () => {
   // const isLoggedIn = useUserStore(state => state.user);
