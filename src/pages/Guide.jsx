@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 // 외부 패키지
+import { useNavigate } from 'react-router';
 // 이미지
 import bookClubImg from '@assets/bookClub.svg';
 import introImg from '@assets/intro.svg';
