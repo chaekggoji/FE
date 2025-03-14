@@ -53,6 +53,9 @@
   /* 폰트 설정 */
   --font-ownglyph: 'Ownglyph_StudyHard-Rg', sans-serif;
   --font-gowunbatang: 'GowunBatang-Regular', sans-serif;
+
+  /* Shadows */
+  --shadow-book: 5px 0px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 @layer base {

@@ -15,9 +15,10 @@ import StudyHome from '@pages/study/Index';
 import Supabase from '@pages/Supabase';
 import Test from '@pages/Test';
 import ProtectedRoute from '@routes/ProtectedRoute';
-import { createBrowserRouter } from 'react-router';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
+import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
+import { createBrowserRouter } from 'react-router';
 
 const router = createBrowserRouter([
   {
@@ -42,9 +43,10 @@ const router = createBrowserRouter([
           // 스터디 상세 페이지
           {
             path: 'study/:studyId',
+            element: <StudyDetailLayout />,
             children: [
               {
-                index: true,
+                path: 'home',
                 element: <StudyDetailHome />,
               },
               {
@@ -106,6 +108,9 @@ const router = createBrowserRouter([
       {
         path: 'supabase',
         element: <Supabase />,
+      },
+      {
+        path: 'study/:id',
       },
     ],
   },
