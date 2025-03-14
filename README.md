@@ -57,18 +57,18 @@ npm run lint --fix # 자동 수정
 
 ### ✅ **프로젝트 필수 라이브러리 (dependencies)**
 
-| 라이브러리                         | 설명                                                                                  |
-| ---------------------------------- | ------------------------------------------------------------------------------------- |
-| **@tanstack/react-query**          | 서버 상태 관리 라이브러리. API 요청 캐싱 및 최적화 가능                               |
-| **@tanstack/react-query-devtools** | React Query의 개발자 도구. API 상태를 시각적으로 확인 가능                            |
-| **axios**                          | HTTP 요청을 쉽게 처리하는 라이브러리                                                  |
-| **prop-types**                     | React 컴포넌트의 props 타입 검증                                                      |
-| **react**                          | React 라이브러리                                                                      |
-| **react-dom**                      | React 컴포넌트를 DOM에 렌더링하는 라이브러리                                          |
-| **react-hook-form**                | React에서 폼(Form) 관리를 쉽게 도와주는 라이브러리                                    |
-| **react-router**                   | 클라이언트 사이드 라우팅을 제공하는 라이브러리 (v7부터 `react-router` 없이 사용 가능) |
-| **styled-components**              | CSS-in-JS 방식으로 스타일을 적용할 수 있는 라이브러리                                 |
-| **zustand**                        | 전역 상태 관리를 위한 가벼운 상태 관리 라이브러리                                     |
+| 라이브러리                         | 설명                                                                                      |
+| ---------------------------------- | ----------------------------------------------------------------------------------------- |
+| **@tanstack/react-query**          | 서버 상태 관리 라이브러리. API 요청 캐싱 및 최적화 가능                                   |
+| **@tanstack/react-query-devtools** | React Query의 개발자 도구. API 상태를 시각적으로 확인 가능                                |
+| **axios**                          | HTTP 요청을 쉽게 처리하는 라이브러리                                                      |
+| **prop-types**                     | React 컴포넌트의 props 타입 검증                                                          |
+| **react**                          | React 라이브러리                                                                          |
+| **react-dom**                      | React 컴포넌트를 DOM에 렌더링하는 라이브러리                                              |
+| **react-hook-form**                | React에서 폼(Form) 관리를 쉽게 도와주는 라이브러리                                        |
+| **react-router**                   | 클라이언트 사이드 라우팅을 제공하는 라이브러리 (v7부터 `react-router-dom` 없이 사용 가능) |
+| **styled-components**              | CSS-in-JS 방식으로 스타일을 적용할 수 있는 라이브러리                                     |
+| **zustand**                        | 전역 상태 관리를 위한 가벼운 상태 관리 라이브러리                                         |
 
 ### 🛠 **개발 환경 관련 라이브러리 (devDependencies)**
 
