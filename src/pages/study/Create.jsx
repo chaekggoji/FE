@@ -26,11 +26,31 @@ const Create = () => {
     </option>
   ));
 
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
 
   const isStepOneFilled = true;
 
   const isStepTwoFilled = true;
+
+  const isStepFilled =
+    (currentStep === 0 && isStepOneFilled) ||
+    (currentStep === 1 && isStepTwoFilled);
+
+  const handleNextStep = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleCancelCreate = () => {
+    alert('스터디 생성 취소');
+  };
+
+  const handleSaveStudy = () => {
+    alert('스터디 정보 저장');
+  };
 
   return (
     <>
@@ -47,11 +67,11 @@ const Create = () => {
         {currentStep === 2 && <StudyPreview />}
         <div className="flex justify-between">
           {currentStep === 0 ? (
-            <Button size="large" type="CTA Lined">
+            <Button size="large" type="CTA Lined" onClick={handleCancelCreate}>
               취소
             </Button>
           ) : (
-            <Button size="large" type="CTA Lined">
+            <Button size="large" type="CTA Lined" onClick={handlePreviousStep}>
               <img src="/src/assets/icons/icon_arrow_left_24.svg" />
               이전
             </Button>
@@ -61,17 +81,15 @@ const Create = () => {
               size="large"
               type={
                 // step 1, 2의 모든 내용이 입력 완료된 경우에만 버튼 활성화
-                (currentStep === 0 && isStepOneFilled) ||
-                (currentStep === 1 && isStepTwoFilled)
-                  ? 'CTA Abled'
-                  : 'CTA Disabled'
+                isStepFilled ? 'CTA Abled' : 'CTA Disabled'
               }
+              onClick={isStepFilled ? handleNextStep : null}
             >
               다음
               <img src="/src/assets/icons/icon_arrow_right_24.svg" />
             </Button>
           ) : (
-            <Button size="large" type="CTA Abled">
+            <Button size="large" type="CTA Abled" onClick={handleSaveStudy}>
               스터디 생성
             </Button>
           )}
