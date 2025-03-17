@@ -17,9 +17,10 @@ import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
 import { createBrowserRouter } from 'react-router';
-import PostWrite from '@components/modules/board/PostWrite';
-import PostDetail from '@components/modules/board/PostDetail';
+import PostWrite from '@components/modules/post/PostWrite';
+import PostDetail from '@components/modules/post/PostDetail';
 import Board from '@components/modules/board/Board';
+import PostEdit from '@components/modules/post/PostEdit';
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,16 @@ const router = createBrowserRouter([
                 children: [
                   { index: true, element: <Board /> },
                   { path: 'write', element: <PostWrite /> },
-                  { path: ':postId', element: <PostDetail /> },
+                  {
+                    path: ':postId',
+                    children: [
+                      {
+                        index: true,
+                        element: <PostDetail />,
+                      },
+                      { path: 'edit', element: <PostEdit /> },
+                    ],
+                  },
                 ],
               },
               {

@@ -22,6 +22,11 @@ const postList = [
     title: '두번째 게시글',
     content: '두번째 게시글의 내용입니다.',
   },
+  {
+    id: 2,
+    title: '두번째 게시글',
+    content: '두번째 게시글의 내용입니다.',
+  },
 ];
 
 const Board = () => {
