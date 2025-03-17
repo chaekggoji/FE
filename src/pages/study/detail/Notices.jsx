@@ -1,5 +1,5 @@
-import Board from '@components/pages/study/detail/board/Board';
-import BoardTitle from '@components/pages/study/detail/board/BoardTitle';
+import Board from '@components/modules/board/Board';
+import BoardTitle from '@components/modules/board/BoardTitle';
 
 const Notices = () => {
   return (

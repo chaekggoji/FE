@@ -1,4 +1,4 @@
-import BoardListItem from '@components/pages/study/detail/board/BoardListItem';
+import BoardListItem from '@components/modules/board/BoardListItem';
 
 const BoardList = () => {
   return (
