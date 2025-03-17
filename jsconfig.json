@@ -11,7 +11,7 @@
       "@store/*": ["store/*"],
       "@styles/*": ["styles/*"],
       "@utils/*": ["utils/*"],
-      "@libs/": ["libs/"]
+      "@libs/*": ["libs/*"]
     }
   }
 }
