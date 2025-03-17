@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router';
 
 const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
@@ -40,6 +41,12 @@ const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
       <div className="hidden absolute top-5 w-11/12 h-[2px] bg-primary-300 -z-10 sm:block"></div>
     </div>
   );
+};
+
+ProgressBar.propTypes = {
+  currentStep: PropTypes.number.isRequired,
+  isStepOneFilled: PropTypes.bool.isRequired,
+  isStepTwoFilled: PropTypes.bool.isRequired,
 };
 
 export default ProgressBar;
