@@ -1,7 +1,8 @@
 import Button from '@components/common/Button';
 import CustomInputField from '@components/common/CustomInputField';
 import CustomTextarea from '@components/common/CustomTextarea';
-import { NavLink } from 'react-router';
+import ProgressBar from '@components/pages/study/create/ProgressBar';
+import { useState } from 'react';
 
 const Create = () => {
   const BookInfo = [];
@@ -26,59 +27,21 @@ const Create = () => {
     </option>
   ));
 
-  const isStepOne = false;
-  const isStepOneFilled = true;
+  const [currentStep, setCurrentStep] = useState(2);
 
-  const isStepTwo = false;
-  const isStepTwoFilled = true;
+  const isStepOneFilled = false;
 
-  const isStepThree = true;
-
-  const ProgressBar = () => {
-    return (
-      <div className="flex justify-center gap-x-10 sm:gap-x-28 relative w-fit mx-auto">
-        <NavLink className="text-center flex flex-col items-center gap-2">
-          <div
-            className={`flex justify-center items-center ${isStepOne || isStepOneFilled ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-          >
-            {isStepOneFilled ? (
-              <img src="/src/assets/icons/icon_check_24.svg" />
-            ) : (
-              '1'
-            )}
-          </div>
-          <p>도서 검색</p>
-        </NavLink>
-        <NavLink className="text-center flex flex-col items-center gap-2">
-          <div
-            className={`flex justify-center items-center ${isStepTwo || isStepTwoFilled ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-          >
-            {isStepTwoFilled ? (
-              <img src="/src/assets/icons/icon_check_24.svg" />
-            ) : (
-              '2'
-            )}
-          </div>
-          <p>스터디 정보 입력</p>
-        </NavLink>
-        <NavLink className="text-center flex flex-col items-center gap-2">
-          <div
-            className={`flex justify-center items-center ${isStepThree ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
-          >
-            3
-          </div>
-          <p>미리보기</p>
-        </NavLink>
-        <div className="hidden absolute top-5 w-11/12 h-[2px] bg-primary-300 -z-10 sm:block"></div>
-      </div>
-    );
-  };
+  const isStepTwoFilled = false;
 
   return (
     <>
       <div className="my-6 md:my-10 md:mx-auto w-full max-w-[1100px] md:p-15 flex flex-col gap-y-10">
-        <ProgressBar />
-        {isStepOne && (
+        <ProgressBar
+          currentStep={currentStep}
+          isStepOneFilled={isStepOneFilled}
+          isStepTwoFilled={isStepTwoFilled}
+        />
+        {currentStep === 0 && (
           <>
             <input type="text" placeholder="검색어를 입력해주세요." />
             <h1 className="text-4xl">검색 결과</h1>
@@ -97,7 +60,7 @@ const Create = () => {
             </ul>
           </>
         )}
-        {isStepTwo && (
+        {currentStep === 1 && (
           <>
             <form className="flex flex-col gap-y-6 sm:gap-y-10">
               <CustomInputField
@@ -156,13 +119,13 @@ const Create = () => {
             </form>
           </>
         )}
-        {isStepThree && (
+        {currentStep === 2 && (
           <>
             <h1 className="text-4xl">스터디 미리보기</h1>
             <div className="flex flex-col gap-y-6 sm:gap-y-10 sm:border border-gray-200 sm:p-10 rounded-xl">
               <div className="sm:grid grid-cols-3 ">
                 <div className="col-start-1 col-end-3 flex flex-col gap-y-6">
-                  <hr className="text-gray-200 sm:hidden" />
+                  <hr className="text-gray- sm:hidden" />
                   <h2 className="md:text-3xl w-fit mx-auto text-2xl">
                     스터디 정보
                   </h2>
@@ -215,12 +178,14 @@ const Create = () => {
           <Button size="large" type="CTA Lined">
             취소
           </Button>
+          <Button size="large" type="CTA Lined">
+            <img src="/src/assets/icons/icon_arrow_left_24.svg" />
+            이전
+          </Button>
           <Button
             size="large"
             type={
-              isStepOneFilled || isStepTwoFilled || isStepThree
-                ? 'CTA Abled'
-                : 'CTA Disabled'
+              isStepOneFilled || isStepTwoFilled ? 'CTA Abled' : 'CTA Disabled'
             }
           >
             다음
