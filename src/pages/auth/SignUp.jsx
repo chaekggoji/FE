@@ -7,6 +7,7 @@ import InterestSelect from '@components/common/InterestSelect';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
+import supabase from '@libs/supabase';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -23,10 +24,87 @@ const SignUp = () => {
 
   const password = watch('password');
 
-  const onSubmit = (data) => {
-    console.log(data); // TODO : 회원가입 API 요청
-    navigate('/login');
+  const onSubmit = async (data) => {
+    try {
+      // 1. Supabase Auth로 사용자 생성
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (authError) throw authError;
+
+      const userId = authData.user.id;
+
+      // 2. 프로필 이미지 업로드 (이미지가 있는 경우)
+      let img_url = null;
+      if (uploadImgUrl && uploadImgUrl.startsWith('data:')) {
+        // Base64 데이터 URL에서 실제 파일 데이터 추출
+        const base64Data = uploadImgUrl.split(',')[1];
+        const fileName = `profile_${userId}_${Date.now()}.jpg`;
+
+        // Storage에 이미지 업로드
+        const { data: fileData, error: fileError } = await supabase.storage
+          .from('profile_images') // 스토리지 버킷 이름 (미리 생성해야 함)
+          .upload(fileName, decode(base64Data), {
+            contentType: 'image/jpeg',
+          });
+
+        if (fileError) throw fileError;
+
+        // 업로드된 이미지의 공개 URL 가져오기
+        const { data: urlData } = supabase.storage
+          .from('profile_images')
+          .getPublicUrl(fileName);
+
+        img_url = urlData.publicUrl;
+      }
+
+      // 3. users 테이블에 추가 정보 저장
+      const { error: profileError } = await supabase.from('users').insert([
+        {
+          id: userId, // Auth에서 생성된 ID 사용
+          email: data.email,
+          nickname: data.nickname,
+          img_url: img_url,
+          intro: '', // 빈 소개
+        },
+      ]);
+
+      if (profileError) throw profileError;
+
+      // 4. user_interests 테이블에 관심분야 저장
+      // 이제 data.interests는 {id, title} 객체 배열이므로 간단히 처리 가능
+      const interestsToInsert = data.interests.map((interest) => ({
+        user_id: userId,
+        category_id: interest.id,
+        created_at: new Date(),
+      }));
+
+      // 관심분야 저장
+      const { error: interestsError } = await supabase
+        .from('user_interests')
+        .insert(interestsToInsert);
+
+      if (interestsError) throw interestsError;
+
+      console.log('회원가입 완료!', authData);
+      navigate('/login');
+    } catch (error) {
+      console.error('회원가입 에러:', error);
+      alert(`회원가입 중 오류가 발생했습니다: ${error.message}`);
+    }
   };
+
+  // Base64 디코딩 함수 (브라우저 환경에서 사용)
+  function decode(base64String) {
+    const binaryString = window.atob(base64String);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
 
   const [uploadImgUrl, setUploadImgUrl] = useState('');
 
