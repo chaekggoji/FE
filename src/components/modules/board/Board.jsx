@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
 
-const board = {
+const title = {
   notices: '공지사항',
   debates: '토론 나눠요',
 };
@@ -39,7 +39,7 @@ const Board = () => {
 
   return (
     <div>
-      <BoardTitle title={board[boardType]} />
+      <BoardTitle title={title[boardType]} />
       <div className="flex flex-col">
         <div className="flex items-center px-6 h-12">
           <BoardSort
