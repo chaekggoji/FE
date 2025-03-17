@@ -2,10 +2,20 @@ import Button from '@components/common/Button';
 import CustomInputField from '@components/common/CustomInputField';
 import CustomTextarea from '@components/common/CustomTextarea';
 import ProgressBar from '@components/pages/study/create/ProgressBar';
+import StudyBook from '@components/pages/study/detail/StudyBook';
+import StudyInfo from '@components/pages/study/detail/StudyInfo';
+import StudyIntro from '@components/pages/study/detail/StudyIntro';
+import StudyRules from '@components/pages/study/detail/StudyRules';
 import { useState } from 'react';
 
 const Create = () => {
-  const BookInfo = [];
+  const book = {
+    title: '신의 아이들은 모두 춤춘다',
+    author: '무라카미 하루키',
+    thumbnail:
+      'https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F6771279%3Ftimestamp%3D20250108153124',
+    url: 'https://search.daum.net/search?w=bookpage&bookId=6771279&q=%EC%8B%A0%EC%9D%98+%EC%95%84%EC%9D%B4%EB%93%A4%EC%9D%80+%EB%AA%A8%EB%91%90+%EC%B6%A4%EC%B6%98%EB%8B%A4',
+  };
 
   const BookCategoryList = [
     { id: 1, title: '자기계발' },
@@ -123,54 +133,12 @@ const Create = () => {
           <>
             <h1 className="text-4xl">스터디 미리보기</h1>
             <div className="flex flex-col gap-y-6 sm:gap-y-10 sm:border border-gray-200 sm:p-10 rounded-xl">
-              <div className="sm:grid grid-cols-3 ">
-                <div className="col-start-1 col-end-3 flex flex-col gap-y-6">
-                  <hr className="text-gray- sm:hidden" />
-                  <h2 className="md:text-3xl w-fit mx-auto text-2xl">
-                    스터디 정보
-                  </h2>
-                  <h2 className="text-2xl w-fit mx-auto">스터디 제목</h2>
-                  <div className="grid grid-cols-2">
-                    <p className="justify-self-center">스터디 제목</p>
-                    <p className="justify-self-start">스터디 진행 도서</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p className="justify-self-center">스터디 제목</p>
-                    <p className="justify-self-start">스터디 진행 도서</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p className="justify-self-center">스터디 제목</p>
-                    <p className="justify-self-start">스터디 진행 도서</p>
-                  </div>
-                </div>
-                <hr className="text-gray-200 sm:hidden" />
-                <div className="mx-auto">
-                  <h2 className="text-3xl w-fit mx-auto mb-5">도서 정보</h2>
-                  <figure className="w-[210px]">
-                    <img
-                      src="https://picsum.photos/120/160"
-                      className="w-full h-full aspect-[7/10] max-w-[210px] object-cover"
-                    />
-                    <figcaption>
-                      <p>책 제목: 다슬이가 괜찮을까요?</p>
-                      <p>저자명: 김용희</p>
-                    </figcaption>
-                  </figure>
-                </div>
+              <div className="px-24 flex py-12 border-b-1 border-slate-200">
+                <StudyInfo />
+                <StudyBook bookInfo={book} />
               </div>
-              <hr className="text-gray-200" />
-              <div className="mx-auto text-center">
-                <h2 className="text-3xl mb-6 sm:mb-10">스터디 소개</h2>
-                <p className="whitespace-pre-line">
-                  소개소개소개소개소개 소개소개소개소개소개 소개소개소개소개소개
-                  소개소개소개소개소개
-                </p>
-              </div>
-              <hr className="text-gray-200" />
-              <div className="mx-auto text-center">
-                <h2 className="text-3xl mb-6 sm:mb-10">스터디 규칙</h2>
-                <p className="whitespace-pre-line">1. 규칙 1. 규칙</p>
-              </div>
+              <StudyIntro />
+              <StudyRules />
             </div>
           </>
         )}
