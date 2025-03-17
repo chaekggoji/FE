@@ -61,7 +61,7 @@ const PostDetail = () => {
       <BoardTitle title={post.title} />
       <div className="flex flex-col mx-auto max-w-[1000px]">
         {/* 작성자 정보, 수정, 삭제 버튼 */}
-        <div className="h-12 flex items-center">
+        <div className="h-12 flex items-center my-2">
           <div
             className="cursor-pointer flex items-center"
             onClick={() => navigate(`/profile/${post.user.id}`)}
@@ -77,7 +77,7 @@ const PostDetail = () => {
           </div>
         </div>
         {/* 글 내용 */}
-        <div className="py-2 font-gowunbatang mb-8">{post.content}</div>
+        <div className=" font-gowunbatang mb-8">{post.content}</div>
         {/* 댓글 */}
         <div>
           {/* 댓글 작성 */}
