@@ -18,7 +18,6 @@ const BoardSort = ({ selectedOption, setSelectedOption }) => {
   };
 
   useEffect(() => {
-    console.log('Effect');
     const handleClickOutside = (event) => {
       if (
         selectBoxRef.current &&
