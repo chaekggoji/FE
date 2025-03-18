@@ -15,7 +15,7 @@ const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
           placeholder={placeholder}
           className="w-full placeholder-gray-300 focus:outline-hidden"
         />
-        <Button size="large" type="CTA Abled">
+        <Button size="medium" type="CTA Abled">
           <img
             src="/src/assets/icons/icon_search_24.svg"
             className="absolute left-[50%] top-[50%] -translate-[50%]"
