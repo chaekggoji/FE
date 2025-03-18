@@ -8,7 +8,7 @@ const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
         {labelText || null}
       </label>
       <div
-        className={`flex gap-x-6 justify-between w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl has-focus-within:border-primary-300 has-focus-within:shadow has-focus-within:shadow-primary-300`}
+        className={`flex gap-x-6 justify-between w-full pl-6 pr-2 py-2 border border-gray-200 rounded-xl sm:text-xl has-focus-within:border-primary-300 has-focus-within:shadow has-focus-within:shadow-primary-300`}
       >
         <input
           type={type}
@@ -16,7 +16,10 @@ const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
           className="w-full placeholder-gray-300 focus:outline-hidden"
         />
         <Button size="large" type="CTA Abled">
-          검색
+          <img
+            src="/src/assets/icons/icon_search_24.svg"
+            className="absolute left-[50%] top-[50%] -translate-[50%]"
+          />
         </Button>
       </div>
     </>
