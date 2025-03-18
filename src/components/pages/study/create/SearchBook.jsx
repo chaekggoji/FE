@@ -1,12 +1,18 @@
 import SearchField from '@components/common/SearchField';
+import { useState } from 'react';
 
 const SearchBook = () => {
+  const [isSelected, setIsSelected] = useState(false);
+
   return (
     <>
       <SearchField placeholder="검색어를 입력해주세요." />
       <h1 className="text-4xl">검색 결과</h1>
       <ul className="flex flex-col gap-y-10">
-        <li className="flex gap-x-10 items-center p-8 border border-gray-200 rounded-xl">
+        <li
+          className={`flex gap-x-10 items-center p-8 border ${isSelected ? 'border-primary-300 bg-primary-100' : 'border-gray-200 bg-white'} rounded-xl cursor-pointer`}
+          onClick={() => setIsSelected(!isSelected)}
+        >
           <img
             className="w-full h-full aspect-[7/10] max-w-[112px] object-cover"
             src="https://picsum.photos/120/160"

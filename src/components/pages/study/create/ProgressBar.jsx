@@ -7,8 +7,6 @@ const ProgressBar = ({
   isStepOneFilled,
   isStepTwoFilled,
 }) => {
-  console.log(currentStep, isStepOneFilled, isStepTwoFilled);
-
   return (
     <div className="flex justify-center gap-x-10 sm:gap-x-28 relative w-fit mx-auto">
       <NavLink
