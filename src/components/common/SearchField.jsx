@@ -1,61 +1,24 @@
+import Button from '@components/common/Button';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
-const InputField = styled.div`
-  display: flex;
-  justify-content: space-bewteen
-  width: 100%;
-  padding: 12px 24px;
-  border: ${({ theme }) => {
-    return theme.colors.gray[200];
-  }}
-    1px solid;
-  border-radius: 12px;
-  font-size: ${({ theme, fontSize }) => {
-    return theme.fontSizes.text[fontSize];
-  }};
-`;
-
-const Input = styled.input`
-  &::placeholder {
-    color: ${({ theme }) => {
-      return theme.colors.gray[300];
-    }};
-  }
-`;
-
-const InputLabel = styled.label`
-  margin-bottom: 4px;
-  font-size: ${({ theme, labelSize }) => {
-    return theme.fontSizes.text[labelSize];
-  }};
-  color: ${({ theme }) => {
-    return theme.colors.gray[400];
-  }};
-`;
-
-const SearchField = ({
-  type = 'text',
-  placeholder,
-  fontSize = 'xl',
-  labelText,
-  labelSize,
-}) => {
+const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
   return (
     <>
-      <InputLabel labelSize={labelSize}>
+      <label className={`mb-1 text-gray-400 text-${labelSize}`}>
         {labelText || null}
-        <InputField fontSize={fontSize}>
-          <Input
-            type={type}
-            placeholder={placeholder}
-            style={{ width: '100%' }}
-          />
-          <button type="button" style={{ backgroundColor: 'dodgerblue' }}>
-            search
-          </button>
-        </InputField>
-      </InputLabel>
+      </label>
+      <div
+        className={`flex gap-x-6 justify-between w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl has-focus-within:border-primary-300 has-focus-within:shadow has-focus-within:shadow-primary-300`}
+      >
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="w-full placeholder-gray-300 focus:outline-hidden"
+        />
+        <Button size="large" type="CTA Abled">
+          검색
+        </Button>
+      </div>
     </>
   );
 };
