@@ -21,6 +21,7 @@ const PostEdit = () => {
   };
 
   const onSubmit = (formData) => {
+    window.alert('글이 수정되었습니다.');
     console.log(formData);
   };
 

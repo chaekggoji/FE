@@ -30,6 +30,7 @@ const PostWrite = () => {
   };
 
   const onSubmit = (formData) => {
+    window.alert('글이 작성되었습니다.');
     console.log(formData);
   };
 

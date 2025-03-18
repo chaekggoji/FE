@@ -4,6 +4,7 @@ import arrowUpIcon from '@assets/icons/icon_arrow_up_white_36.svg';
 import Button from '@components/common/Button';
 import { useNavigate, useParams } from 'react-router';
 import CommentItem from '@components/modules/post/CommentItem';
+import { useForm } from 'react-hook-form';
 
 const commentPlaceholder = {
   notices: '게시글에 댓글을 남겨 보세요.',
@@ -39,6 +40,7 @@ const comments = [
 const PostDetail = () => {
   const { boardType } = useParams();
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
   const handleEdit = () => {
     navigate('edit', {
@@ -54,6 +56,10 @@ const PostDetail = () => {
     if (ok) {
       navigate(-1, { replace: true });
     }
+  };
+
+  const onSubmit = (formData) => {
+    console.log(formData);
   };
 
   return (
@@ -81,11 +87,15 @@ const PostDetail = () => {
         {/* 댓글 */}
         <div>
           {/* 댓글 작성 */}
-          <form className="relative mb-4 font-gowunbatang">
+          <form
+            className="relative mb-4 font-gowunbatang"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <input
               className="w-full ring-2 ring-slate-300 focus:outline-none focus:ring-primary-400 rounded-2xl px-4 h-12"
               type="text"
               placeholder={commentPlaceholder[boardType]}
+              {...register('comment')}
             />
             <button className="bg-primary-300 absolute top-0 right-0 h-12 px-3 rounded-r-2xl hover:bg-primary-400 cursor-pointer ring-2 ring-primary-300 hover:ring-primary-400">
               <img src={arrowUpIcon} className="size-9" />
