@@ -18,6 +18,7 @@ const BoardSort = ({ selectedOption, setSelectedOption }) => {
     setIsOpen(false);
   };
 
+  // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
   useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
 
   return (

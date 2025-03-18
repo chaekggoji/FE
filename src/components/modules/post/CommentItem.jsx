@@ -8,6 +8,7 @@ const CommentItem = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownBoxRef = useRef();
 
+  // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
   useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
 
   const handleDropdonClck = () => {
