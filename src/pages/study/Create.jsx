@@ -7,6 +7,7 @@ import StudyPreview from '@components/pages/study/create/StudyPreview';
 import { useState } from 'react';
 
 const Create = () => {
+  // 카테고리 더미 데이터(상수 처리 vs DB 호출 고려 중)
   const BookCategoryList = [
     { id: 1, title: '자기계발' },
     { id: 2, title: '인문' },
@@ -21,6 +22,7 @@ const Create = () => {
     { id: 11, title: '요리' },
   ];
 
+  // 카테고리 드롭다운(추가 수정 예정)
   const BookCategoryOption = BookCategoryList.map((item) => (
     <option id={item.title} key={item.id} value={item.id}>
       {item.title}
@@ -34,14 +36,14 @@ const Create = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // step 1에서 도서 선택이 완료된 경우, true 로 지정
-  const isStepOneFilled = true;
+  const isStepZeroFilled = true;
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
-  const isStepTwoFilled = true;
+  const isStepOneFilled = true;
 
   const isStepFilled =
-    (currentStep === 0 && isStepOneFilled) ||
-    (currentStep === 1 && isStepTwoFilled);
+    (currentStep === 0 && isStepZeroFilled) ||
+    (currentStep === 1 && isStepOneFilled);
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -66,8 +68,8 @@ const Create = () => {
           <>
             <ProgressBar
               currentStep={currentStep}
+              isStepZeroFilled={isStepZeroFilled}
               isStepOneFilled={isStepOneFilled}
-              isStepTwoFilled={isStepTwoFilled}
               setCurrentStep={setCurrentStep}
             />
             {currentStep === 0 && <SearchBook />}
