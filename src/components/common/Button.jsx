@@ -25,7 +25,7 @@ const Button = ({
 
   return (
     <button
-      className={`inline-flex items-center justify-center font-normal transition duration-200 rounded-lg ${sizeClass} ${typeClass}`}
+      className={`inline-flex items-center justify-center font-normal transition duration-200 rounded-lg gap-x-2.5 shrink-0 ${sizeClass} ${typeClass}`}
       onClick={onClick}
       {...props}
     >
