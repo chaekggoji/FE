@@ -1,26 +1,17 @@
 import profileDefaultIcon from '@assets/icons/icon_profile_default_36.svg';
 import moreIcon from '@assets/icons/icon_more_24.svg';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import useOutsideClick from '@hooks/useOutsideClick';
 
 const CommentItem = ({ data }) => {
-  const [isMore, setIsMore] = useState(false);
-  const moreRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownBoxRef = useRef();
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (moreRef.current && !moreRef.current.contains(event.target)) {
-        setIsMore(false);
-      }
-    };
+  useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
 
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {};
-  }, []);
-
-  const handleMore = () => {
-    setIsMore((prev) => !prev);
+  const handleDropdonClck = () => {
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -33,22 +24,22 @@ const CommentItem = ({ data }) => {
           <img
             src={moreIcon}
             className="cursor-pointer pl-2"
-            onClick={handleMore}
+            onClick={handleDropdonClck}
           />
           {/* 수정, 삭제 모달 */}
           <div
-            ref={moreRef}
-            className={`absolute border-slate-400 border-1 rounded-xl bg-white top-0 right-[24px] opacity-0 transition-all ${isMore ? 'opacity-100' : 'pointer-events-none'}`}
+            ref={dropdownBoxRef}
+            className={`absolute border-slate-400 border-1 rounded-xl bg-white top-0 right-[24px] opacity-0 transition-all ${isOpen ? 'opacity-100' : 'pointer-events-none'}`}
           >
             <p
               className="py-1 px-3 border-b-1 border-slate-400 cursor-pointer  hover:bg-primary-100 rounded-t-xl"
-              onClick={() => setIsMore(false)}
+              onClick={() => setIsOpen(false)}
             >
               수정
             </p>
             <p
               className="py-1 px-3 cursor-pointer hover:bg-primary-100 rounded-b-xl"
-              onClick={() => setIsMore(false)}
+              onClick={() => setIsOpen(false)}
             >
               삭제
             </p>

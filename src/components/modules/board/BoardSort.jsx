@@ -1,5 +1,6 @@
+import useOutsideClick from '@hooks/useOutsideClick';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const options = [
   { name: '조회수 많은 순', value: 'mostViewed' },
@@ -10,30 +11,17 @@ const options = [
 
 const BoardSort = ({ selectedOption, setSelectedOption }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const selectBoxRef = useRef(null);
+  const dropdownBoxRef = useRef(null);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        selectBoxRef.current &&
-        !selectBoxRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {};
-  }, []);
+  useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
 
   return (
-    <div className="relative text-center w-32" ref={selectBoxRef}>
+    <div className="relative text-center w-32" ref={dropdownBoxRef}>
       <button
         className={`bg-white py-1 w-full border-1 border-black cursor-pointer transition-all ${isOpen ? 'rounded-t-2xl' : 'rounded-2xl'}`}
         onClick={() => setIsOpen((prev) => !prev)}
