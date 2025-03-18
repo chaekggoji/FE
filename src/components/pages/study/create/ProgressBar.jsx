@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router';
 
 const ProgressBar = ({
   currentStep,
@@ -9,8 +8,8 @@ const ProgressBar = ({
 }) => {
   return (
     <div className="flex justify-center gap-x-10 sm:gap-x-28 relative w-fit mx-auto">
-      <NavLink
-        className="text-center flex flex-col items-center gap-2"
+      <div
+        className="text-center flex flex-col items-center gap-2 cursor-pointer"
         onClick={() => {
           setCurrentStep(0);
         }}
@@ -23,9 +22,9 @@ const ProgressBar = ({
           )}
         </div>
         <p className="text-2xl">도서 검색</p>
-      </NavLink>
-      <NavLink
-        className="text-center flex flex-col items-center gap-2"
+      </div>
+      <div
+        className="text-center flex flex-col items-center gap-2 cursor-pointer"
         onClick={() => {
           setCurrentStep(1);
         }}
@@ -40,9 +39,9 @@ const ProgressBar = ({
           )}
         </div>
         <p className="text-2xl">스터디 정보 입력</p>
-      </NavLink>
-      <NavLink
-        className="text-center flex flex-col items-center gap-2"
+      </div>
+      <div
+        className="text-center flex flex-col items-center gap-2 cursor-pointer"
         onClick={() => {
           setCurrentStep(2);
         }}
@@ -53,7 +52,7 @@ const ProgressBar = ({
           3
         </div>
         <p className="text-2xl">미리보기</p>
-      </NavLink>
+      </div>
       <div className="hidden absolute top-5 w-11/12 h-[2px] bg-primary-300 -z-10 sm:block"></div>
     </div>
   );
