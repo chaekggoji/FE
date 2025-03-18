@@ -3,10 +3,12 @@ import Button from '@components/common/Button';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
-const StudyLeader = ({ userId, profileURL, nickname, intro }) => {
+const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
   const navigate = useNavigate();
   return (
-    <div className="px-24 w-full flex items-center min-h-[104px] border-b-1 border-slate-200">
+    <div
+      className={`px-24 w-full flex items-center min-h-[104px] border-b-1 border-slate-200 ${className}`}
+    >
       <img
         className="size-20 mr-5"
         src={profileURL ? profileURL : defaultProfile}
@@ -31,4 +33,5 @@ StudyLeader.propTypes = {
   profileURL: PropTypes.string,
   nickname: PropTypes.string.isRequired,
   intro: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };

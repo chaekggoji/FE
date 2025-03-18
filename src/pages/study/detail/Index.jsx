@@ -21,12 +21,13 @@ const book = {
 
 const StudyDetailHome = () => {
   return (
-    <>
+    <div className="flex flex-col">
       <StudyLeader
         userId={leader.id}
         profileURL={leader.img_url}
         nickname={leader.nickname}
         intro={leader.intro}
+        className="lg:order-0 order-1"
       />
       <div className="px-24 flex py-12 border-b-1 border-slate-200">
         <StudyInfo />
@@ -34,7 +35,7 @@ const StudyDetailHome = () => {
       </div>
       <StudyIntro />
       <StudyRules />
-    </>
+    </div>
   );
 };
 
