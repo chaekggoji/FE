@@ -10,7 +10,7 @@ const SearchBook = () => {
       <h1 className="text-4xl">검색 결과</h1>
       <ul className="flex flex-col gap-y-10">
         <li
-          className={`flex gap-x-10 items-center p-8 border ${isSelected ? 'border-primary-300 bg-primary-100' : 'border-gray-200 bg-white'} rounded-xl cursor-pointer`}
+          className={`flex gap-x-5 sm:gap-x-10 items-center p-4 sm:p-8 border ${isSelected ? 'border-primary-300 bg-primary-100' : 'border-gray-200 bg-white'} rounded-xl cursor-pointer`}
           onClick={() => setIsSelected(!isSelected)}
         >
           <img
