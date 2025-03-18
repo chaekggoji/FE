@@ -2,14 +2,12 @@ import useOutsideClick from '@hooks/useOutsideClick';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
-const options = [
-  { name: '조회수 많은 순', value: 'mostViewed' },
-  { name: '댓글 많은 순', value: 'mostCommented' },
-  { name: '최근 활동 순', value: 'recent' },
-  { name: '초기화', value: null },
-];
-
-const BoardSort = ({ selectedOption, setSelectedOption }) => {
+const DropdownBox = ({
+  selectedOption,
+  setSelectedOption,
+  options,
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownBoxRef = useRef(null);
 
@@ -20,9 +18,8 @@ const BoardSort = ({ selectedOption, setSelectedOption }) => {
 
   // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
   useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
-
   return (
-    <div className="relative text-center w-32" ref={dropdownBoxRef}>
+    <div className={`relative text-center ${className}`} ref={dropdownBoxRef}>
       <button
         className={`bg-white py-1 w-full border-1 border-black cursor-pointer transition-all ${isOpen ? 'rounded-t-2xl' : 'rounded-2xl'}`}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -46,9 +43,16 @@ const BoardSort = ({ selectedOption, setSelectedOption }) => {
   );
 };
 
-BoardSort.propTypes = {
+DropdownBox.propTypes = {
   selectedOption: PropTypes.string.isRequired,
   setSelectedOption: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+  className: PropTypes.string,
 };
 
-export default BoardSort;
+export default DropdownBox;

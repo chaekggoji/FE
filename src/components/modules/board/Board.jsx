@@ -1,10 +1,10 @@
 import Button from '@components/common/Button';
-import BoardSort from '@components/modules/board/BoardSort';
-import Pagination from '@components/modules/board/Pagination';
+import Pagination from '@components/common/Pagination';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
+import DropdownBox from '@components/common/DropdownBox';
 
 const title = {
   notices: '공지사항',
@@ -29,6 +29,13 @@ const postList = [
   },
 ];
 
+const options = [
+  { name: '조회수 많은 순', value: 'mostViewed' },
+  { name: '댓글 많은 순', value: 'mostCommented' },
+  { name: '최근 활동 순', value: 'recent' },
+  { name: '초기화', value: null },
+];
+
 const Board = () => {
   const { studyId, boardType } = useParams();
   const navigate = useNavigate();
@@ -47,9 +54,11 @@ const Board = () => {
       <BoardTitle title={title[boardType]} />
       <div className="flex flex-col">
         <div className="flex items-center px-6 h-12">
-          <BoardSort
+          <DropdownBox
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            options={options}
+            className="w-32"
           />
           <Button
             className="ml-auto"
