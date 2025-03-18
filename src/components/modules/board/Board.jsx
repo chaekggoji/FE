@@ -74,8 +74,12 @@ const Board = () => {
             <BoardListItem key={post.id} post={post} />
           ))}
         </div>
-
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <div className="h-[64px] flex items-center justify-center">
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );
