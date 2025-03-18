@@ -1,15 +1,23 @@
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router';
 
-const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
+const ProgressBar = ({
+  currentStep,
+  setCurrentStep,
+  isStepOneFilled,
+  isStepTwoFilled,
+}) => {
   console.log(currentStep, isStepOneFilled, isStepTwoFilled);
 
   return (
     <div className="flex justify-center gap-x-10 sm:gap-x-28 relative w-fit mx-auto">
-      <NavLink className="text-center flex flex-col items-center gap-2">
-        <div
-          className={`flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full`}
-        >
+      <NavLink
+        className="text-center flex flex-col items-center gap-2"
+        onClick={() => {
+          setCurrentStep(0);
+        }}
+      >
+        <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
           {isStepOneFilled ? (
             <img src="/src/assets/icons/icon_check_24.svg" />
           ) : (
@@ -18,7 +26,12 @@ const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
         </div>
         <p>도서 검색</p>
       </NavLink>
-      <NavLink className="text-center flex flex-col items-center gap-2">
+      <NavLink
+        className="text-center flex flex-col items-center gap-2"
+        onClick={() => {
+          setCurrentStep(1);
+        }}
+      >
         <div
           className={`flex justify-center items-center ${currentStep >= 1 ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
         >
@@ -30,7 +43,12 @@ const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
         </div>
         <p>스터디 정보 입력</p>
       </NavLink>
-      <NavLink className="text-center flex flex-col items-center gap-2">
+      <NavLink
+        className="text-center flex flex-col items-center gap-2"
+        onClick={() => {
+          setCurrentStep(2);
+        }}
+      >
         <div
           className={`flex justify-center items-center ${currentStep === 2 ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
         >
@@ -45,6 +63,7 @@ const ProgressBar = ({ currentStep, isStepOneFilled, isStepTwoFilled }) => {
 
 ProgressBar.propTypes = {
   currentStep: PropTypes.number.isRequired,
+  setCurrentStep: PropTypes.func.isRequired,
   isStepOneFilled: PropTypes.bool.isRequired,
   isStepTwoFilled: PropTypes.bool.isRequired,
 };

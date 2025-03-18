@@ -59,6 +59,7 @@ const Create = () => {
           currentStep={currentStep}
           isStepOneFilled={isStepOneFilled}
           isStepTwoFilled={isStepTwoFilled}
+          setCurrentStep={setCurrentStep}
         />
         {currentStep === 0 && <SearchBook />}
         {currentStep === 1 && (
