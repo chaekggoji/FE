@@ -6,10 +6,8 @@ import Login from '@pages/auth/Login';
 import Books from '@pages/profile/Books';
 import Edit from '@pages/profile/Edit';
 import Studies from '@pages/profile/Studies';
-import Debates from '@pages/study/detail/Debates';
 import StudyDetailHome from '@pages/study/detail/Index';
 import Manage from '@pages/study/detail/Manage';
-import Notices from '@pages/study/detail/Notices';
 import Phrases from '@pages/study/detail/Phrases';
 import StudyHome from '@pages/study/Index';
 import Supabase from '@pages/Supabase';
@@ -19,6 +17,10 @@ import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
 import { createBrowserRouter } from 'react-router';
+import PostWrite from '@components/modules/post/PostWrite';
+import PostDetail from '@components/modules/post/PostDetail';
+import Board from '@components/modules/board/Board';
+import PostEdit from '@components/modules/post/PostEdit';
 
 const router = createBrowserRouter([
   {
@@ -50,12 +52,21 @@ const router = createBrowserRouter([
                 element: <StudyDetailHome />,
               },
               {
-                path: 'notices',
-                element: <Notices />,
-              },
-              {
-                path: 'debates',
-                element: <Debates />,
+                path: ':boardType',
+                children: [
+                  { index: true, element: <Board /> },
+                  { path: 'write', element: <PostWrite /> },
+                  {
+                    path: ':postId',
+                    children: [
+                      {
+                        index: true,
+                        element: <PostDetail />,
+                      },
+                      { path: 'edit', element: <PostEdit /> },
+                    ],
+                  },
+                ],
               },
               {
                 path: 'phrases',

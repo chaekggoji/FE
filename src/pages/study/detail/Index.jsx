@@ -21,7 +21,7 @@ const book = {
 
 const StudyDetailHome = () => {
   return (
-    <>
+    <div>
       <StudyLeader
         userId={leader.id}
         profileURL={leader.img_url}
@@ -34,7 +34,7 @@ const StudyDetailHome = () => {
       </div>
       <StudyIntro />
       <StudyRules />
-    </>
+    </div>
   );
 };
 
