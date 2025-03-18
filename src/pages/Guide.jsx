@@ -108,7 +108,7 @@ const Guide = () => {
 
   return (
     // ❌ 음수 마진으로 좌우 패딩 제거
-    <div className="font-ownglyph text-center -mx-10 md:-mx-8 sm:-mx-6">
+    <div className="font-ownglyph text-center lg:-mx-10 md:-mx-8 sm:-mx-6">
       {/* index의 홀짝에 따라 배경색 설정 */}
       {sections.map((section, index) => (
         <section
