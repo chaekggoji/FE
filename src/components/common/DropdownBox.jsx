@@ -24,7 +24,7 @@ const DropdownBox = ({
         className={`bg-white py-1 w-full border-1 border-black cursor-pointer transition-all ${isOpen ? 'rounded-t-2xl' : 'rounded-2xl'}`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        {selectedOption.value ? selectedOption.name : '게시글 정렬'}
+        {selectedOption.value ? selectedOption.name : '정렬 기준'}
       </button>
       <ul
         className={`w-full text-center absolute left-0 top-full transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
