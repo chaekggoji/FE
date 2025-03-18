@@ -1,6 +1,4 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
-import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
-import Button from '@components/common/Button';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
 
 const memberList = [
