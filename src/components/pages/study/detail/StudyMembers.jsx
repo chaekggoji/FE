@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
-const MemberList = ({ memberList }) => {
+const StudyMembers = ({ memberList }) => {
   const navigate = useNavigate();
   return (
     <div className="flex cursor-pointer">
@@ -19,8 +19,8 @@ const MemberList = ({ memberList }) => {
   );
 };
 
-MemberList.propTypes = {
+StudyMembers.propTypes = {
   memberList: PropTypes.array.isRequired,
 };
 
-export default MemberList;
+export default StudyMembers;
