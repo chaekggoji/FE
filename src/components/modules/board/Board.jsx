@@ -1,6 +1,6 @@
 import Button from '@components/common/Button';
 import Pagination from '@components/common/Pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
@@ -23,7 +23,7 @@ const postList = [
     content: '두번째 게시글의 내용입니다.',
   },
   {
-    id: 2,
+    id: 3,
     title: '두번째 게시글',
     content: '두번째 게시글의 내용입니다.',
   },
@@ -48,6 +48,11 @@ const Board = () => {
 
   // 현재 페이지
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    // boardType이 바뀔 때마다 currentPage를 1로 초기화
+    setCurrentPage(1);
+  }, [boardType]);
 
   return (
     <div>
