@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import tagDelete from '@assets/icons/icon_x_24.svg';
 import supabase from '@libs/supabase';
 

@@ -34,18 +34,18 @@ const SignUp = () => {
 
       if (authError) throw authError;
 
-      const userId = authData.user.id;
+      const authUserId = authData.user.id;
 
       // 2. 프로필 이미지 업로드 (이미지가 있는 경우)
       let img_url = null;
       if (uploadImgUrl && uploadImgUrl.startsWith('data:')) {
         // Base64 데이터 URL에서 실제 파일 데이터 추출
         const base64Data = uploadImgUrl.split(',')[1];
-        const fileName = `profile_${userId}_${Date.now()}.jpg`;
+        const fileName = `profile_${authUserId}_${Date.now()}.jpg`;
 
         // Storage에 이미지 업로드
         const { data: fileData, error: fileError } = await supabase.storage
-          .from('profile_images') // 스토리지 버킷 이름 (미리 생성해야 함)
+          .from('profile-images') // 스토리지 버킷 이름 (미리 생성해야 함)
           .upload(fileName, decode(base64Data), {
             contentType: 'image/jpeg',
           });
@@ -54,34 +54,38 @@ const SignUp = () => {
 
         // 업로드된 이미지의 공개 URL 가져오기
         const { data: urlData } = supabase.storage
-          .from('profile_images')
+          .from('profile-images')
           .getPublicUrl(fileName);
 
         img_url = urlData.publicUrl;
       }
 
-      // 3. users 테이블에 추가 정보 저장
-      const { error: profileError } = await supabase.from('users').insert([
-        {
-          id: userId, // Auth에서 생성된 ID 사용
-          email: data.email,
-          nickname: data.nickname,
-          img_url: img_url,
-          intro: '', // 빈 소개
-        },
-      ]);
+      // 3. users 테이블에 추가 정보 저장 (변경된 부분)
+      const { data: userData, error: profileError } = await supabase
+        .from('users')
+        .insert([
+          {
+            auth_id: authUserId, // Auth의 UUID를 별도 칼럼에 저장
+            email: data.email,
+            nickname: data.nickname,
+            password: data.password, // 기존 코드에서 유지 (팀 설계상 필요하다면)
+            img_url: img_url,
+            intro: '',
+          },
+        ])
+        .select(); // 생성된 사용자 ID 반환
 
       if (profileError) throw profileError;
 
-      // 4. user_interests 테이블에 관심분야 저장
-      // 이제 data.interests는 {id, title} 객체 배열이므로 간단히 처리 가능
+      // 생성된 사용자의 ID 가져오기 (bigint)
+      const userId = userData[0].id;
+
+      // 4. user_interests 테이블에 관심분야 저장 (기존 bigint ID 사용)
       const interestsToInsert = data.interests.map((interest) => ({
         user_id: userId,
         category_id: interest.id,
-        created_at: new Date(),
       }));
 
-      // 관심분야 저장
       const { error: interestsError } = await supabase
         .from('user_interests')
         .insert(interestsToInsert);
