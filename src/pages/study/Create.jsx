@@ -36,10 +36,10 @@ const Create = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // step 1에서 도서 선택이 완료된 경우, true 로 지정
-  const isStepZeroFilled = true;
+  const isStepZeroFilled = false;
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
-  const isStepOneFilled = true;
+  const isStepOneFilled = false;
 
   const isStepFilled =
     (currentStep === 0 && isStepZeroFilled) ||
