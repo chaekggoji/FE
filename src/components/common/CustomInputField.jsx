@@ -9,6 +9,7 @@ const CustomInputField = ({
   max,
   placeholder,
   children,
+  register,
 }) => {
   return (
     <div>
@@ -26,6 +27,7 @@ const CustomInputField = ({
           min={min}
           max={max}
           className="w-full placeholder-gray-300 focus:outline-hidden"
+          {...register}
         />
         {children}
       </div>
@@ -42,6 +44,7 @@ CustomInputField.propTypes = {
   type: PropTypes.string,
   placeholder: PropTypes.string,
   children: PropTypes.node,
+  register: PropTypes.object,
 };
 
 export default CustomInputField;
