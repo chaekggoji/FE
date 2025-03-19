@@ -1,5 +1,5 @@
 import Button from '@components/common/Button';
-import MemberList from '@components/pages/study/detail/MemberList';
+import StudyMembers from '@components/pages/study/detail/MemberList';
 import { useLocation } from 'react-router';
 
 const StudyInfo = () => {
@@ -26,7 +26,7 @@ const StudyInfo = () => {
         <>
           <div>
             <p className="text-2xl mb-4">현재 스터디원</p>
-            <MemberList
+            <StudyMembers
               memberList={[
                 { id: 1, nickname: '오동환' },
                 { id: 2, nickname: '오다슬' },
