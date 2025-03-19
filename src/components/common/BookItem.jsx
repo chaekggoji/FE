@@ -12,7 +12,8 @@ const BookItem = ({
   const sizeClass = {
     // 카카오 API 제공 썸네일 크기 : 120x174
     large: 'w-[240px] h-[348px]',
-    medium: 'w-[120px] h-[174px]',
+    medium: 'w-[180px] h-[261px]',
+    small: 'w-[120px] h-[174px]',
   }[size];
 
   const captionHeightClass = size === 'medium' ? 'h-[40px]' : 'h-[80px]';
