@@ -1,7 +1,11 @@
 import Button from '@components/common/Button';
 import MemberList from '@components/pages/study/detail/MemberList';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 const StudyInfo = () => {
+  // 반응형 버튼 제작을 위한 커스텀 훅 사용
+  const lg = useMediaQuery('(min-width: 1024px)');
+
   return (
     <div className="flex-1/2 flex flex-col gap-4">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
@@ -34,6 +38,7 @@ const StudyInfo = () => {
         />
       </div>
       <Button
+        size={lg ? 'medium' : 'small'}
         className="ml-auto"
         onClick={() => window.alert('스터디에 참여하였습니다.')}
       >
