@@ -29,7 +29,7 @@ const StudyDetailHome = () => {
         intro={leader.intro}
         className="lg:order-0 order-1"
       />
-      <div className="lg:px-24 flex py-12 border-b-1 border-slate-200">
+      <div className="lg:px-24 flex py-12 border-b-1  border-slate-200">
         <StudyInfo />
         <StudyBook bookInfo={book} />
       </div>

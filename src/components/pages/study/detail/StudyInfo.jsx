@@ -7,7 +7,7 @@ const StudyInfo = () => {
   const lg = useMediaQuery('(min-width: 1024px)');
 
   return (
-    <div className="flex-1/2 flex flex-col gap-4">
+    <div className="flex-3/5 flex flex-col gap-4">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
       <h3 className="lg:text-3xl text-2xl">
         무라카미 하루키 신작 같이 읽어요!

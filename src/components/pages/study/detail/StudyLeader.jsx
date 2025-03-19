@@ -1,24 +1,37 @@
 import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
 import Button from '@components/common/Button';
+import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
 const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
+  const lg = useMediaQuery('(min-width: 1024px)');
+
   const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/profile/${userId}`);
+  };
   return (
     <div
-      className={`px-24 w-full flex items-center min-h-[104px] border-b-1 border-slate-200 ${className}`}
+      className={`px-24 w-full flex lg:justify-start justify-center items-center gap-4 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
+      onClick={lg ? null : handleNavigate}
     >
       <img
-        className="size-20 mr-5"
+        className="lg:size-20 size-16"
         src={profileURL ? profileURL : defaultProfile}
       />
-      <div>
-        <h4 className="text-xl">스터디 리더 : {nickname}</h4>
-        <p>{intro}</p>
+      <div className="py-2">
+        <h4 className="text-xl lg:mr-0 mr-5">스터디 리더 : {nickname}</h4>
+        <p className="text-gray-500">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste, iure
+          fugiat officiis labore nulla deleniti laboriosam non cumque?
+          Doloremque repudiandae aliquam in repellat dignissimos enim omnis ea
+          asperiores similique accusamus?
+        </p>
       </div>
-      <div className="ml-auto">
-        <Button onClick={() => navigate(`/profile/${userId}`)}>
+      <div className="ml-auto hidden lg:block shrink-0">
+        <Button className="" onClick={handleNavigate}>
           프로필 보기
         </Button>
       </div>
