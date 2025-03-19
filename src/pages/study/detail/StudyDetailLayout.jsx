@@ -4,7 +4,7 @@ import { Outlet } from 'react-router';
 const StudyDetailLayout = () => {
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
-      <nav className="w-[220px] bg-primary-100 shrink-0">
+      <nav className="w-[220px] bg-primary-100 shrink-0 hidden lg:block">
         <StudyNavLink to="home">스터디 홈</StudyNavLink>
         <StudyNavLink to="notices">공지사항</StudyNavLink>
         <StudyNavLink to="debates">토론 나눠요</StudyNavLink>
