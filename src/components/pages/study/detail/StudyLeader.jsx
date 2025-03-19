@@ -1,4 +1,4 @@
-import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
+import defaultProfile from '@assets/icons/icon_profile_default_36.svg';
 import Button from '@components/common/Button';
 import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
@@ -14,11 +14,11 @@ const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
   };
   return (
     <div
-      className={`px-24 w-full flex lg:justify-start justify-center items-center gap-4 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
+      className={`px-24 w-full flex lg:justify-start justify-center items-center gap-6 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
       onClick={lg ? null : handleNavigate}
     >
       <img
-        className="lg:size-20 size-16"
+        className="lg:size-16 size-12"
         src={profileURL ? profileURL : defaultProfile}
       />
       <div className="py-2">
