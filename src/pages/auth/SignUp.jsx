@@ -93,6 +93,7 @@ const SignUp = () => {
       if (interestsError) throw interestsError;
 
       console.log('회원가입 완료!', authData);
+      alert('회원가입 완료!');
       navigate('/login');
     } catch (error) {
       console.error('회원가입 에러:', error);
