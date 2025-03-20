@@ -1,5 +1,5 @@
 import Button from '@components/common/Button';
-import StudyMembers from '@components/pages/study/detail/MemberList';
+import StudyMembers from '@components/pages/study/detail/StudyMembers';
 import { useLocation } from 'react-router';
 
 const StudyInfo = () => {

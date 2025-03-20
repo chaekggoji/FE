@@ -8,7 +8,7 @@ const SmallDropdownBox = ({ className }) => {
   const dropdownBoxRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDropdonClck = () => {
+  const handleDropdownClick = () => {
     setIsOpen((prev) => !prev);
   };
 
@@ -20,7 +20,7 @@ const SmallDropdownBox = ({ className }) => {
       <img
         src={moreIcon}
         className="cursor-pointer"
-        onClick={handleDropdonClck}
+        onClick={handleDropdownClick}
       />
       <div
         className={`absolute border-slate-400 border-1 rounded-xl bg-white top-0 right-[24px] opacity-0 transition-all ${isOpen ? 'opacity-100' : 'pointer-events-none'}`}
