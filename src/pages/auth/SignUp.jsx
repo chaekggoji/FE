@@ -161,7 +161,7 @@ const SignUp = () => {
         />
         <label
           htmlFor="profile-upload"
-          className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 cursor-pointer"
+          className="absolute bottom-0 right-0 translate-x-3/4 translate-y-1/4 cursor-pointer"
         >
           <img
             src={uploadImgUrl ? profileUpdate : profileUpload}
