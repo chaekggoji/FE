@@ -10,7 +10,7 @@ const StudyItem = ({ study, size = 'large' }) => {
   };
 
   return (
-    <div className={`study-item border-4 border-primary-300 rounded-xl ${sizeClass[size]} relative`}>
+    <div className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
       {/* 썸네일 이미지 */}
       <div className='relative w-full h-[70%] overflow-hidden rounded-t-lg'>
         <img

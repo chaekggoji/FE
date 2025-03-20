@@ -48,7 +48,7 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
 
       {/* 검색 버튼 */}
       <button onClick={onSearch} className='bg-primary-200 p-2 rounded-full flex items-center justify-center w-15 h-15'>
-        <img src={SearchIcon} alt='검색' className='w-8 h-8 invert' />
+        <img src={SearchIcon} alt='검색' className='w-8 h-8 white' />
       </button>
     </div>
   );
