@@ -1,13 +1,14 @@
 import moreIcon from '@assets/icons/icon_more_24.svg';
 import useModalDismiss from '@hooks/useModalDismiss';
 
+import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
-const SmallDropdownBox = () => {
+const SmallDropdownBox = ({ className }) => {
   const dropdownBoxRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDropdonClck = () => {
+  const handleDropdownClick = () => {
     setIsOpen((prev) => !prev);
   };
 
@@ -15,14 +16,13 @@ const SmallDropdownBox = () => {
   useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
 
   return (
-    <div className="relative">
+    <div ref={dropdownBoxRef} className={`relative ${className}`}>
       <img
         src={moreIcon}
         className="cursor-pointer"
-        onClick={handleDropdonClck}
+        onClick={handleDropdownClick}
       />
       <div
-        ref={dropdownBoxRef}
         className={`absolute border-slate-400 border-1 rounded-xl bg-white top-0 right-[24px] opacity-0 transition-all ${isOpen ? 'opacity-100' : 'pointer-events-none'}`}
       >
         <p
@@ -40,6 +40,10 @@ const SmallDropdownBox = () => {
       </div>
     </div>
   );
+};
+
+SmallDropdownBox.propTypes = {
+  className: PropTypes.string,
 };
 
 export default SmallDropdownBox;
