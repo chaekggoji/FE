@@ -1,6 +1,5 @@
 import moreIcon from '@assets/icons/icon_more_24.svg';
 import useModalDismiss from '@hooks/useModalDismiss';
-
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 

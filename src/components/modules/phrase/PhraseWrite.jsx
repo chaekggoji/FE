@@ -1,5 +1,5 @@
 import Button from '@components/common/Button';
-import useOutsideClick from '@hooks/useOutsideClick';
+import useModalDismiss from '@hooks/useModalDismiss';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -13,7 +13,7 @@ const PhraseWrite = () => {
     setIsOpen(false);
   };
 
-  useOutsideClick(formRef, () => {
+  useModalDismiss(formRef, () => {
     setIsOpen(false);
   });
 
