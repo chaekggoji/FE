@@ -4,7 +4,7 @@ import SmallDropdownBox from '@components/common/SmallDropdownBox';
 
 const CommentItem = ({ data }) => {
   return (
-    <li className="p-4 ring-2 ring-slate-300 rounded-2xl font-gowunbatang">
+    <li className="p-4 ring-2 ring-slate-300 rounded-2xl font-gowunbatang md:text-[1rem] text-sm">
       <div className="flex items-center mb-2">
         <img src={profileDefaultIcon} className="mr-2" />
         <p className="font-bold">유저 닉네임</p>

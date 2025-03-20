@@ -1,5 +1,6 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
+import useMediaQuery from '@hooks/useMediaQuery';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
@@ -13,6 +14,7 @@ const PostEdit = () => {
   const { boardType } = useParams();
   const { register, handleSubmit } = useForm();
   const location = useLocation();
+  const md = useMediaQuery('(min-width: 768px)');
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -26,10 +28,10 @@ const PostEdit = () => {
   };
 
   return (
-    <div className="pb-16">
+    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
       <form
-        className="px-24 flex flex-col gap-4 items-center mt-4 max-w-[1000px] mx-auto"
+        className="flex flex-col gap-4 items-center mt-4 max-w-[1000px] mx-auto lg:px-10 md:px-8 sm:px-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
@@ -44,10 +46,14 @@ const PostEdit = () => {
           defaultValue={location.state.content}
         />
         <div className="flex ml-auto gap-4">
-          <Button type="CTA Lined" onClick={handleCancle}>
+          <Button
+            size={md ? 'medium' : 'small'}
+            type="CTA Lined"
+            onClick={handleCancle}
+          >
             취소
           </Button>
-          <Button>저장</Button>
+          <Button size={md ? 'medium' : 'small'}>저장</Button>
         </div>
       </form>
     </div>

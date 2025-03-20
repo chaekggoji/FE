@@ -21,7 +21,7 @@ const FloatNavButton = ({ pages }) => {
   useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
   return (
     <div
-      className="fixed md:top-[calc(74px+16px)] sm:top-[calc(74px+24px)] lg:hidden z-10"
+      className="fixed top-[calc(74px+16px)] lg:hidden z-10"
       ref={dropdownBoxRef}
     >
       <div

@@ -55,7 +55,7 @@ const Board = () => {
     setCurrentPage(1);
   }, [boardType]);
 
-  const lg = useMediaQuery('(min-width: 1024px)');
+  const md = useMediaQuery('(min-width: 768px)');
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
@@ -66,10 +66,10 @@ const Board = () => {
             setSelectedOption={setSelectedOption}
             options={options}
             className="w-32"
-            size="small"
+            size={md ? 'medium' : 'small'}
           />
           <Button
-            size={lg ? 'medium' : 'small'}
+            size={md ? 'medium' : 'small'}
             className="ml-auto"
             onClick={() => navigate(`/study/${studyId}/${boardType}/write`)}
           >
