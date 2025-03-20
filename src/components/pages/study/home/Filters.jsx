@@ -12,7 +12,7 @@ export default function Filters({ duration, setDuration, category, setCategory }
   return (
     <div className='flex gap-x-4'>
       {/* 기간 드롭다운 */}
-      <div className='relative text-left'>
+      <div className='relative bg-white rounded-lg text-left'>
         <button
           onClick={toggleDurationDropdown}
           className={`border text-2xl px-4 py-2 rounded-lg w-40 text-left ${isDurationOpen ? 'bg-gray-100' : ''}`}
@@ -39,7 +39,7 @@ export default function Filters({ duration, setDuration, category, setCategory }
       </div>
 
       {/* 카테고리 드롭다운 */}
-      <div className='relative text-left'>
+      <div className='relative bg-white rounded-lg text-left'>
         <button
           onClick={toggleCategoryDropdown}
           className='border text-2xl px-4 py-2 rounded-lg w-40 text-left'

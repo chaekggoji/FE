@@ -72,7 +72,7 @@ export default function StudyHome() {
   }, []);
 
   return (
-    <div className='p-10'>
+    <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       {/* 추천 도서 섹션 */}
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       <div className='grid grid-cols-4 gap-8 my-12 sm:grid-cols-2 lg:grid-cols-4'>
@@ -99,14 +99,13 @@ export default function StudyHome() {
       </div>
 
       {/* 스터디 리스트 */}
-      <div className="study-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="study-list grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-16 my-12">
         {studyData.map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
             index={index}
             totalItems={studyData.length}
-            className={index === studyData.length - 1 ? "mr-0" : "mr-4"}
           />
         ))}
       </div>

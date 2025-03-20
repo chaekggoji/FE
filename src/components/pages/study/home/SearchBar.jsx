@@ -43,7 +43,7 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder='원하는 스터디를 찾아보세요'
-        className='border-2 border-primary-300 text-3xl rounded-lg px-4 py-2 focus:text-primary-300 flex-grow'
+        className='bg-white border-2 border-primary-300 text-3xl rounded-lg px-4 py-2 focus:text-primary-300 flex-grow'
       />
 
       {/* 검색 버튼 */}

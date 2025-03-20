@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const StudyItem = ({ study, size = 'large', index, totalItems }) => {
+const StudyItem = ({ study, size = 'large' }) => {
   // study가 없을 경우 아무것도 렌더링하지 않음
   if (!study) return null;
 
@@ -10,7 +10,7 @@ const StudyItem = ({ study, size = 'large', index, totalItems }) => {
   };
 
   return (
-    <div className={`study-item bg-white rounded-lg shadow-xl ${sizeClass[size]} my-12 relative`}> {/* 마지막 카드에서 오른쪽 마진을 없애기 위해 조건 추가 */}
+    <div className={`study-item border-4 border-primary-300 rounded-xl ${sizeClass[size]} relative`}>
       {/* 썸네일 이미지 */}
       <div className='relative w-full h-[70%] overflow-hidden rounded-t-lg'>
         <img
@@ -25,7 +25,7 @@ const StudyItem = ({ study, size = 'large', index, totalItems }) => {
       </div>
 
       {/* 텍스트 영역 */}
-      <div className='text w-full text-left pl-4 my-4 z-20 relative'>
+      <div className='text w-full text-left pl-4 my-3 z-20 relative'>
         <p className='text-2xl'>스터디 명: {study.title || '스터디명 없음'}</p>
         <p className='text-lg my-2'>
           참여 인원: {study.participants || 0} / {study.capacity || 0}
