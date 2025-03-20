@@ -101,9 +101,16 @@ export default function StudyHome() {
       {/* 스터디 리스트 */}
       <div className="study-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {studyData.map((study, index) => (
-          <StudyItem key={study.id} study={study} index={index} totalItems={studyData.length} />
+          <StudyItem
+            key={study.id}
+            study={study}
+            index={index}
+            totalItems={studyData.length}
+            className={index === studyData.length - 1 ? "mr-0" : "mr-4"}
+          />
         ))}
       </div>
+
 
 
       {/* 페이지네이션 */}
