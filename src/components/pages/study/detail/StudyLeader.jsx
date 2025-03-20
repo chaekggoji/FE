@@ -14,21 +14,16 @@ const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
   };
   return (
     <div
-      className={`px-24 w-full flex lg:justify-start justify-center items-center gap-6 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
+      className={`lg:px-24 lg:py-0 py-6 w-full flex lg:justify-start justify-center items-center gap-6 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
       onClick={lg ? null : handleNavigate}
     >
       <img
         className="lg:size-16 size-12"
         src={profileURL ? profileURL : defaultProfile}
       />
-      <div className="py-2">
+      <div>
         <h4 className="text-xl lg:mr-0 mr-5">스터디 리더 : {nickname}</h4>
-        <p className="text-gray-500">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste, iure
-          fugiat officiis labore nulla deleniti laboriosam non cumque?
-          Doloremque repudiandae aliquam in repellat dignissimos enim omnis ea
-          asperiores similique accusamus?
-        </p>
+        <p className="text-gray-500">{intro}</p>
       </div>
       <div className="ml-auto hidden lg:block shrink-0">
         <Button className="" onClick={handleNavigate}>
