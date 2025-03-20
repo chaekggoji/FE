@@ -75,6 +75,7 @@ export default function StudyHome() {
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       {/* 추천 도서 섹션 */}
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
+      {/* 추후 넷플릭스 슬라이드 방식으로 수정할 예정 */}
       <div className='grid grid-cols-4 gap-8 my-12 sm:grid-cols-2 lg:grid-cols-4'>
         {books.slice(0, 4).map(book => (
           <BookItem
@@ -88,14 +89,26 @@ export default function StudyHome() {
         ))}
       </div>
 
-
       {/* 검색 바 */}
-      <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} />
+      <SearchBar
+        search={search}
+        setSearch={setSearch}
+        filter={filter}
+        setFilter={setFilter}
+      />
 
       {/* 필터 & 정렬 */}
       <div className='flex items-center justify-between mt-4'>
-        <Filters duration={duration} setDuration={setDuration} category={category} setCategory={setCategory} />
-        <SortDropdown sort={sort} setSort={setSort} />
+        <Filters
+          duration={duration}
+          setDuration={setDuration}
+          category={category}
+          setCategory={setCategory}
+        />
+        <SortDropdown
+          sort={sort}
+          setSort={setSort}
+        />
       </div>
 
       {/* 스터디 리스트 */}
@@ -113,7 +126,11 @@ export default function StudyHome() {
 
 
       {/* 페이지네이션 */}
-      <Pagination currentPage={currentPage} totalPages={5} onPageChange={setCurrentPage} />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={5}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

@@ -15,9 +15,9 @@ export default function SortDropdown({ sort, setSort }) {
       {/* 드롭다운 버튼 */}
       <button
         onClick={toggleDropdown}
-        className='bg-primary-200 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
+        className='bg-primary-200 border-2 border-primary-400/50 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
       >
-        {displayedSort} {/* 정렬을 기본적으로 '정렬'로 표시 */}
+        {displayedSort}
       </button>
 
       {isOpen && (
@@ -25,7 +25,7 @@ export default function SortDropdown({ sort, setSort }) {
           {SORT_OPTIONS.map((option) => (
             <div
               key={option.value}
-              className='p-4 hover:bg-primary-200 text-2xl hover:text-white cursor-pointer'
+              className='p-4 hover:bg-primary-200 text-2xl text-gray-950 hover:text-white cursor-pointer'
               onClick={() => {
                 setSort(option.label);  // 클릭 시 label로 설정
                 setIsOpen(false);  // 드롭다운 닫기

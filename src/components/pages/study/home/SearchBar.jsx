@@ -14,13 +14,12 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
       <div className='relative'>
         <button
           onClick={toggleFilterDropdown}
-          className='bg-primary-200 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
+          className='bg-primary-200 border-2 border-primary-400/50 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
         >
           {filter || '필터 선택'}
         </button>
         {isFilterOpen && (
-          <div className='absolute left-0 right-0 bg-white border-2 border-primary-300/50 shadow-md rounded-lg z-20'>
-            {/* `ALL` 항목을 드롭다운에서 제외 */}
+          <div className='absolute left-0 right-0 text-gray-950 bg-white border-2 border-primary-300/50 shadow-md rounded-lg z-20'>
             {SEARCH_CATEGORIES.filter(option => option.label !== 'ALL').map((option) => (
               <div
                 key={option.value}

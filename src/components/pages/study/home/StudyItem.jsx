@@ -11,6 +11,7 @@ const StudyItem = ({ study, size = 'large' }) => {
 
   return (
     <div className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
+      <div className="absolute rounded-xl bg-[linear-gradient(90deg,_rgba(95,95,95,0.1)_0%,_rgba(255,255,255,0)_4%)] inset-0 z-5" />
       {/* 썸네일 이미지 */}
       <div className='relative w-full h-[70%] overflow-hidden rounded-t-lg'>
         <img
