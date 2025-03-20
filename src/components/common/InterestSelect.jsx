@@ -1,39 +1,49 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import tagDelete from '@assets/icons/icon_x_24.svg';
+import supabase from '@libs/supabase';
 
-const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
+const InterestSelect = ({ value = [], onChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const selectBoxRef = useRef(null);
 
-  const interestOptions = [
-    '관심분야 1',
-    '관심분야 2',
-    '관심분야 3',
-    '관심분야 4',
-  ];
+  // 컴포넌트 마운트 시 카테고리 데이터 로드
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('book_categories')
+          .select('id, title');
+
+        if (error) throw error;
+        setCategories(data);
+      } catch (error) {
+        console.error('카테고리 로드 에러:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleInterestSelect = (option) => {
-    if (selectedInterestList.includes(option)) {
-      setSelectedInterestList(
-        selectedInterestList.filter((item) => item !== option),
-      );
-    } else if (selectedInterestList.length < 3) {
-      const newSelection = [...selectedInterestList, option];
-      setSelectedInterestList(newSelection);
-      setIsDropdownOpen(false); // 하나 이상 선택되면 드롭다운 닫기
+  const handleInterestSelect = (category) => {
+    if (value.some((item) => item.id === category.id)) {
+      onChange(value.filter((item) => item.id !== category.id));
+    } else if (value.length < 3) {
+      onChange([...value, category]);
+      setIsDropdownOpen(false);
     }
   };
 
-  const handleRemoveInterestTag = (option, e) => {
+  const handleRemoveInterestTag = (category, e) => {
     e.stopPropagation(); // 드롭다운이 열리는 것을 방지
-    const updateSelection = selectedInterestList.filter(
-      (item) => item !== option,
-    );
-    setSelectedInterestList(updateSelection);
+    onChange(value.filter((item) => item.id !== category.id));
   };
 
   return (
@@ -43,43 +53,51 @@ const InterestSelect = ({ selectedInterestList, setSelectedInterestList }) => {
         className="w-full min-h-[48px] px-4 border border-gray-300 rounded-lg text-gray-600 flex flex-wrap items-center gap-2 cursor-pointer bg-white"
         onClick={toggleDropdown}
       >
-        {selectedInterestList.length > 0 ? (
+        {value.length > 0 ? (
           <>
-            {selectedInterestList.map((item) => (
+            {value.map((category) => (
               <span
-                key={item}
+                key={category.id}
                 className="bg-primary-300 text-white px-3 py-1 text-sm rounded-md flex items-center gap-2"
               >
-                {item}
+                {category.title}
                 <img
                   src={tagDelete}
                   alt="관심분야 삭제"
                   className="cursor-pointer"
-                  onClick={(e) => handleRemoveInterestTag(item, e)}
+                  onClick={(e) => handleRemoveInterestTag(category, e)}
                 />
               </span>
             ))}
             <span className="ml-auto text-xs text-gray-400">
-              {selectedInterestList.length}/3
+              {value.length}/3
             </span>
           </>
         ) : (
-          '관심 분야를 선택하세요'
+          <span className="text-gray-400">관심 분야를 선택하세요</span>
         )}
       </div>
 
       <ul
         className={`absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-1 py-2 max-h-[200px] overflow-y-auto z-50 ${isDropdownOpen ? 'block' : 'hidden'}`}
       >
-        {interestOptions.map((option) => (
-          <li
-            key={option}
-            className={`px-4 py-2 text-md cursor-pointer ${selectedInterestList.includes(option) ? 'bg-primary-100' : 'bg-white'} hover:bg-gray-100`}
-            onClick={() => handleInterestSelect(option)}
-          >
-            {option}
-          </li>
-        ))}
+        {isLoading ? (
+          <li className="px-4 py-2 text-md">로딩 중...</li>
+        ) : (
+          categories.map((category) => (
+            <li
+              key={category.id}
+              className={`px-4 py-2 text-md cursor-pointer ${
+                value.some((item) => item.id === category.id)
+                  ? 'bg-primary-100'
+                  : 'bg-white'
+              } hover:bg-gray-100`}
+              onClick={() => handleInterestSelect(category)}
+            >
+              {category.title}
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );

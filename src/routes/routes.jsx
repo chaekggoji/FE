@@ -114,6 +114,8 @@ const router = createBrowserRouter([
         path: 'test',
         element: <Test />,
       },
+      { path: 'users/login', element: <Login /> },
+      { path: 'users/signup', element: <SignUp /> },
       {
         path: 'supabase',
         element: <Supabase />,

@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import logo from '@assets/logo.svg';
 import alarm from '@assets/icons/icon_alarm_37.svg';
 import noAlarm from '@assets/icons/icon_no_alarm_37.svg';
-import noProfile from '@assets/icons/icon_no_profile_24.svg';
+import noProfile from '@assets/icons/icon_profile_default_36.svg';
 import { useState } from 'react';
 
 const Header = () => {
