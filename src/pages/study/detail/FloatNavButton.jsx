@@ -1,5 +1,5 @@
 import barIcon from '@assets/icons/icon_bar_white_24.svg';
-import useOutsideClick from '@hooks/useOutsideClick';
+import useModalDismiss from '@hooks/useModalDismiss';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -18,14 +18,14 @@ const FloatNavButton = ({ pages }) => {
     setIsOpen(false);
   };
 
-  useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
+  useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
   return (
     <div
       className="absolute left-0 top-[24px] lg:hidden z-10"
       ref={dropdownBoxRef}
     >
       <div
-        className="size-12 bg-primary-200 rounded-full flex justify-center items-center cursor-pointer shadow-float-button"
+        className="size-12 bg-primary-200 rounded-full flex justify-center items-center cursor-pointer shadow-float-button hover:bg-primary-300"
         onClick={handleToggleDropdown}
       >
         <img src={barIcon} className="size-6" />

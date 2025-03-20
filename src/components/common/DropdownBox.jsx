@@ -1,4 +1,4 @@
-import useOutsideClick from '@hooks/useOutsideClick';
+import useModalDismiss from '@hooks/useModalDismiss';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
@@ -17,7 +17,7 @@ const DropdownBox = ({
   };
 
   // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
-  useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
+  useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
   return (
     <div className={`relative text-center ${className}`} ref={dropdownBoxRef}>
       <button
