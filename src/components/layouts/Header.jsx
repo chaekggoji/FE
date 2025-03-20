@@ -38,12 +38,7 @@ const Header = () => {
             />
           </>
         ) : (
-          <>
-            <Link to="/study/create" className="hidden sm:block">
-              스터디 생성
-            </Link>
-            <Link to="/login">로그인</Link>
-          </>
+          <Link to="/login">로그인</Link>
         )}
       </nav>
     </header>
