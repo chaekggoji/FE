@@ -1,4 +1,4 @@
-import noProfile from '@assets/icons/icon_no_profile_24.svg';
+import noProfile from '@assets/icons/icon_profile_default_36.svg';
 import profileUpload from '@assets/icons/icon_profile_upload_50.svg';
 import profileUpdate from '@assets/icons/icon_profile_update_50.svg';
 import deleteProfile from '@assets/icons/icon_x_24.svg';
