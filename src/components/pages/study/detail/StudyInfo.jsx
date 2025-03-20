@@ -1,7 +1,10 @@
 import Button from '@components/common/Button';
-import MemberList from '@components/pages/study/detail/MemberList';
+import StudyMembers from '@components/pages/study/detail/StudyMembers';
+import { useLocation } from 'react-router';
 
 const StudyInfo = () => {
+  const { pathname } = useLocation();
+
   return (
     <div className="flex-1/2 flex flex-col gap-4">
       <h2 className="text-3xl mb-4 text-center">스터디 정보</h2>
@@ -18,24 +21,29 @@ const StudyInfo = () => {
           <p>8명</p>
         </div>
       </div>
-      <div>
-        <p className="text-2xl mb-4">현재 스터디원</p>
-        <MemberList
-          memberList={[
-            { id: 1, nickname: '오동환' },
-            { id: 2, nickname: '오다슬' },
-            { id: 3, nickname: '이선재' },
-            { id: 4, nickname: '강지훈' },
-            { id: 5, nickname: '황은지' },
-            { id: 6, nickname: null },
-          ]}
-        />
-      </div>
-      <div className="ml-auto">
-        <Button onClick={() => window.alert('스터디에 참여하였습니다.')}>
-          스터디 참여하기
-        </Button>
-      </div>
+      {pathname !== '/study/create' && (
+        // 현재 위치가 /study/create 가 아닌 경우에만 렌더링
+        <>
+          <div>
+            <p className="text-2xl mb-4">현재 스터디원</p>
+            <StudyMembers
+              memberList={[
+                { id: 1, nickname: '오동환' },
+                { id: 2, nickname: '오다슬' },
+                { id: 3, nickname: '이선재' },
+                { id: 4, nickname: '강지훈' },
+                { id: 5, nickname: '황은지' },
+                { id: 6, nickname: null },
+              ]}
+            />
+          </div>
+          <div className="ml-auto">
+            <Button onClick={() => window.alert('스터디에 참여하였습니다.')}>
+              스터디 참여하기
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

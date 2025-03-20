@@ -1,26 +1,12 @@
+import Button from '@components/common/Button';
+import CreateComplete from '@components/pages/study/create/CreateComplete';
+import ProgressBar from '@components/pages/study/create/ProgressBar';
+import SearchBook from '@components/pages/study/create/SearchBook';
+import StudyForm from '@components/pages/study/create/StudyForm';
+import StudyPreview from '@components/pages/study/create/StudyPreview';
+import { useState } from 'react';
+
 const Create = () => {
-  // 카테고리 더미 데이터(상수 처리 vs DB 호출 고려 중)
-  const BookCategoryList = [
-    { id: 1, title: '자기계발' },
-    { id: 2, title: '인문' },
-    { id: 3, title: '경제/경영' },
-    { id: 4, title: '처세' },
-    { id: 5, title: 'IT' },
-    { id: 6, title: '소설' },
-    { id: 7, title: '과학' },
-    { id: 8, title: '시/에세이' },
-    { id: 9, title: '역사/문화' },
-    { id: 10, title: '건강' },
-    { id: 11, title: '요리' },
-  ];
-
-  // 카테고리 드롭다운(추가 수정 예정)
-  const BookCategoryOption = BookCategoryList.map((item) => (
-    <option id={item.title} key={item.id} value={item.id}>
-      {item.title}
-    </option>
-  ));
-
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -28,10 +14,10 @@ const Create = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // step 1에서 도서 선택이 완료된 경우, true 로 지정
-  const isStepZeroFilled = true;
+  const isStepZeroFilled = false;
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
-  const isStepOneFilled = true;
+  const isStepOneFilled = false;
 
   const isStepFilled =
     (currentStep === 0 && isStepZeroFilled) ||
@@ -65,9 +51,7 @@ const Create = () => {
               setCurrentStep={setCurrentStep}
             />
             {currentStep === 0 && <SearchBook />}
-            {currentStep === 1 && (
-              <StudyForm BookCategoryOption={BookCategoryOption} />
-            )}
+            {currentStep === 1 && <StudyForm />}
             {currentStep === 2 && <StudyPreview />}
             <div className="flex justify-between">
               {currentStep === 0 ? (
