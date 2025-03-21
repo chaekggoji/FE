@@ -35,10 +35,10 @@ const PostWrite = () => {
   };
 
   return (
-    <div className="pb-16">
+    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
       <form
-        className="px-24 flex flex-col gap-4 items-center mt-4 max-w-[1000px] mx-auto"
+        className="flex flex-col gap-4 items-center mt-4 max-w-[1000px] mx-auto lg:px-10 md:px-8 sm:px-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input

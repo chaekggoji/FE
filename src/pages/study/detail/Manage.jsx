@@ -38,7 +38,7 @@ const memberList = [
 
 const Manage = () => {
   return (
-    <div className="pb-16">
+    <div className="pb-8">
       <BoardTitle title={'스터디원 관리'} />
       <ul>
         {memberList.map((member) => (

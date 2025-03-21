@@ -1,4 +1,3 @@
-import profileDefaultIcon from '@assets/icons/icon_profile_default_36.svg';
 import commentIcon from '@assets/icons/icon_comment_24.svg';
 import eyeIcon from '@assets/icons/icon_eye_24.svg';
 import PropTypes from 'prop-types';
@@ -9,25 +8,24 @@ const BoardListItem = ({ post }) => {
 
   return (
     <div
-      className="px-6 h-16 flex items-center border-b-1 border-slate-500 cursor-pointer"
+      className="lg:px-6 px-4 min-h-12 md:py-2 py-4 flex items-center border-b-1 border-slate-500 cursor-pointer md:flex-row flex-col md:gap-0 gap-4"
       onClick={() => {
         return navigate(`${post.id}`);
       }}
     >
-      <div className="flex-8">{post.title}</div>
-      <div className="flex-1 text-center flex justify-center items-center">
-        <img src={profileDefaultIcon} />
-      </div>
-      <div className="flex-1 text-center flex justify-center items-center">
-        <img src={commentIcon} className="mr-1" />
-        <span>4</span>
-      </div>
-      <div className="flex-1 text-center flex justify-center items-center">
-        <img src={eyeIcon} className="mr-1" />
-        <span>6</span>
-      </div>
-      <div className="flex-1 text-center flex justify-center items-center">
-        1일 전
+      <div className="md:flex-3/5 sm:w-full">{post.title}</div>
+      <div className="md:flex-2/5 sm:w-full flex text-center justify-end">
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
+          <img src={commentIcon} className="mr-1" />
+          <span>4</span>
+        </div>
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
+          <img src={eyeIcon} className="mr-1" />
+          <span>6</span>
+        </div>
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
+          1일 전
+        </div>
       </div>
     </div>
   );

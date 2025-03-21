@@ -3,13 +3,13 @@ import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
 
 const StudyBook = ({ bookInfo }) => {
-  const lg = useMediaQuery('(min-width: 1024px)');
+  const md = useMediaQuery('(min-width: 768px)');
 
   return (
     <div className="flex-2/5 flex flex-col items-center md:pt-0 pt-6">
       <h2 className="text-3xl mb-5 text-center">도서 정보</h2>
       <BookItem
-        size={lg ? 'large' : 'medium'}
+        size={md ? 'large' : 'medium'}
         title={bookInfo.title}
         author={bookInfo.author}
         thumbnail={bookInfo.thumbnail}

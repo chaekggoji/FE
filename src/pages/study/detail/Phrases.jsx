@@ -50,7 +50,7 @@ const Phrases = () => {
   });
 
   return (
-    <div className="pb-16">
+    <div className="pb-8">
       <BoardTitle title={'구절 공유해요'} />
       <div className="flex items-center px-6 h-12 relative">
         <DropdownBox
