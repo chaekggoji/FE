@@ -33,7 +33,11 @@ const ProgressBar = ({
           className={`flex justify-center items-center ${currentStep >= 1 ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
         >
           {isStepOneFilled ? (
-            <img src="/src/assets/icons/icon_check_24.svg" />
+            currentStep >= 1 ? (
+              <img src="/src/assets/icons/icon_check_24.svg" />
+            ) : (
+              <img src="/src/assets/icons/icon_check_black_24.svg" />
+            )
           ) : (
             '2'
           )}
