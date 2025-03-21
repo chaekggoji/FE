@@ -1,10 +1,12 @@
 import Button from '@components/common/Button';
 import supabase from '@libs/supabase';
+import useUserStore from '@store/userStore';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +34,7 @@ const Login = () => {
         throw error;
       }
 
+      setUser(data.user);
       console.log('로그인 성공');
       alert('로그인 성공');
       navigate('/'); // 성공 시에만 이동
