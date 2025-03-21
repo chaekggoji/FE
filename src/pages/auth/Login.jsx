@@ -40,7 +40,7 @@ const Login = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base transition"
         />
       </div>
 
@@ -51,7 +51,7 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base focus:border-primary-400 focus:ring-2 focus:ring-primary-200 transition"
+          className="w-full h-12 px-4 border border-gray-300 rounded-xl text-base transition"
         />
       </div>
 
