@@ -5,6 +5,7 @@ import Button from '@components/common/Button';
 import { useNavigate, useParams } from 'react-router';
 import CommentItem from '@components/modules/post/CommentItem';
 import { useForm } from 'react-hook-form';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 const commentPlaceholder = {
   notices: '게시글에 댓글을 남겨 보세요.',
@@ -41,6 +42,7 @@ const PostDetail = () => {
   const { boardType } = useParams();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const md = useMediaQuery('(min-width: 768px)');
 
   const handleEdit = () => {
     navigate('edit', {
@@ -63,9 +65,9 @@ const PostDetail = () => {
   };
 
   return (
-    <div className="pb-16">
+    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={post.title} />
-      <div className="flex flex-col mx-auto max-w-[1000px]">
+      <div className="flex flex-col mx-auto max-w-[1000px] lg:px-10 md:px-8 sm:px-6 box-content">
         {/* 작성자 정보, 수정, 삭제 버튼 */}
         <div className="h-12 flex items-center my-2">
           <div
@@ -76,8 +78,14 @@ const PostDetail = () => {
             <p>{post.user.nickname}</p>
           </div>
           <div className="flex ml-auto gap-4">
-            <Button onClick={handleEdit}>수정</Button>
-            <Button type="CTA Delete" onClick={handleDelete}>
+            <Button size={md ? 'medium' : 'small'} onClick={handleEdit}>
+              수정
+            </Button>
+            <Button
+              size={md ? 'medium' : 'small'}
+              type="CTA Delete"
+              onClick={handleDelete}
+            >
               삭제
             </Button>
           </div>

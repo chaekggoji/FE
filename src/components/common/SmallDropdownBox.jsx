@@ -1,6 +1,5 @@
 import moreIcon from '@assets/icons/icon_more_24.svg';
-
-import useOutsideClick from '@hooks/useOutsideClick';
+import useModalDismiss from '@hooks/useModalDismiss';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
@@ -13,7 +12,7 @@ const SmallDropdownBox = ({ className }) => {
   };
 
   // dropdownBox 외부클릭 시 setIsOpen(false) 실행
-  useOutsideClick(dropdownBoxRef, () => setIsOpen(false));
+  useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
 
   return (
     <div ref={dropdownBoxRef} className={`relative ${className}`}>

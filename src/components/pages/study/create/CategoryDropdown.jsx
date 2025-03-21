@@ -1,4 +1,4 @@
-import useOutsideClick from '@hooks/useOutsideClick';
+import useModalDismiss from '@hooks/useModalDismiss';
 import { useRef, useState } from 'react';
 
 const CategoryDropdown = () => {
@@ -43,7 +43,7 @@ const CategoryDropdown = () => {
     </li>
   ));
 
-  useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
+  useModalDismiss(dropdownRef, () => setIsDropdownOpen(false));
 
   return (
     <>
