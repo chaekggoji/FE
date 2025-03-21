@@ -12,12 +12,14 @@ const CustomTextarea = ({
 }) => {
   return (
     <div>
-      <label
-        htmlFor={id}
-        className={`mb-1 text-gray-400 ${labelSize ? `text-${labelSize}` : 'sm:text-2xl'}`}
-      >
-        {labelText || null}
-      </label>
+      {labelText && (
+        <label
+          htmlFor={id}
+          className={`mb-1 text-gray-400 ${labelSize ? `text-${labelSize}` : 'sm:text-2xl'}`}
+        >
+          {labelText}
+        </label>
+      )}
       <div className="flex w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl has-focus-within:border-primary-300 has-focus-within:shadow has-focus-within:shadow-primary-300">
         <textarea
           id={id}

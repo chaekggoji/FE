@@ -38,7 +38,7 @@ const SearchBook = () => {
             src="https://picsum.photos/120/160"
           />
           <div className="flex flex-col gap-8">
-            <h2 className="text-3xl">도서 제목</h2>
+            <h2 className="text-3xl line-clamp-1">도서 제목</h2>
             <p className="text-xl text-gray-500">저자 | 출판사</p>
             <p className="text-xl text-gray-500">도서 정보</p>
           </div>
