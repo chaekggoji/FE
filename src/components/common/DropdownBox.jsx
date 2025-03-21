@@ -7,6 +7,7 @@ const DropdownBox = ({
   setSelectedOption,
   options,
   className,
+  size = 'medium',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownBoxRef = useRef(null);
@@ -16,10 +17,18 @@ const DropdownBox = ({
     setIsOpen(false);
   };
 
+  const sizeClass = {
+    medium: 'w-32',
+    small: 'w-24 text-sm',
+  }[size];
+
   // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
   useModalDismiss(dropdownBoxRef, () => setIsOpen(false));
   return (
-    <div className={`relative text-center ${className}`} ref={dropdownBoxRef}>
+    <div
+      className={`relative text-center ${sizeClass} ${className}`}
+      ref={dropdownBoxRef}
+    >
       <button
         className={`bg-white py-1 w-full border-1 border-black cursor-pointer transition-all ${isOpen ? 'rounded-t-2xl' : 'rounded-2xl'}`}
         onClick={() => setIsOpen((prev) => !prev)}
@@ -53,6 +62,7 @@ DropdownBox.propTypes = {
     }),
   ),
   className: PropTypes.string,
+  size: PropTypes.string,
 };
 
 export default DropdownBox;

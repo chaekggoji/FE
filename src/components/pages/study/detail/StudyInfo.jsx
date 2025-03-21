@@ -5,7 +5,7 @@ import useMediaQuery from '@hooks/useMediaQuery';
 
 const StudyInfo = () => {
   // 반응형 버튼 제작을 위한 커스텀 훅 사용
-  const lg = useMediaQuery('(min-width: 1024px)');
+  const md = useMediaQuery('(min-width: 768px)');
   const { pathname } = useLocation();
 
   return (
@@ -44,7 +44,7 @@ const StudyInfo = () => {
           </div>
           <div className="ml-auto">
             <Button
-              size={lg ? 'medium' : 'small'}
+              size={md ? 'medium' : 'small'}
               onClick={() => window.alert('스터디에 참여하였습니다.')}
             >
               스터디 참여하기

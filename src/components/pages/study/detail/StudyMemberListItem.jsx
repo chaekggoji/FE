@@ -1,8 +1,11 @@
-import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
+import defaultProfile from '@assets/icons/icon_profile_default_36.svg';
 import Button from '@components/common/Button';
+import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
 
 const StudyMemberListItem = ({ memberData }) => {
+  const md = useMediaQuery('(min-width: 768px)');
+
   const handleKick = () => {
     const ok = window.confirm('정말로 해당 멤버를 내보내시겠습니까?');
     if (ok) {
@@ -12,10 +15,15 @@ const StudyMemberListItem = ({ memberData }) => {
   return (
     <li className="flex items-center px-6 border-b-1 border-slate-400 h-16">
       <div className="flex items-center">
-        <img src={defaultProfile} className="size-12" />
+        <img src={defaultProfile} className="size-10 mr-4" />
         <p>{memberData.nickname}</p>
       </div>
-      <Button type="CTA Delete" className="ml-auto" onClick={handleKick}>
+      <Button
+        size={md ? 'medium' : 'small'}
+        type="CTA Delete"
+        className="ml-auto"
+        onClick={handleKick}
+      >
         내보내기
       </Button>
     </li>
