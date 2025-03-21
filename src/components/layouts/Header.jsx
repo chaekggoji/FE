@@ -4,13 +4,12 @@ import alarm from '@assets/icons/icon_alarm_37.svg';
 import noAlarm from '@assets/icons/icon_no_alarm_37.svg';
 import noProfile from '@assets/icons/icon_profile_default_36.svg';
 import { useState } from 'react';
+import useUserStore from '@store/userStore';
 
 const Header = () => {
-  // 로그인 개발 전 useState로.. true면 로그인 상태, false면 로그아웃 상태
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useUserStore(); // 현재 로그인 상태
 
-  // 알림 상태.. true면 알림 있음, false는 알림 없음..
-  const [isAlarm, setIsAlarm] = useState(false);
+  const [isAlarm, setIsAlarm] = useState(false); // 알림은 임시 상태
   return (
     <header className="flex items-center justify-between h-[74px] px-6 py-4 shadow-md text-2xl md:text-xl sm:text-lg z-10">
       {/* 로고 섹션 */}
@@ -19,9 +18,9 @@ const Header = () => {
         <h1 className="m-0">책꼬지</h1>
       </Link>
 
-      {/* 네비게이션 */}
+      {/* 로그인 여부에 따른 네비게이션 */}
       <nav className="flex items-center gap-5">
-        {isLoggedIn ? (
+        {user ? (
           <>
             <Link to="#" className="hidden sm:block">
               스터디 생성
