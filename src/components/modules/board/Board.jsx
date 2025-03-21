@@ -65,7 +65,6 @@ const Board = () => {
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
             options={options}
-            className="w-32"
             size={md ? 'medium' : 'small'}
           />
           <Button

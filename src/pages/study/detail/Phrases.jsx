@@ -2,6 +2,7 @@ import DropdownBox from '@components/common/DropdownBox';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
+import useMediaQuery from '@hooks/useMediaQuery';
 import { useState } from 'react';
 
 const phrases = [
@@ -49,19 +50,21 @@ const Phrases = () => {
     value: null,
   });
 
+  const md = useMediaQuery('(min-width: 768px)');
+
   return (
-    <div className="pb-8">
+    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'구절 공유해요'} />
-      <div className="flex items-center px-6 h-12 relative">
+      <div className="flex items-center max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 h-12 relative">
         <DropdownBox
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           options={options}
-          className="w-32"
+          size={md ? 'medium' : 'small'}
         />
         <PhraseWrite />
       </div>
-      <div className="px-6 flex flex-col gap-4">
+      <div className="max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
         {phrases.map((phrase) => (
           <PhraseItem key={phrase.id} phraseData={phrase} />
         ))}

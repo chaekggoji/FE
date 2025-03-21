@@ -18,8 +18,8 @@ const DropdownBox = ({
   };
 
   const sizeClass = {
-    medium: '',
-    small: 'text-sm',
+    medium: 'w-32',
+    small: 'w-24 text-sm',
   }[size];
 
   // dropdownBox 외부 클릭 시 setIsOpen(false) 실행
