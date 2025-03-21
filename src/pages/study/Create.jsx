@@ -41,7 +41,7 @@ const Create = () => {
 
   return (
     <>
-      <div className="my-6 md:my-10 md:mx-auto w-full max-w-[1100px] md:p-15 flex flex-col gap-y-10">
+      <div className="my-6 md:my-10 md:mx-auto w-full max-w-[1100px] md:p-15 flex flex-col gap-y-7 sm:gap-y-10">
         {!isComplete ? (
           <>
             <ProgressBar
