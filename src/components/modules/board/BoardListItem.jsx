@@ -8,7 +8,7 @@ const BoardListItem = ({ post }) => {
 
   return (
     <div
-      className="lg:px-6 px-4 min-h-12 md:py-2 py-4 flex items-center border-b-1 border-slate-500 cursor-pointer md:flex-row flex-col md:gap-0 gap-4"
+      className="lg:px-6 px-4 md:min-h-12 py-2 flex items-center border-b-1 border-slate-500 cursor-pointer md:flex-row flex-col md:gap-0 gap-4"
       onClick={() => {
         return navigate(`${post.id}`);
       }}
