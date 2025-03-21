@@ -26,12 +26,13 @@ const StudyItem = ({ study, size = 'large' }) => {
       </div>
 
       {/* 텍스트 영역 */}
-      <div className='text w-full text-left pl-4 my-3 z-20 relative'>
-        <p className='text-2xl'>스터디 명: {study.title || '스터디명 없음'}</p>
-        <p className='text-lg my-2'>
+      <div className='text w-full text-left px-4 my-3 z-20 relative'>
+        {/* truncate를 추가해서 텍스트 한 줄, 넘친 부분을 숨김, 말줄임표 표시 */}
+        <p className='text-2xl truncate'>스터디 명: {study.title || '스터디명 없음'}</p>
+        <p className='text-lg my-2 truncate'>
           참여 인원: {study.participants || 0} / {study.capacity || 0}
         </p>
-        <p className='text-lg'>
+        <p className='text-lg truncate'>
           참여 기간: {study.start_date || '시작일 없음'} ~ {study.end_date || '종료일 없음'}
         </p>
       </div>

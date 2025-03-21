@@ -23,7 +23,7 @@ export default function StudyHome() {
 
   // UI 확인용으로 넣은 임시 데이터
   const studyData = [
-    { id: 1, category: '인문', title: '다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
+    { id: 1, category: '인문', title: '다슬이를 도와줘! 다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
     { id: 2, category: '에세이', title: '친구 사귀는 법', participants: 4, capacity: 8, start_date: '2025-03-01', end_date: '2025-04-20', thumbnail: 'https://picsum.photos/120/174' },
     { id: 3, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
     { id: 4, category: '수필', title: '여기 왔던 덴데', participants: 3, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/173' },
