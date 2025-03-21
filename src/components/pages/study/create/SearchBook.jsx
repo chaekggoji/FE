@@ -1,12 +1,32 @@
 import SearchField from '@components/common/SearchField';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const SearchBook = () => {
   const [isSelected, setIsSelected] = useState(false);
 
+  // input 란의 값을 useRef 로 추출
+  const searchKeyword = useRef(null);
+
+  // ref 에 해당하는 input 의 value 를 추출, 함수 실행
+  const handleSearch = () => {
+    console.log(searchKeyword.current.value);
+  };
+
+  // Enter key 이벤트 추가
+  const handleEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <>
-      <SearchField placeholder="검색어를 입력해주세요." />
+      <SearchField
+        placeholder="검색어를 입력해주세요."
+        searchKeyword={searchKeyword}
+        onClick={handleSearch}
+        onKeyDown={handleEnter}
+      />
       <h1 className="text-4xl">검색 결과</h1>
       <ul className="flex flex-col gap-y-10">
         <li

@@ -1,7 +1,15 @@
 import Button from '@components/common/Button';
 import PropTypes from 'prop-types';
 
-const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
+const SearchField = ({
+  type = 'text',
+  placeholder,
+  labelText,
+  labelSize,
+  searchKeyword,
+  onClick,
+  onKeyDown,
+}) => {
   return (
     <>
       <label className={`mb-1 text-gray-400 text-${labelSize}`}>
@@ -14,8 +22,10 @@ const SearchField = ({ type = 'text', placeholder, labelText, labelSize }) => {
           type={type}
           placeholder={placeholder}
           className="w-full placeholder-gray-300 focus:outline-hidden"
+          ref={searchKeyword}
+          onKeyDown={onKeyDown}
         />
-        <Button size="medium" type="CTA Abled">
+        <Button size="medium" type="CTA Abled" onClick={onClick}>
           <img
             src="/src/assets/icons/icon_search_24.svg"
             className="absolute left-[50%] top-[50%] -translate-[50%]"
@@ -32,6 +42,9 @@ SearchField.propTypes = {
   fontSize: PropTypes.string,
   labelText: PropTypes.string,
   labelSize: PropTypes.string,
+  searchKeyword: PropTypes.object,
+  onClick: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func,
 };
 
 export default SearchField;
