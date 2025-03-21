@@ -10,7 +10,7 @@ const StudyMemberListItem = ({ memberData }) => {
     }
   };
   return (
-    <li className="flex items-center px-6 border-b-1 border-slate-200 h-16">
+    <li className="flex items-center px-6 border-b-1 border-slate-400 h-16">
       <div className="flex items-center">
         <img src={defaultProfile} className="size-12" />
         <p>{memberData.nickname}</p>

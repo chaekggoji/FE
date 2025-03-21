@@ -21,19 +21,22 @@ const book = {
 
 const StudyDetailHome = () => {
   return (
-    <div>
-      <StudyLeader
-        userId={leader.id}
-        profileURL={leader.img_url}
-        nickname={leader.nickname}
-        intro={leader.intro}
-      />
-      <div className="px-24 flex py-12 border-b-1 border-slate-200">
-        <StudyInfo />
-        <StudyBook bookInfo={book} />
+    <div className="relative">
+      <div className="flex flex-col">
+        <StudyLeader
+          userId={leader.id}
+          profileURL={leader.img_url}
+          nickname={leader.nickname}
+          intro={leader.intro}
+          className="lg:order-0 order-1"
+        />
+        <div className="lg:px-24 flex md:py-12 py-6 border-b-1 border-slate-200 md:flex-row flex-col">
+          <StudyInfo />
+          <StudyBook bookInfo={book} />
+        </div>
+        <StudyIntro />
+        <StudyRules />
       </div>
-      <StudyIntro />
-      <StudyRules />
     </div>
   );
 };
