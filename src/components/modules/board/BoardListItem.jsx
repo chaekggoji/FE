@@ -1,4 +1,3 @@
-import profileDefaultIcon from '@assets/icons/icon_profile_default_36.svg';
 import commentIcon from '@assets/icons/icon_comment_24.svg';
 import eyeIcon from '@assets/icons/icon_eye_24.svg';
 import PropTypes from 'prop-types';
