@@ -112,7 +112,7 @@ export default function StudyHome() {
       </div>
 
       {/* 스터디 리스트 */}
-      <div className="study-list grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-16 my-12">
+      <div className="study-list grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-20 gap-y-16 my-12">
         {studyData.map((study, index) => (
           <StudyItem
             key={study.id}
@@ -122,8 +122,6 @@ export default function StudyHome() {
           />
         ))}
       </div>
-
-
 
       {/* 페이지네이션 */}
       <Pagination
