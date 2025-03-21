@@ -1,4 +1,5 @@
 import Button from '@components/common/Button';
+import supabase from '@libs/supabase';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
@@ -7,11 +8,48 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const isFormValid = email.trim() !== '' && password.trim() !== '';
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isFormValid) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('로그인 성공');
+      alert('로그인 성공');
+      navigate('/'); // 성공 시에만 이동
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      setError(error.message || '로그인 중 오류가 발생했습니다.');
+      alert('로그인 실패');
+      // 실패 시 이동하지 않음
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="w-full max-w-[580px] mx-auto p-5 flex flex-col gap-5">
+    <form
+      className="w-full max-w-[580px] mx-auto p-5 flex flex-col gap-5"
+      onSubmit={handleSubmit}
+    >
       <h1 className="text-2xl text-center">로그인</h1>
 
       {/* 소셜 로그인 버튼 */}
@@ -71,7 +109,6 @@ const Login = () => {
         size="large"
         type={isFormValid ? 'CTA Active' : 'CTA Disabled'}
         disabled={!isFormValid}
-        onClick={isFormValid ? () => navigate('/') : undefined}
       >
         로그인
       </Button>
@@ -83,7 +120,7 @@ const Login = () => {
       <Button size="large" type="CTA Lined" onClick={() => navigate('/signup')}>
         회원가입
       </Button>
-    </div>
+    </form>
   );
 };
 
