@@ -15,19 +15,16 @@ const BoardListItem = ({ post }) => {
       }}
     >
       <div className="md:flex-3/5 sm:w-full">{post.title}</div>
-      <div className="md:flex-2/5 sm:w-full flex text-center justify-around">
-        <div className="flex-1 text-center flex justify-center items-center">
-          <img src={profileDefaultIcon} className="size-7" />
-        </div>
-        <div className="flex-1 text-center flex justify-center items-center">
+      <div className="md:flex-2/5 sm:w-full flex text-center justify-end">
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
           <img src={commentIcon} className="mr-1" />
           <span>4</span>
         </div>
-        <div className="flex-1 text-center flex justify-center items-center">
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
           <img src={eyeIcon} className="mr-1" />
           <span>6</span>
         </div>
-        <div className="flex-1 text-center flex justify-center items-center">
+        <div className="md:flex-1 sm:ml-4 text-center flex justify-center items-center">
           1일 전
         </div>
       </div>
