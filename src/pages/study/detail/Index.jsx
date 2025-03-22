@@ -31,14 +31,7 @@ const StudyDetailHome = () => {
       const { data, error } = await supabase
         .from('studies')
         .select(
-          `
-          *,
-          study_participants(
-            *,
-            users(id, nickname, img_url)
-          ),
-          books(*)
-        `,
+          `*,study_participants(*,users(id, nickname, img_url, intro)),books(*)`,
         )
         .eq('id', studyId)
         .single();
@@ -56,27 +49,25 @@ const StudyDetailHome = () => {
         );
 
         setLeader(leader);
+        setIsLoading(false);
       }
     };
 
     fetchData();
-    setIsLoading(false);
   }, [studyId]);
 
+  console.log('render');
   console.log(studyData, leader);
   return (
     <div className="relative">
-      {isLoading && (
+      {!isLoading && (
         <div className="flex flex-col">
           <StudyLeader
-            userId={leader.id}
-            profileURL={leader.img_url}
-            nickname={leader.nickname}
-            intro={leader.intro}
+            leaderData={leader.users}
             className="lg:order-0 order-1"
           />
           <div className="lg:px-24 flex md:py-12 py-6 border-b-1 border-slate-200 md:flex-row flex-col">
-            <StudyInfo />
+            <StudyInfo infoData={studyData} />
             <StudyBook bookInfo={book} />
           </div>
           <StudyIntro />

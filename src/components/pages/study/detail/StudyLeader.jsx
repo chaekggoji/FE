@@ -4,26 +4,29 @@ import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
-const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
+const StudyLeader = ({ leaderData, className }) => {
   const lg = useMediaQuery('(min-width: 1024px)');
 
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/profile/${userId}`);
+    navigate(`/profile/${leaderData.userId}`);
   };
+  console.log(leaderData);
   return (
     <div
       className={`lg:px-24 lg:py-0 py-6 w-full flex lg:justify-start justify-center items-center gap-6 lg:min-h-[104px] min-h[64px] border-b-1 border-slate-200 ${className} lg:cursor-auto cursor-pointer`}
       onClick={lg ? null : handleNavigate}
     >
       <img
-        className="lg:size-16 size-12"
-        src={profileURL ? profileURL : defaultProfile}
+        className="lg:size-16 size-12 rounded-full"
+        src={leaderData.img_url ? leaderData.img_url : defaultProfile}
       />
       <div>
-        <h4 className="text-xl lg:mr-0 mr-5">스터디 리더 : {nickname}</h4>
-        <p className="text-gray-500">{intro}</p>
+        <h4 className="text-xl lg:mr-0 mr-5">
+          스터디 리더 : {leaderData.nickname}
+        </h4>
+        <p className="text-gray-500">{leaderData.intro}</p>
       </div>
       <div className="ml-auto hidden lg:block shrink-0">
         <Button className="" onClick={handleNavigate}>
@@ -37,9 +40,11 @@ const StudyLeader = ({ userId, profileURL, nickname, intro, className }) => {
 export default StudyLeader;
 
 StudyLeader.propTypes = {
-  userId: PropTypes.number.isRequired,
-  profileURL: PropTypes.string,
-  nickname: PropTypes.string.isRequired,
-  intro: PropTypes.string.isRequired,
+  leaderData: PropTypes.shape({
+    userId: PropTypes.number.isRequired,
+    img_url: PropTypes.string,
+    nickname: PropTypes.string.isRequired,
+    intro: PropTypes.string.isRequired,
+  }),
   className: PropTypes.string,
 };

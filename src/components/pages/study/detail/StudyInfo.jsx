@@ -2,8 +2,9 @@ import Button from '@components/common/Button';
 import StudyMembers from '@components/pages/study/detail/StudyMembers';
 import { useLocation } from 'react-router';
 import useMediaQuery from '@hooks/useMediaQuery';
+import PropTypes from 'prop-types';
 
-const StudyInfo = () => {
+const StudyInfo = ({ studyData }) => {
   // 반응형 버튼 제작을 위한 커스텀 훅 사용
   const md = useMediaQuery('(min-width: 768px)');
   const { pathname } = useLocation();
@@ -54,6 +55,10 @@ const StudyInfo = () => {
       )}
     </div>
   );
+};
+
+StudyInfo.propTypes = {
+  studyData: PropTypes.string.isRequired,
 };
 
 export default StudyInfo;
