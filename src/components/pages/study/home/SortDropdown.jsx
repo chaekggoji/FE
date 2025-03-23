@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { SORT_OPTIONS } from '@/constants/bookSearch'; // 정렬 옵션 상수 파일
+import useModalDismiss from '@hooks/useModalDismiss';
+import { set } from 'react-hook-form';
 
-export default function SortDropdown({ sort, setSort }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function SortDropdown({ sort, setSort, openDropdown, setOpenDropdown }) {
+  const dropdownRef = useRef(null);
+  const isOpen = openDropdown === 'sort'
 
   // 드롭다운 열기/닫기 토글
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => {
+    if (isOpen) {
+      setOpenDropdown(null); // 닫기
+    } else {
+      setOpenDropdown('sort'); // 열기 -> 다른 드롭다운이 열려 있을 때 강제로 바꿈
+    }
+  };
 
-  // 기본적으로 정렬을 '정렬'로 설정
-  const displayedSort = sort === 'latest' ? '정렬' : sort;
+  useModalDismiss(dropdownRef, () => {
+    setOpenDropdown(null);
+  })
+
+  const displayedSort = sort || '정렬';
 
   return (
-    <div className='relative'>
+    <div className='relative' ref={dropdownRef}>
       {/* 드롭다운 버튼 */}
       <button
         onClick={toggleDropdown}
@@ -28,7 +40,7 @@ export default function SortDropdown({ sort, setSort }) {
               className='p-4 hover:bg-primary-200 text-2xl text-gray-950 hover:text-white cursor-pointer'
               onClick={() => {
                 setSort(option.label);  // 클릭 시 label로 설정
-                setIsOpen(false);  // 드롭다운 닫기
+                setOpenDropdown(null); // 드롭다운 닫기
               }}
             >
               {option.label}

@@ -20,9 +20,10 @@ export default function StudyHome() {
   const [category, setCategory] = useState('');
   const [sort, setSort] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   // UI 확인용으로 넣은 임시 데이터
-  const studyData = [
+  const studyList = [
     { id: 1, category: '인문', title: '다슬이를 도와줘! 다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
     { id: 2, category: '에세이', title: '친구 사귀는 법', participants: 4, capacity: 8, start_date: '2025-03-01', end_date: '2025-04-20', thumbnail: 'https://picsum.photos/120/174' },
     { id: 3, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
@@ -36,6 +37,11 @@ export default function StudyHome() {
     { id: 11, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
     { id: 12, category: '수필', title: '여기 왔던 덴데', participants: 3, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/173' },
   ];
+
+  const onSearch = () => {
+    console.log('검색 실행. 검색어:', search, '| 필터:', filter);
+  };
+
 
   useEffect(() => {
     async function fetchStudies() {
@@ -95,6 +101,9 @@ export default function StudyHome() {
         setSearch={setSearch}
         filter={filter}
         setFilter={setFilter}
+        onSearch={onSearch}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
       />
 
       {/* 필터 & 정렬 */}
@@ -104,21 +113,25 @@ export default function StudyHome() {
           setDuration={setDuration}
           category={category}
           setCategory={setCategory}
+          openDropdown={openDropdown}
+          setOpenDropdown={setOpenDropdown}
         />
         <SortDropdown
           sort={sort}
           setSort={setSort}
+          openDropdown={openDropdown}
+          setOpenDropdown={setOpenDropdown}
         />
       </div>
 
       {/* 스터디 리스트 */}
       <div className="study-list grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-20 gap-y-16 my-12">
-        {studyData.map((study, index) => (
+        {studyList.map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
             index={index}
-            totalItems={studyData.length}
+            totalItems={studyList.length}
           />
         ))}
       </div>

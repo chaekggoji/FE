@@ -1,19 +1,27 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { SEARCH_CATEGORIES } from '@/constants/bookSearch';
-import SearchIcon from '@assets/icons/icon_search_24.svg'
+import SearchIcon from '@assets/icons/icon_search_24.svg';
+import useModalDismiss from '@hooks/useModalDismiss';
 
-export default function SearchBar({ search, setSearch, filter, setFilter, onSearch }) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+export default function SearchBar({
+  search, setSearch,
+  filter, setFilter,
+  onSearch,
+  openDropdown, setOpenDropdown
+}) {
+  const filterRef = useRef(null);
+  const isFilterOpen = openDropdown === 'search-filter';
 
-  // 필터 드롭다운 열기/닫기 토글
-  const toggleFilterDropdown = () => setIsFilterOpen(!isFilterOpen);
+  useModalDismiss(filterRef, () => {
+    if (isFilterOpen) setOpenDropdown(null);
+  });
 
   return (
     <div className='flex items-center gap-4 my-8'>
       {/* 필터 선택 */}
-      <div className='relative'>
+      <div className='relative' ref={filterRef}>
         <button
-          onClick={toggleFilterDropdown}
+          onClick={() => setOpenDropdown(isFilterOpen ? null : 'search-filter')}
           className='bg-primary-200 border-2 border-primary-400/50 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
         >
           {filter || '필터 선택'}
@@ -25,8 +33,8 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
                 key={option.value}
                 className='p-4 hover:bg-primary-200 text-2xl hover:text-white cursor-pointer'
                 onClick={() => {
-                  setFilter(option.label);  // 클릭 시 value로 설정
-                  setIsFilterOpen(false);  // 드롭다운 닫기
+                  setFilter(option.label);
+                  setOpenDropdown(null);
                 }}
               >
                 {option.label}
@@ -46,7 +54,10 @@ export default function SearchBar({ search, setSearch, filter, setFilter, onSear
       />
 
       {/* 검색 버튼 */}
-      <button onClick={onSearch} className='bg-primary-200 p-2 rounded-full flex items-center justify-center w-15 h-15'>
+      <button
+        onClick={onSearch}
+        className='bg-primary-200 p-2 rounded-full flex items-center justify-center w-15 h-15'
+      >
         <img src={SearchIcon} alt='검색' className='w-8 h-8 white' />
       </button>
     </div>
