@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import bookCoverPlaceholder from '@assets/images/book_cover_placeholder.jpg';
 const BookItem = ({
   size = 'medium',
   title,
@@ -32,7 +32,7 @@ const BookItem = ({
         {...props}
       >
         <img
-          src={thumbnail ? thumbnail : 'https://picsum.photos/120/174'}
+          src={thumbnail ? thumbnail : bookCoverPlaceholder}
           className="w-full h-full object-cover rounded-tr-2xl rounded-br-2xl"
         />
         <div
