@@ -16,16 +16,10 @@ const BookItem = ({
     small: 'w-[120px] h-[174px]',
   }[size];
 
-  const captionHeightClass = {
-    large: 'h-[80px]',
-    medium: 'h-[60px]',
-    small: 'h-[40px]',
-  }[size];
-
-  const captionFontSizeClass = {
-    large: 'text-lg',
-    medium: 'text-base',
-    small: 'text-xs',
+  const captionClass = {
+    large: 'h-[80px] text-lg p-4',
+    medium: 'h-[60px] text-base p-2',
+    small: 'h-[40px] text-xs p-2',
   }[size];
 
   return (
@@ -44,7 +38,7 @@ const BookItem = ({
           className="w-full h-full object-cover rounded-tr-2xl rounded-br-2xl"
         />
         <div
-          className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center p-4 ${captionHeightClass} ${captionFontSizeClass}`}
+          className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center ${captionClass}`}
         >
           <p className="mr-auto w-full truncate">{title}</p>
           <p className="ml-auto text-end w-full truncate">by {author}</p>
