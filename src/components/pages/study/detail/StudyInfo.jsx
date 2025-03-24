@@ -40,7 +40,7 @@ const StudyInfo = ({ studyData }) => {
   };
 
   return (
-    <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6">
+    <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6 pr-4">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
       <h3 className="lg:text-3xl text-2xl">{studyData.title}</h3>
       <div className="flex">
