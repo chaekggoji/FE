@@ -11,7 +11,7 @@ const StudyRules = ({ ruleData }) => {
       className={`lg:px-24 md:py-12 py-6 ${pathname !== '/study/create' && 'border-b-1 border-slate-200'}`}
     >
       <h2 className="text-3xl mb-4 text-center">스터디 규칙</h2>
-      <p className="text-2xl text-center text-gray-500">{ruleData}</p>
+      <p className="text-xl text-center text-gray-500">{ruleData}</p>
       {/* <ul className="text-2xl text-center">
         {rules.map((item, index) => (
           <li
