@@ -9,6 +9,7 @@ import Filters from '@components/pages/study/home/Filters';
 import SearchBar from '@components/pages/study/home/SearchBar';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 
 export default function StudyHome() {
@@ -21,6 +22,10 @@ export default function StudyHome() {
   const [sort, setSort] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   // UI 확인용으로 넣은 임시 데이터
   const studyList = [
@@ -39,7 +44,7 @@ export default function StudyHome() {
   ];
 
   const onSearch = () => {
-    console.log('검색 실행. 검색어:', search, '| 필터:', filter);
+    console.log('검색 실행. 검색어:', search, '필터:', filter);
   };
 
 
@@ -77,21 +82,42 @@ export default function StudyHome() {
     fetchBooks();
   }, []);
 
+  // 추천 도서 섹션 개수
+  let bookCount = 2; // 기본값: 모바일은 2개
+
+  if (isTablet) {
+    bookCount = 3; // 태블릿은 3개
+  } else if (isDesktop) {
+    bookCount = 4; // 데스크탑은 4개
+  }
+
+  // 스터디 리스트 섹션 개수
+  let studyCount = 6; // 기본: 모바일 (2 × 3)
+
+  if (isTablet) {
+    studyCount = 9; // 태블릿 (3 × 3)
+  } else if (isDesktop) {
+    studyCount = 12; // 데스크탑 (4 × 3)
+  }
+
+
+
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       {/* 추천 도서 섹션 */}
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       {/* 추후 넷플릭스 슬라이드 방식으로 수정할 예정 */}
-      <div className='grid grid-cols-4 gap-8 my-12 sm:grid-cols-2 lg:grid-cols-4'>
-        {books.slice(0, 4).map(book => (
-          <BookItem
-            key={book.id}
-            size='medium'
-            title={book.title}
-            author={book.author}
-            thumbnail={book.thumbnail}
-            link={book.link}
-          />
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 my-12'>
+        {books.slice(0, bookCount).map((book) => (
+          <div key={book.id} className="w-full max-w-[160px] mx-auto">
+            <BookItem
+              size='medium'
+              title={book.title}
+              author={book.author}
+              thumbnail={book.thumbnail}
+              link={book.link}
+            />
+          </div>
         ))}
       </div>
 
@@ -107,7 +133,7 @@ export default function StudyHome() {
       />
 
       {/* 필터 & 정렬 */}
-      <div className='flex items-center justify-between mt-4'>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-2 mt-4'>
         <Filters
           duration={duration}
           setDuration={setDuration}
@@ -116,17 +142,19 @@ export default function StudyHome() {
           openDropdown={openDropdown}
           setOpenDropdown={setOpenDropdown}
         />
-        <SortDropdown
-          sort={sort}
-          setSort={setSort}
-          openDropdown={openDropdown}
-          setOpenDropdown={setOpenDropdown}
-        />
+        <div className="md:ml-auto">
+          <SortDropdown
+            sort={sort}
+            setSort={setSort}
+            openDropdown={openDropdown}
+            setOpenDropdown={setOpenDropdown}
+          />
+        </div>
       </div>
 
       {/* 스터디 리스트 */}
-      <div className="study-list grid grid-cols-1 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-20 gap-y-16 my-12">
-        {studyList.map((study, index) => (
+      <div className="study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center  gap-12 my-12">
+        {studyList.slice(0, studyCount).map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
@@ -142,6 +170,6 @@ export default function StudyHome() {
         totalPages={5}
         onPageChange={setCurrentPage}
       />
-    </div>
+    </div >
   );
 }

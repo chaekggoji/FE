@@ -4,23 +4,31 @@ const StudyItem = ({ study, size = 'large' }) => {
   // study가 없을 경우 아무것도 렌더링하지 않음
   if (!study) return null;
 
+  // 부모가 주는 너비만큼 알아서 맞추기
   const sizeClass = {
-    large: 'w-[280px] h-[400px]',
-    medium: 'w-[240px] h-[348px]',
+    large: 'w-full',
+    medium: 'w-full',
   };
 
   return (
     <div className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
       <div className="absolute rounded-xl bg-[linear-gradient(90deg,_rgba(95,95,95,0.1)_0%,_rgba(255,255,255,0)_4%)] inset-0 z-5" />
       {/* 썸네일 이미지 */}
-      <div className='relative w-full h-[70%] overflow-hidden rounded-t-lg'>
+      <div className='relative w-full aspect-[5/6] overflow-hidden rounded-t-lg'>
         <img
           src={study.thumbnail || 'https://picsum.photos/120/174'}  // 임시 thumbnail을 사용
           alt={study.title}
           className='w-full h-full object-cover'
         />
         {/* 카테고리 라벨 */}
-        <div className='absolute top-2 left-2 bg-primary-300 shadow-2xl text-white px-4 py-1 text-sm rounded-3xl z-10'>
+        {/* 300px 이하에서는 숨기기 */}
+        <div className='
+  absolute top-2 left-2 bg-primary-300 shadow-2xl text-white
+  px-2 py-1 text-xs md:text-sm lg:text-base
+  rounded-3xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
+  z-10
+  [@media(max-width:300px)]:hidden
+'>
           {study.category || 'ETC'}
         </div>
       </div>
