@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { joinStudy } from '@queries/joinStudy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+// 임시 로그인 변수
 const loggedInUserId = 3;
 
 const StudyInfo = ({ studyData }) => {
