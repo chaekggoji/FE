@@ -1,15 +1,41 @@
 import Button from '@components/common/Button';
 import StudyMembers from '@components/pages/study/detail/StudyMembers';
-import { useLocation } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
+import supabase from '@libs/supabase';
+
+const loggedInUserId = 3;
 
 const StudyInfo = ({ studyData }) => {
+  const { studyId } = useParams();
   // 반응형 버튼 제작을 위한 커스텀 훅 사용
   const md = useMediaQuery('(min-width: 768px)');
   const { pathname } = useLocation();
-  console.log(studyData);
 
+  const isParticipant = studyData.study_participants
+    .map((participant) => participant.users.id)
+    .includes(loggedInUserId);
+
+  const participateUser = async (userId) => {
+    const { error } = await supabase
+      .from('study_participants')
+      .insert([{ user_id: userId, study_id: studyId, role: 'member' }]);
+
+    if (error) {
+      window.alert('스터디 참여 중 오류가 발생했습니다.');
+      return;
+    }
+    window.alert('스터디에 참여하였습니다.');
+  };
+
+  const handleParticipate = async (userId) => {
+    try {
+      await participateUser(userId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
@@ -35,14 +61,16 @@ const StudyInfo = ({ studyData }) => {
             <p className="text-2xl mb-4">현재 스터디원</p>
             <StudyMembers participantData={studyData.study_participants} />
           </div>
-          <div className="ml-auto">
-            <Button
-              size={md ? 'medium' : 'small'}
-              onClick={() => window.alert('스터디에 참여하였습니다.')}
-            >
-              스터디 참여하기
-            </Button>
-          </div>
+          {!isParticipant && (
+            <div className="ml-auto">
+              <Button
+                size={md ? 'medium' : 'small'}
+                onClick={() => handleParticipate(loggedInUserId)}
+              >
+                스터디 참여하기
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>
