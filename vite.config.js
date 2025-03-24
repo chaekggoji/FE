@@ -16,6 +16,7 @@ export default defineConfig({
       { find: '@styles', replacement: '/src/styles' },
       { find: '@utils', replacement: '/src/utils' },
       { find: '@libs', replacement: '/src/libs' },
+      { find: '@queries', replacement: '/src/queries' },
     ],
   },
 });
