@@ -1,11 +1,12 @@
 import { useRef } from 'react';
-import { SORT_OPTIONS } from '@/constants/bookSearch';
 import useModalDismiss from '@hooks/useModalDismiss';
+import { SORT_OPTIONS } from '@/constants/bookSearch';
 
 export default function SortDropdown({ sort, setSort, openDropdown, setOpenDropdown }) {
   const dropdownRef = useRef(null);
   const isSortOpen = openDropdown === 'sort';
 
+  // 정렬 드롭다운 열기/닫기 토글
   const toggleDropdown = () => {
     if (isSortOpen) {
       setOpenDropdown(null);

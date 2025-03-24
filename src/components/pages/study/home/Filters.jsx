@@ -8,7 +8,7 @@ export default function Filters({
   openDropdown, setOpenDropdown
 }) {
   // 드롭다운 너비 동일하게 하기
-  const dropdownWidth = "w-full sm:w-28 md:w-32 lg:w-36";
+  const dropdownWidth = 'w-full sm:w-28 md:w-32 lg:w-36';
 
   const durationRef = useRef(null);
   const categoryRef = useRef(null);

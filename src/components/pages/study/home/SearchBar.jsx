@@ -1,7 +1,7 @@
 import { useRef } from 'react';
+import useModalDismiss from '@hooks/useModalDismiss';
 import { SEARCH_CATEGORIES } from '@/constants/bookSearch';
 import SearchIcon from '@assets/icons/icon_search_24.svg';
-import useModalDismiss from '@hooks/useModalDismiss';
 
 export default function SearchBar({
   search, setSearch,
@@ -11,7 +11,7 @@ export default function SearchBar({
 }) {
   const filterRef = useRef(null);
   const isFilterOpen = openDropdown === 'search-filter';
-  const dropdownWidth = "w-36 sm:w-40";
+  const dropdownWidth = 'w-36 sm:w-40'; // 버튼과 드롭다운의 동일 너비 유지
 
   useModalDismiss(filterRef, () => {
     if (isFilterOpen) setOpenDropdown(null);
@@ -19,7 +19,7 @@ export default function SearchBar({
 
   return (
     <div className='flex flex-col gap-4 my-8 md:flex-row md:items-center'>
-      {/* 필터 선택 */}
+      {/* 필터 드롭다운 영역 */}
       <div className='relative' ref={filterRef}>
         <button
           onClick={() => setOpenDropdown(isFilterOpen ? null : 'search-filter')}
@@ -45,7 +45,7 @@ export default function SearchBar({
         )}
       </div>
 
-      {/* 검색 입력 + 버튼 */}
+      {/* 검색 인풋과 검색 버튼 */}
       <div className='flex w-full gap-2'>
         <input
           type='text'
@@ -54,6 +54,7 @@ export default function SearchBar({
           placeholder='원하는 스터디를 찾아보세요'
           className='flex-grow bg-white border-2 border-primary-300 text-base sm:text-xl rounded-lg px-4 py-2 focus:text-primary-300'
         />
+        {/* 검색 실행 버튼 */}
         <button
           onClick={onSearch}
           className='bg-primary-200 rounded-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14'

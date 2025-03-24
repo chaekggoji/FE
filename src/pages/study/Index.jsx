@@ -1,15 +1,16 @@
 // React 라이브러리
 import { useState, useEffect } from 'react';
+// hook
+import useMediaQuery from '@hooks/useMediaQuery';
 // 외부 패키지
 import supabase from '@/libs/supabase'; // Supabase 설정 파일 불러오기
-// 이미지/아이콘
+// 컴포넌트
 import Pagination from '@components/pages/study/home/Pagination';
 import SortDropdown from '@components/pages/study/home/SortDropdown';
 import Filters from '@components/pages/study/home/Filters';
 import SearchBar from '@components/pages/study/home/SearchBar';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
-import useMediaQuery from '@hooks/useMediaQuery';
 
 
 export default function StudyHome() {
@@ -44,7 +45,7 @@ export default function StudyHome() {
   ];
 
   const onSearch = () => {
-    console.log('검색 실행. 검색어:', search, '필터:', filter);
+    console.log('검색어:', search, '필터:', filter);
   };
 
 
@@ -109,7 +110,7 @@ export default function StudyHome() {
       {/* 추후 넷플릭스 슬라이드 방식으로 수정할 예정 */}
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 my-12'>
         {books.slice(0, bookCount).map((book) => (
-          <div key={book.id} className="w-full max-w-[160px] mx-auto">
+          <div key={book.id} className='w-full max-w-[160px] mx-auto'>
             <BookItem
               size='medium'
               title={book.title}
@@ -142,7 +143,8 @@ export default function StudyHome() {
           openDropdown={openDropdown}
           setOpenDropdown={setOpenDropdown}
         />
-        <div className="md:ml-auto">
+        {/* 반응형에도 가장 우측 위치하도록 */}
+        <div className='md:ml-auto'>
           <SortDropdown
             sort={sort}
             setSort={setSort}
@@ -153,7 +155,7 @@ export default function StudyHome() {
       </div>
 
       {/* 스터디 리스트 */}
-      <div className="study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center  gap-12 my-12">
+      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center  gap-12 my-12'>
         {studyList.slice(0, studyCount).map((study, index) => (
           <StudyItem
             key={study.id}

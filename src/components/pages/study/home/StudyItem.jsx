@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+// 스터디 카드(썸네일 이미지, 스터디 정보(제목, 인원, 기간)) - 반응형 스타일
 const StudyItem = ({ study, size = 'large' }) => {
   // study가 없을 경우 아무것도 렌더링하지 않음
   if (!study) return null;
@@ -12,8 +13,9 @@ const StudyItem = ({ study, size = 'large' }) => {
 
   return (
     <div className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
-      <div className="absolute rounded-xl bg-[linear-gradient(90deg,_rgba(95,95,95,0.1)_0%,_rgba(255,255,255,0)_4%)] inset-0 z-5" />
+      <div className='absolute rounded-xl bg-[linear-gradient(90deg,_rgba(95,95,95,0.1)_0%,_rgba(255,255,255,0)_4%)] inset-0 z-5' />
       {/* 썸네일 이미지 */}
+      {/* 썸네일 이미지 영역 (상단 5:6 비율 유지) */}
       <div className='relative w-full aspect-[5/6] overflow-hidden rounded-t-lg'>
         <img
           src={study.thumbnail || 'https://picsum.photos/120/174'}  // 임시 thumbnail을 사용
@@ -22,13 +24,9 @@ const StudyItem = ({ study, size = 'large' }) => {
         />
         {/* 카테고리 라벨 */}
         {/* 300px 이하에서는 숨기기 */}
-        <div className='
-  absolute top-2 left-2 bg-primary-300 shadow-2xl text-white
-  px-2 py-1 text-xs md:text-sm lg:text-base
-  rounded-3xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
-  z-10
-  [@media(max-width:300px)]:hidden
-'>
+        <div className='absolute top-2 left-2 bg-primary-300 shadow-2xl text-white px-2 py-1 text-xs md:text-sm lg:text-base rounded-3xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
+  z-10 [@media(max-width:300px)]:hidden'
+        >
           {study.category || 'ETC'}
         </div>
       </div>
