@@ -5,12 +5,14 @@ import StudyLeader from '@components/pages/study/detail/StudyLeader';
 import StudyRules from '@components/pages/study/detail/StudyRules';
 import { getStudyById } from '@queries/getStudyById';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router';
+import { useOutletContext, useParams } from 'react-router';
+import { useEffect } from 'react';
 
 const StudyDetailHome = () => {
   const { studyId } = useParams();
+  const { setIsError } = useOutletContext();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['study', studyId],
     queryFn: () => {
       return getStudyById(studyId);
@@ -27,9 +29,16 @@ const StudyDetailHome = () => {
     staleTime: 1000 * 10, // 10초 동안 refetch 안 함
   });
 
+  // Layout에 Error 상태를 전달
+  useEffect(() => {
+    if (isError) {
+      setIsError(true);
+    }
+  }, [isError]);
+
   return (
     <div className="relative">
-      {!isLoading && (
+      {!isLoading && !isError && (
         <div className="flex flex-col">
           <StudyLeader
             leaderData={data.leader.users}
