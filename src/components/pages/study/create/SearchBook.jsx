@@ -26,11 +26,14 @@ const SearchBook = ({ bookList, setBookList }) => {
       );
       if (response.ok) {
         const bookSearchResults = await response.json();
+        console.log(bookSearchResults.meta);
         setBookList(bookSearchResults.documents);
       } else {
         console.log('검색 결과 없음');
       }
-    } catch {}
+    } catch {
+      alert('잠시 후 다시 검색해 주세요.');
+    }
   };
 
   console.log(bookList);
