@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import bookCoverPlaceholder from '@assets/images/book_cover_placeholder.jpg';
 const BookItem = ({
   size = 'medium',
   title,
@@ -16,9 +16,11 @@ const BookItem = ({
     small: 'w-[120px] h-[174px]',
   }[size];
 
-  const captionHeightClass = size === 'medium' ? 'h-[40px]' : 'h-[80px]';
-
-  const captionFontSizeClass = size === 'medium' ? 'text-xs' : '';
+  const captionClass = {
+    large: 'h-[80px] text-lg p-4',
+    medium: 'h-[60px] text-base p-2',
+    small: 'h-[40px] text-xs p-2',
+  }[size];
 
   return (
     <>
@@ -32,14 +34,14 @@ const BookItem = ({
         {...props}
       >
         <img
-          src={thumbnail ? thumbnail : 'https://picsum.photos/120/174'}
+          src={thumbnail ? thumbnail : bookCoverPlaceholder}
           className="w-full h-full object-cover rounded-tr-2xl rounded-br-2xl"
         />
         <div
-          className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center p-4 ${captionHeightClass} ${captionFontSizeClass}`}
+          className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center ${captionClass}`}
         >
-          <p className="mr-auto">{title}</p>
-          <p className="ml-auto">by {author}</p>
+          <p className="mr-auto w-full truncate">{title}</p>
+          <p className="ml-auto text-end w-full truncate">by {author}</p>
         </div>
       </div>
     </>
