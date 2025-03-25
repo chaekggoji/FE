@@ -4,11 +4,26 @@ import { useRef, useState } from 'react';
 
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
-const SearchBook = ({ bookList, setBookList }) => {
+const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
   const [isSelected, setIsSelected] = useState(false);
+
+  // 도서 검색 리스트
+  const [bookList, setBookList] = useState();
 
   // input 란의 값을 useRef 로 추출
   const searchKeyword = useRef(null);
+
+  const handleBookSelect = (item) => {
+    setIsBookSelected({
+      title: item.title,
+      author: item.authors,
+      publisher: item.publisher,
+      isbn: item.isbn,
+      description: item.description,
+      url: item.url,
+      thumb_url: item.thumb_url,
+    });
+  };
 
   // ref 에 해당하는 input 의 value 를 추출, 함수 실행
   const handleSearch = async () => {
@@ -41,8 +56,10 @@ const SearchBook = ({ bookList, setBookList }) => {
   const bookSearchResults = bookList?.map((item) => (
     <li
       key={item.isbn}
-      className={`flex gap-x-5 sm:gap-x-10 items-center p-4 sm:p-8 border ${isSelected ? 'border-primary-300 bg-primary-100' : 'border-gray-200 bg-white'} rounded-xl cursor-pointer`}
-      onClick={() => setIsSelected(!isSelected)}
+      className={`flex gap-x-5 sm:gap-x-10 items-center p-4 sm:p-8 border ${item.isbn === isBookSelected?.isbn ? 'border-primary-300 bg-primary-100' : 'border-gray-200 bg-white'} rounded-xl cursor-pointer`}
+      onClick={() => {
+        handleBookSelect(item);
+      }}
     >
       <img
         className="w-full h-full aspect-[7/10] max-w-[112px] object-cover"
@@ -81,8 +98,8 @@ const SearchBook = ({ bookList, setBookList }) => {
 };
 
 SearchBook.propTypes = {
-  bookList: PropTypes.object,
-  setBookList: PropTypes.func,
+  isBookSelected: PropTypes.object,
+  setIsBookSelected: PropTypes.func,
 };
 
 export default SearchBook;
