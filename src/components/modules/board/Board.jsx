@@ -6,10 +6,12 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
 import useMediaQuery from '@hooks/useMediaQuery';
+import { useQuery } from '@tanstack/react-query';
+import { getPostListByType } from '@queries/getStudyPostListByType';
 
 const title = {
-  notices: '공지사항',
-  debates: '토론 나눠요',
+  notice: '공지사항',
+  debate: '토론 나눠요',
 };
 
 const postList = [
@@ -56,6 +58,17 @@ const Board = () => {
   }, [boardType]);
 
   const md = useMediaQuery('(min-width: 768px)');
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['posts', boardType],
+    queryFn: () => {
+      return getPostListByType(studyId, boardType);
+    },
+    select: (res) => res.data,
+    staleTime: 1000 * 10, // 10초 동안 refetch 안 함
+  });
+
+  if (data) console.log(data);
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
