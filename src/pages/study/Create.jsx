@@ -13,17 +13,14 @@ const Create = () => {
   // 전체 작성 완료 상태
   const [isComplete, setIsComplete] = useState(false);
 
-  // 도서 검색 리스트
-  const [bookList, setBookList] = useState();
-
-  // step 1에서 도서 선택이 완료된 경우, true 로 지정
-  const isStepZeroFilled = true;
+  // 선택 도서 상태
+  const [isBookSelected, setIsBookSelected] = useState(null);
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
   const isStepOneFilled = true;
 
   const isStepFilled =
-    (currentStep === 0 && isStepZeroFilled) ||
+    (currentStep === 0 && isBookSelected) ||
     (currentStep === 1 && isStepOneFilled);
 
   const handleNextStep = () => {
@@ -49,12 +46,15 @@ const Create = () => {
           <>
             <ProgressBar
               currentStep={currentStep}
-              isStepZeroFilled={isStepZeroFilled}
+              isBookSelected={isBookSelected}
               isStepOneFilled={isStepOneFilled}
               setCurrentStep={setCurrentStep}
             />
             {currentStep === 0 && (
-              <SearchBook bookList={bookList} setBookList={setBookList} />
+              <SearchBook
+                isBookSelected={isBookSelected}
+                setIsBookSelected={setIsBookSelected}
+              />
             )}
             {currentStep === 1 && <StudyForm />}
             {currentStep === 2 && <StudyPreview />}

@@ -5,9 +5,7 @@ import { useRef, useState } from 'react';
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
 const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  // 도서 검색 리스트
+  // 도서 검색 결과 리스트 상태
   const [bookList, setBookList] = useState();
 
   // input 란의 값을 useRef 로 추출
@@ -27,7 +25,6 @@ const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
 
   // ref 에 해당하는 input 의 value 를 추출, 함수 실행
   const handleSearch = async () => {
-    console.log(searchKeyword.current.value);
     try {
       const response = await fetch(
         `https://dapi.kakao.com/v3/search/book?query=${searchKeyword.current.value}&sort=accuracy`,
@@ -50,8 +47,6 @@ const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
       alert('잠시 후 다시 검색해 주세요.');
     }
   };
-
-  console.log(bookList);
 
   const bookSearchResults = bookList?.map((item) => (
     <li
