@@ -51,7 +51,8 @@ const SearchBook = ({ bookList, setBookList }) => {
       <div className="flex flex-col gap-8">
         <h2 className="text-3xl line-clamp-1">{item.title}</h2>
         <p className="text-xl text-gray-500">
-          {item.authors} | {item.publisher}
+          {item.authors.length > 1 ? item.authors.join(', ') : item.authors} |{' '}
+          {item.publisher}
         </p>
         <p className="text-xl text-gray-500 line-clamp-1">{item.contents}</p>
       </div>
