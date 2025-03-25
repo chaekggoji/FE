@@ -50,7 +50,6 @@ const Board = () => {
     staleTime: 1000 * 10, // 10초 동안 refetch 안 함
   });
 
-  if (data) console.log(data);
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
