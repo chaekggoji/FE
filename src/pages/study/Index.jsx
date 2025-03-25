@@ -16,13 +16,18 @@ import StudyItem from '@components/pages/study/home/StudyItem';
 export default function StudyHome() {
   const [studies, setStudies] = useState([]);
   const [books, setBooks] = useState([]);
+  // 사용자가 입력 중인 값
   const [search, setSearch] = useState('');
+  // 실제 검색 버튼 클릭 시 반영되는 값
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [filter, setFilter] = useState('all');
   const [duration, setDuration] = useState('');
   const [category, setCategory] = useState('');
   const [sort, setSort] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdown, setOpenDropdown] = useState(null);
+  // 전체 몇 페이지 있는지를 저장
+  const [totalPages, setTotalPages] = useState(1);
 
   const isMobile = useMediaQuery('(max-width: 767px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
@@ -45,43 +50,9 @@ export default function StudyHome() {
   ];
 
   const onSearch = () => {
-    console.log('검색어:', search, '필터:', filter);
+    setCurrentPage(1); // 검색 버튼 누르면 1페이지부터 다시 보기
+    setSearchKeyword(search); // 버튼 누를 때만 실제 검색어 적용
   };
-
-
-  useEffect(() => {
-    async function fetchStudies() {
-      let query = supabase.from('studies').select('*');
-
-      if (search) {
-        query = query.ilike('title', `%${search}%`);
-      }
-      if (duration) {
-        query = query.gte('start_date', '2024-01-01').lte('end_date', '2025-12-31');
-      }
-      if (category) {
-        query = query.eq('book_id', category);
-      }
-      if (sort === 'latest') {
-        query = query.order('start_date', { ascending: false });
-      } else if (sort === 'oldest') {
-        query = query.order('start_date', { ascending: true });
-      }
-
-      const { data, error } = await query;
-      if (error) console.error('스터디 데이터 불러오기 오류:', error);
-      else setStudies(data);
-    }
-
-    async function fetchBooks() {
-      const { data, error } = await supabase.from('books').select('*');
-      if (error) console.error('책 데이터 불러오기 오류:', error);
-      else setBooks(data);
-    }
-
-    fetchStudies();
-    fetchBooks();
-  }, []);
 
   // 추천 도서 섹션 개수
   let bookCount = 2; // 기본값: 모바일은 2개
@@ -101,7 +72,88 @@ export default function StudyHome() {
     studyCount = 12; // 데스크탑 (4 × 3)
   }
 
+  useEffect(() => {
+    async function fetchStudies() {
+      const itemsPerPage = studyCount; // 화면 크기에 따라 6, 9, 12로 자동 조절됨
+      const from = (currentPage - 1) * itemsPerPage;
+      const to = from + itemsPerPage - 1;
 
+      let query = supabase
+        .from('studies')
+        .select('*', { count: 'exact' }); // 데이터를 가져오면서 전체 개수도 같이 가져오기
+
+      // 🔍 검색어 필터
+      if (searchKeyword) {
+        const keyword = `%${searchKeyword}%`;
+
+        if (filter === 'study') {
+          // 스터디명 검색
+          query = query.ilike('title', keyword);
+        }
+
+        if (filter === 'all') {
+          // ALL일 경우: studies.title도 포함되도록
+          query = query.ilike('title', keyword);
+        }
+      }
+
+      // 📅 기간 필터 (예시: 나중에 더 정교하게)
+      if (duration) {
+        query = query.gte('start_date', '2024-01-01').lte('end_date', '2025-12-31');
+      }
+
+      // 📂 카테고리 필터
+      if (category) {
+        query = query.eq('category', category); // category가 문자열로 있다면
+      }
+
+      // 🔃 정렬
+      if (sort === 'latest') {
+        query = query.order('start_date', { ascending: false });
+      } else if (sort === 'oldest') {
+        query = query.order('start_date', { ascending: true });
+      }
+
+      // 페이지 범위
+      query = query.range(from, to);
+
+      // Supabase에 요청
+      const { data, count, error } = await query;
+
+      if (error) {
+        console.error('스터디 불러오기 오류:', error);
+      } else {
+        setStudies(data); // 가져온 데이터 저장
+        setTotalPages(Math.ceil(count / itemsPerPage)); // 전체 페이지 수 반올림해서 저장
+      }
+    }
+    async function fetchBooks() {
+      let bookQuery = supabase.from('books').select('*');
+
+      if (searchKeyword) {
+        const keyword = `%${searchKeyword}%`;
+
+        if (filter === 'title') {
+          bookQuery = bookQuery.ilike('title', keyword);
+        } else if (filter === 'author') {
+          bookQuery = bookQuery.ilike('author', keyword);
+        } else if (filter === 'all') {
+          bookQuery = bookQuery.or(`title.ilike.${keyword},author.ilike.${keyword}`);
+        }
+      }
+
+      const { data, error } = await bookQuery;
+      if (error) {
+        console.error('책 데이터 불러오기 오류:', error);
+      } else {
+        setBooks(data);
+      }
+    }
+
+
+    fetchStudies();
+    fetchBooks();
+  }, [searchKeyword, duration, category, sort, currentPage, studyCount]);
 
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
@@ -156,7 +208,7 @@ export default function StudyHome() {
 
       {/* 스터디 리스트 */}
       <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center  gap-12 my-12'>
-        {studyList.slice(0, studyCount).map((study, index) => (
+        {studies.map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
@@ -169,7 +221,7 @@ export default function StudyHome() {
       {/* 페이지네이션 */}
       <Pagination
         currentPage={currentPage}
-        totalPages={5}
+        totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
     </div >

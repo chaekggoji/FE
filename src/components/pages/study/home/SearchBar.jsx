@@ -25,16 +25,16 @@ export default function SearchBar({
           onClick={() => setOpenDropdown(isFilterOpen ? null : 'search-filter')}
           className={`bg-primary-200 border-2 border-primary-400/50 text-white text-base sm:text-lg md:text-xl px-4 py-2 rounded-lg text-left ${dropdownWidth}`}
         >
-          {filter || '필터 선택'}
+          {filter || 'ALL'}
         </button>
         {isFilterOpen && (
           <div className={`absolute left-0 bg-white border-2 border-primary-300/50 shadow-md rounded-lg z-20 text-gray-950 ${dropdownWidth}`}>
-            {SEARCH_CATEGORIES.filter(option => option.label !== 'ALL').map((option) => (
+            {SEARCH_CATEGORIES.map((option) => (
               <div
                 key={option.value}
                 className='p-4 hover:bg-primary-200 text-base sm:text-xl hover:text-white cursor-pointer'
                 onClick={() => {
-                  setFilter(option.label);
+                  setFilter(option.value);
                   setOpenDropdown(null);
                 }}
               >
