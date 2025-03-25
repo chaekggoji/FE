@@ -1,34 +1,46 @@
-import { useState } from 'react';
-import { SORT_OPTIONS } from '@/constants/bookSearch'; // 정렬 옵션 상수 파일
+import { useRef } from 'react';
+import useModalDismiss from '@hooks/useModalDismiss';
+import { SORT_OPTIONS } from '@/constants/bookSearch';
 
-export default function SortDropdown({ sort, setSort }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function SortDropdown({ sort, setSort, openDropdown, setOpenDropdown }) {
+  const dropdownRef = useRef(null);
+  const isSortOpen = openDropdown === 'sort';
 
-  // 드롭다운 열기/닫기 토글
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  // 정렬 드롭다운 열기/닫기 토글
+  const toggleDropdown = () => {
+    if (isSortOpen) {
+      setOpenDropdown(null);
+    } else {
+      setOpenDropdown('sort');
+    }
+  };
 
-  // 기본적으로 정렬을 '정렬'로 설정
-  const displayedSort = sort === 'latest' ? '정렬' : sort;
+  useModalDismiss(dropdownRef, () => {
+    if (isSortOpen) setOpenDropdown(null);
+  });
+
+  const displayedSort = sort || '정렬';
 
   return (
-    <div className='relative'>
+    <div className='relative w-full sm:w-32 md:w-36 lg:w-40' ref={dropdownRef}>
       {/* 드롭다운 버튼 */}
       <button
         onClick={toggleDropdown}
-        className='bg-primary-200 border-2 border-primary-400/50 text-white text-3xl px-4 py-2.5 rounded-lg w-40 text-left'
+        className='bg-primary-200 border-2 border-primary-400/50 text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 w-full sm:w-32 md:w-36 lg:w-40 rounded-lg text-left'
       >
         {displayedSort}
       </button>
 
-      {isOpen && (
-        <div className='absolute left-0 right-0 bg-white border-2 border-primary-400/50 rounded-lg shadow-lg z-20'>
+      {/* 드롭다운 메뉴 */}
+      {isSortOpen && (
+        <div className='absolute w-full left-0 right-0 bg-white border-2 border-primary-300/50 rounded-lg shadow-md z-20'>
           {SORT_OPTIONS.map((option) => (
             <div
               key={option.value}
-              className='p-4 hover:bg-primary-200 text-2xl text-gray-950 hover:text-white cursor-pointer'
+              className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg text-gray-950 hover:text-white cursor-pointer'
               onClick={() => {
-                setSort(option.label);  // 클릭 시 label로 설정
-                setIsOpen(false);  // 드롭다운 닫기
+                setSort(option.value);
+                setOpenDropdown(null);
               }}
             >
               {option.label}
