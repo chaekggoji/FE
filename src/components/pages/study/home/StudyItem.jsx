@@ -34,11 +34,11 @@ const StudyItem = ({ study, size = 'large' }) => {
       {/* 텍스트 영역 */}
       <div className='text w-full text-left px-4 my-3 z-20 relative space-y-1'>
         {/* leadin-snug: 줄 간격은 너무 벌어지지 않도록, tracking-tight: 자간을 조금 좁혀서 정돈된 느낌 주기 */}
-        <p className='text-xl md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>스터디 명: {study.title || '스터디명 없음'}</p>
-        <p className='text-base md:text-lg lg:text-xl leading-snug break-words'>
+        <p className='truncate text-xl md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>스터디 명: {study.title || '스터디명 없음'}</p>
+        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
           참여 인원: {study.participants || 0} / {study.capacity || 0}
         </p>
-        <p className='text-base md:text-lg lg:text-xl leading-snug break-words'>
+        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
           참여 기간: {study.start_date || '시작일 없음'} ~ {study.end_date || '종료일 없음'}
         </p>
       </div>
