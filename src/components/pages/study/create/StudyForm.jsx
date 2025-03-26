@@ -2,8 +2,11 @@ import CustomInputField from '@components/common/CustomInputField';
 import CustomTextarea from '@components/common/CustomTextarea';
 import CategoryDropdown from '@components/pages/study/create/CategoryDropdown';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 
-const StudyForm = () => {
+const StudyForm = ({ studyForm, setStudyForm }) => {
+  const { register, handleSubmit, control } = useForm({});
+
   return (
     <form className="flex flex-col gap-y-6 sm:gap-y-10">
       <CustomInputField
@@ -11,6 +14,12 @@ const StudyForm = () => {
         type="text"
         placeholder="스터디 이름을 입력해주세요."
         id="studyName"
+        register={
+          (register('title'),
+          {
+            required: '스터디 이름을 입력해주세요.',
+          })
+        }
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-10">
         <CustomInputField
@@ -18,12 +27,24 @@ const StudyForm = () => {
           type="date"
           placeholder="스터디 시작일을 선택해주세요."
           id="studyStartDate"
+          register={
+            (register('start_date'),
+            {
+              required: '스터디 시작일을 선택해주세요.',
+            })
+          }
         />
         <CustomInputField
           labelText="스터디 종료일"
           type="date"
           placeholder="스터디 종료일을 선택해주세요."
           id="studyEndDate"
+          register={
+            (register('start_date'),
+            {
+              required: '스터디 종료일을 선택해주세요.',
+            })
+          }
         />
       </div>
       <CustomInputField
@@ -33,15 +54,33 @@ const StudyForm = () => {
         max="8"
         placeholder="참여인원을 입력해주세요."
         id="studyCapacity"
+        register={
+          (register('capacity'),
+          {
+            required: '스터디 참여 인원을 입력해주세요.',
+          })
+        }
       />
       <CategoryDropdown />
       <CustomTextarea
         labelText="스터디 소개"
         placeholder="스터디 소개를 입력해주세요."
+        register={
+          (register('description'),
+          {
+            required: '스터디 소개를 입력해주세요.',
+          })
+        }
       />
       <CustomTextarea
         labelText="스터디 규칙"
         placeholder="스터디 규칙을 입력해주세요."
+        register={
+          (register('rule'),
+          {
+            required: '스터디 규칙을 입력해주세요.',
+          })
+        }
       />
     </form>
   );
