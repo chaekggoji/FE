@@ -45,10 +45,11 @@ const SearchBook = ({
       );
       if (response.ok) {
         const bookSearchResults = await response.json();
+        console.log(response);
+        console.log(bookSearchResults);
         console.log(bookSearchResults.meta);
+        console.log(bookSearchResults.documents);
         setBookList(bookSearchResults.documents);
-      } else {
-        console.log('검색 결과 없음');
       }
     } catch {
       alert('잠시 후 다시 검색해 주세요.');
@@ -98,7 +99,20 @@ const SearchBook = ({
         onKeyDown={handleEnter}
       />
       <h1 className="text-4xl">검색 결과</h1>
-      <ul className="flex flex-col gap-y-10">{bookSearchResults}</ul>
+      {bookList?.length !== 0 ? (
+        <ul className="flex flex-col gap-y-10">{bookSearchResults}</ul>
+      ) : (
+        <div className="flex flex-col gap-y-10">
+          <img
+            src="/src/assets/images/error.png"
+            alt="도서 검색 결과가 없습니다."
+            className="mx-auto max-w-30 sm:max-w-40 mt-19 md:mt-0"
+          />
+          <h1 className="mx-auto text-2xl sm:text-4xl">
+            검색어와 일치하는 책을 찾지 못했어요 😭
+          </h1>
+        </div>
+      )}
     </>
   );
 };
