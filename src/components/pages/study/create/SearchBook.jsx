@@ -65,7 +65,11 @@ const SearchBook = ({
     >
       <img
         className="w-full h-full aspect-[7/10] max-w-[112px] object-cover"
-        src={item.thumbnail}
+        src={
+          item.thumbnail
+            ? item.thumbnail
+            : '/src/assets/images/book_cover_placeholder.jpg'
+        }
       />
       <div className="flex flex-col gap-8">
         <h2 className="text-3xl line-clamp-1">{item.title}</h2>
