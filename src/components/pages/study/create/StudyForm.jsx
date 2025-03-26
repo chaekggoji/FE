@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
 const StudyForm = ({ studyForm, setStudyForm }) => {
-  const { register, handleSubmit, control } = useForm({});
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({});
 
   return (
     <form className="flex flex-col gap-y-6 sm:gap-y-10">
@@ -20,6 +25,7 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
             required: '스터디 이름을 입력해주세요.',
           })
         }
+        error={errors.title}
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-10">
         <CustomInputField
@@ -33,6 +39,7 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
               required: '스터디 시작일을 선택해주세요.',
             })
           }
+          error={errors.start_date}
         />
         <CustomInputField
           labelText="스터디 종료일"
@@ -40,11 +47,12 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
           placeholder="스터디 종료일을 선택해주세요."
           id="studyEndDate"
           register={
-            (register('start_date'),
+            (register('end_date'),
             {
               required: '스터디 종료일을 선택해주세요.',
             })
           }
+          error={errors.end_date}
         />
       </div>
       <CustomInputField
@@ -60,6 +68,7 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
             required: '스터디 참여 인원을 입력해주세요.',
           })
         }
+        error={errors.capacity}
       />
       <CategoryDropdown />
       <CustomTextarea
@@ -71,6 +80,7 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
             required: '스터디 소개를 입력해주세요.',
           })
         }
+        error={errors.description}
       />
       <CustomTextarea
         labelText="스터디 규칙"
@@ -81,6 +91,7 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
             required: '스터디 규칙을 입력해주세요.',
           })
         }
+        error={errors.description}
       />
     </form>
   );
