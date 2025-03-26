@@ -13,11 +13,14 @@ const Create = () => {
   // 전체 작성 완료 상태
   const [isComplete, setIsComplete] = useState(false);
 
+  // 도서 검색 결과 리스트 상태
+  const [bookList, setBookList] = useState();
+
   // 선택 도서 상태
   const [isBookSelected, setIsBookSelected] = useState(null);
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
-  const isStepOneFilled = true;
+  const isStepOneFilled = false;
 
   const isStepFilled =
     (currentStep === 0 && isBookSelected) ||
@@ -54,6 +57,8 @@ const Create = () => {
               <SearchBook
                 isBookSelected={isBookSelected}
                 setIsBookSelected={setIsBookSelected}
+                bookList={bookList}
+                setBookList={setBookList}
               />
             )}
             {currentStep === 1 && <StudyForm />}

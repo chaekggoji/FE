@@ -17,6 +17,8 @@ const ProgressBar = ({
         <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
           {currentStep > 0 && isBookSelected ? (
             <img src="/src/assets/icons/icon_check_24.svg" />
+          ) : currentStep === 0 && isBookSelected ? (
+            <img src="/src/assets/icons/icon_check_24.svg" />
           ) : (
             '1'
           )}

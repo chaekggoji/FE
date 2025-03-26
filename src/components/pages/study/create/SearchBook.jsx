@@ -1,17 +1,24 @@
 import SearchField from '@components/common/SearchField';
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
-const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
-  // 도서 검색 결과 리스트 상태
-  const [bookList, setBookList] = useState();
-
+const SearchBook = ({
+  isBookSelected,
+  setIsBookSelected,
+  bookList,
+  setBookList,
+}) => {
   // input 란의 값을 useRef 로 추출
   const searchKeyword = useRef(null);
 
   const handleBookSelect = (item) => {
+    if (isBookSelected && isBookSelected.isbn === item.isbn) {
+      setIsBookSelected(null);
+      return;
+    }
+
     setIsBookSelected({
       title: item.title,
       author: item.authors,
@@ -95,6 +102,8 @@ const SearchBook = ({ isBookSelected, setIsBookSelected }) => {
 SearchBook.propTypes = {
   isBookSelected: PropTypes.object,
   setIsBookSelected: PropTypes.func,
+  bookList: PropTypes.object,
+  setBookList: PropTypes.object,
 };
 
 export default SearchBook;
