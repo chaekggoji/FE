@@ -5,10 +5,13 @@ import SearchBook from '@components/pages/study/create/SearchBook';
 import StudyForm from '@components/pages/study/create/StudyForm';
 import StudyPreview from '@components/pages/study/create/StudyPreview';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const Create = () => {
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
+
+  const navigate = useNavigate();
 
   // 전체 작성 완료 상태
   const [isComplete, setIsComplete] = useState(false);
@@ -35,7 +38,8 @@ const Create = () => {
   };
 
   const handleCancelCreate = () => {
-    alert('스터디 생성 취소');
+    const cancelCreate = confirm('스터디 생성을 취소하시겠어요?');
+    if (cancelCreate) navigate(-1);
   };
 
   const handleSaveStudy = () => {
