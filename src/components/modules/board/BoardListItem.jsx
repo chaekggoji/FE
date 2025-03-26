@@ -4,9 +4,35 @@ import eyeIcon from '@assets/icons/icon_eye_24.svg';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 import { getRecentActivity } from '@utils/time';
+import { useQuery } from '@tanstack/react-query';
+import { getUserListById } from '@queries/getUserListById';
 
 const BoardListItem = ({ postData }) => {
   const navigate = useNavigate();
+
+  const { data } = useQuery({
+    queryKey: ['post', 'participants', postData.id],
+    queryFn: () => {
+      return getUserListById(postData.participants);
+    },
+    select: (res) => res.data,
+    staleTime: 1000 * 10, // 10초 동안 refetch 안 함
+  });
+
+  const participantList =
+    data &&
+    data.slice(0, 4).map((item) => {
+      return (
+        <img
+          key={item.id}
+          title={item.nickname}
+          className="size-7 object-cover rounded-full -ml-1"
+          src={item.img_url ? item.img_url : defaultProfile}
+        />
+      );
+    });
+
+  const remainingCount = data && data.length - 4;
 
   return (
     <div
@@ -18,12 +44,15 @@ const BoardListItem = ({ postData }) => {
       <div className="md:flex-3/5 sm:w-full">{postData.title}</div>
       <div className="md:flex-2/5 sm:w-full flex text-center justify-end">
         <div className="md:flex-1 md:ml-0 ml-4 flex justify-center items-center">
-          <img
-            className="size-7 object-cover rounded-full"
-            src={
-              postData.users?.img_url ? postData.users.img_url : defaultProfile
-            }
-          />
+          {participantList}
+          {remainingCount > 0 && (
+            <div
+              className="size-7 shrink-0 flex items-center justify-center rounded-full bg-gray-200 text-xs text-gray-600 font-medium -ml-1"
+              title={`외 ${remainingCount}명`}
+            >
+              +{remainingCount}
+            </div>
+          )}
         </div>
         <div className="md:flex-1 md:ml-0 ml-4 text-center flex justify-center items-center">
           <img src={commentIcon} className="mr-1" />
@@ -50,6 +79,7 @@ BoardListItem.propTypes = {
     comment_count: PropTypes.number.isRequired,
     views: PropTypes.number.isRequired,
     recent_activity: PropTypes.string.isRequired,
+    participants: PropTypes.array.isRequired,
   }),
 };
 
