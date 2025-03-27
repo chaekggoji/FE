@@ -25,8 +25,11 @@ const Create = () => {
   // 스터디 정보 Form 입력 상태
   const [studyForm, setStudyForm] = useState(null);
 
+  // 카테고리 선택 상태
+  const [categoryValue, setCategoryValue] = useState(null);
+
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
-  const isStepOneFilled = false;
+  const isStepOneFilled = studyForm !== null && categoryValue;
 
   const isStepFilled =
     (currentStep === 0 && isBookSelected) ||
@@ -69,9 +72,20 @@ const Create = () => {
               />
             )}
             {currentStep === 1 && (
-              <StudyForm studyForm={studyForm} setStudyForm={setStudyForm} />
+              <StudyForm
+                studyForm={studyForm}
+                setStudyForm={setStudyForm}
+                categoryValue={categoryValue}
+                setCategoryValue={setCategoryValue}
+              />
             )}
-            {currentStep === 2 && <StudyPreview />}
+            {currentStep === 2 && (
+              <StudyPreview
+                isBookSelected={isBookSelected}
+                studyForm={studyForm}
+                categoryValue={categoryValue}
+              />
+            )}
             <div className="flex justify-between">
               {currentStep === 0 ? (
                 <Button
