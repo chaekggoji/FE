@@ -24,9 +24,9 @@ const SearchBook = ({
       author: item.authors,
       publisher: item.publisher,
       isbn: item.isbn,
-      description: item.description,
+      description: item.contents,
       url: item.url,
-      thumb_url: item.thumb_url,
+      thumb_url: item.thumbnail,
     });
   };
 
