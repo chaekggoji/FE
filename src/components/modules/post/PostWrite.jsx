@@ -45,10 +45,6 @@ const PostWrite = () => {
     },
   });
 
-  const handleWrite = async (studyId, userId, type, title, content) => {
-    mutation.mutate({ studyId, userId, type, title, content });
-  };
-
   const handleCancle = (event) => {
     event.preventDefault();
     alert('글 작성이 취소되었습니다.');
@@ -56,7 +52,13 @@ const PostWrite = () => {
   };
 
   const onSubmit = (formData) => {
-    handleWrite(studyId, userId, boardType, formData.title, formData.content);
+    mutation.mutate({
+      studyId,
+      userId,
+      boardType,
+      title: formData.title,
+      content: formData.content,
+    });
   };
 
   return (

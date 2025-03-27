@@ -6,9 +6,13 @@ import { useNavigate, useParams } from 'react-router';
 import CommentItem from '@components/modules/post/CommentItem';
 import { useForm } from 'react-hook-form';
 import useMediaQuery from '@hooks/useMediaQuery';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPostById } from '@queries/post/getPostById';
 import { getCommentListByPostId } from '@queries/post/getCommentListByPostId';
+import { writeComment } from '@queries/post/writeComment';
+
+// 임시 user
+const userId = 1;
 
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
@@ -16,11 +20,13 @@ const commentPlaceholder = {
 };
 
 const PostDetail = () => {
+  const queryClient = useQueryClient();
   const { boardType, postId } = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const md = useMediaQuery('(min-width: 768px)');
 
+  // post 상세 내용을 불러오는 useQuery
   const { data: postData, isLoading: postIsLoading } = useQuery({
     queryKey: ['post', postId],
     queryFn: () => {
@@ -30,6 +36,7 @@ const PostDetail = () => {
     staleTime: 1000 * 10,
   });
 
+  // post에 달린 댓글 리스트를 불러오는 useQuery
   const { data: commentListData, isLoading: commentListIsLoading } = useQuery({
     queryKey: ['comments', postId],
     queryFn: () => {
@@ -37,6 +44,20 @@ const PostDetail = () => {
     },
     select: (res) => res.data,
     staleTime: 1000 * 10,
+  });
+
+  const mutation = useMutation({
+    mutationFn: ({ postId, userId, content }) => {
+      return writeComment(postId, userId, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments', postId]);
+      window.alert('댓글이 작성되었습니다.');
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('댓글 작성 중 오류가 발생했습니다.');
+    },
   });
 
   const handleEdit = () => {
@@ -56,7 +77,8 @@ const PostDetail = () => {
   };
 
   const onSubmit = (formData) => {
-    console.log(formData);
+    mutation.mutate({ postId, userId, content: formData.comment });
+    reset();
   };
 
   return (
