@@ -35,7 +35,7 @@ const BoardListItem = ({ postData }) => {
       }}
     >
       <div className="md:flex-3/5 sm:w-full">{postData.title}</div>
-      <div className="md:flex-2/5 sm:w-full flex gap-4 text-center justify-end">
+      <div className="md:flex-2/5 sm:w-full flex md:gap-0 gap-4 text-center justify-end">
         <div className="md:flex-1 md:ml-0 flex justify-center items-center">
           {participantList}
           {remainingCount > 0 && (
