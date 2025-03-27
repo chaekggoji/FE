@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const InputError = ({ target }) => {
   if (!target) return;
-  return <p className="text-point-red mt-[2px]">{target?.message}</p>;
+  return <p className="text-secondary-300 text-sm">{target?.message}</p>;
 };
 
 InputError.propTypes = {
