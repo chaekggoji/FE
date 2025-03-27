@@ -17,5 +17,6 @@ export const getPostListByType = (studyId, type) => {
       `,
     )
     .eq('type', type)
-    .eq('study_id', studyId);
+    .eq('study_id', studyId)
+    .order('created_at', { ascending: false }); // 최신 순 정렬
 };
