@@ -13,6 +13,7 @@ const BoardListItem = ({ postData }) => {
   const { data } = useQuery({
     queryKey: ['post', 'participants', postData.id],
     queryFn: () => {
+      console.log('참가자 유저 정보 조회');
       return getUserListById(postData.participants);
     },
     select: (res) => res.data,
@@ -21,12 +22,12 @@ const BoardListItem = ({ postData }) => {
 
   const participantList =
     data &&
-    data.slice(0, 4).map((item) => {
+    data.slice(0, 4).map((item, index) => {
       return (
         <img
           key={item.id}
           title={item.nickname}
-          className="size-7 object-cover rounded-full -ml-1"
+          className={`size-7 object-cover rounded-full ${index !== 0 ? '-ml-2' : ''}`}
           src={item.img_url ? item.img_url : defaultProfile}
         />
       );
@@ -47,7 +48,7 @@ const BoardListItem = ({ postData }) => {
           {participantList}
           {remainingCount > 0 && (
             <div
-              className="size-7 shrink-0 flex items-center justify-center rounded-full bg-gray-200 text-xs text-gray-600 font-medium -ml-1"
+              className="size-7 shrink-0 flex items-center justify-center rounded-full bg-gray-200 text-xs text-gray-600 font-medium -ml-2"
               title={`외 ${remainingCount}명`}
             >
               +{remainingCount}

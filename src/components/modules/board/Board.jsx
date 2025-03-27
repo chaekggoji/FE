@@ -44,10 +44,11 @@ const Board = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType],
     queryFn: () => {
+      console.log('게시글 목록 조회');
       return getPostListByType(studyId, boardType);
     },
     select: (res) => res.data,
-    staleTime: 1000 * 10, // 10초 동안 refetch 안 함
+    staleTime: 1000 * 10,
   });
 
   return (
