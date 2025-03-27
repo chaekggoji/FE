@@ -44,7 +44,6 @@ const Board = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType],
     queryFn: () => {
-      console.log('게시글 목록 조회');
       return getPostListByType(studyId, boardType);
     },
     select: (res) => res.data,
