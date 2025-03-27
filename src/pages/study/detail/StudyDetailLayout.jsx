@@ -10,11 +10,11 @@ const pages = [
     title: '스터디 홈',
   },
   {
-    route: 'notices',
+    route: 'notice',
     title: '공지사항',
   },
   {
-    route: 'debates',
+    route: 'debate',
     title: '토론 나눠요',
   },
   {

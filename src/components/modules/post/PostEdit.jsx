@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 const title = {
-  notices: '공지사항 글 수정',
-  debates: '토론 글 수정',
+  notice: '공지사항 글 수정',
+  debate: '토론 글 수정',
 };
 
 const PostEdit = () => {
