@@ -45,9 +45,10 @@ const Phrases = () => {
         <PhraseWrite />
       </div>
       <div className="max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
-        {data.map((phrase) => (
-          <PhraseItem key={phrase.id} phraseData={phrase} />
-        ))}
+        {!isLoading &&
+          data.map((phrase) => (
+            <PhraseItem key={phrase.id} phraseData={phrase} />
+          ))}
       </div>
     </div>
   );
