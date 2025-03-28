@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
 // 임시 유저
-const userId = 1;
+const loggedInUserId = 1;
 
 const title = {
   notice: '공지사항 글 작성',
@@ -30,8 +30,8 @@ const PostWrite = () => {
   const { register, handleSubmit } = useForm();
 
   const mutation = useMutation({
-    mutationFn: ({ studyId, userId, type, title, content }) => {
-      return writePost(studyId, userId, type, title, content);
+    mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
+      return writePost(studyId, loggedInUserId, type, title, content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['posts', boardType]);
@@ -54,8 +54,8 @@ const PostWrite = () => {
   const onSubmit = (formData) => {
     mutation.mutate({
       studyId,
-      userId,
-      boardType,
+      loggedInUserId,
+      type: boardType,
       title: formData.title,
       content: formData.content,
     });

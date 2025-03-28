@@ -3,12 +3,36 @@ import PropTypes from 'prop-types';
 import SmallDropdownBox from '@components/common/SmallDropdownBox';
 import { getRecentActivity } from '@utils/time';
 import { useNavigate } from 'react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteCommentById } from '@queries/post/deleteComment';
+
+const loggedInUserId = 1;
 
 const CommentItem = ({ data }) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const handleProfileClick = () => {
     navigate(`/profile/${data.user_id}`);
   };
+
+  const mutation = useMutation({
+    mutationFn: ({ commentId }) => {
+      return deleteCommentById(commentId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments', data.post_id]);
+      window.alert('댓글이 삭제되었습니다.');
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('댓글 삭제 중 오류가 발생했습니다.');
+    },
+  });
+
+  const handleDelete = () => {
+    mutation.mutate({ commentId: data.id });
+  };
+
   return (
     <li className="p-4 ring-2 ring-slate-300 rounded-2xl font-gowunbatang md:text-[1rem] text-sm">
       <div className="flex items-center mb-2">
@@ -22,13 +46,15 @@ const CommentItem = ({ data }) => {
           />
           <p className="font-bold">{data.users?.nickname}</p>
         </div>
-        <div className="ml-auto flex">
-          <p className="font-bold text-slate-500 pr-2">
+        <div className="ml-auto flex gap-2">
+          <p className="font-bold text-slate-500">
             {getRecentActivity(data.created_at)}
           </p>
 
           {/* 수정, 삭제 모달 */}
-          <SmallDropdownBox />
+          {loggedInUserId === data.user_id && (
+            <SmallDropdownBox onDelete={handleDelete} />
+          )}
         </div>
       </div>
       <p>{data.content}</p>
@@ -43,6 +69,7 @@ CommentItem.propTypes = {
     users: PropTypes.object.isRequired,
     created_at: PropTypes.string.isRequired,
     user_id: PropTypes.number.isRequired,
+    post_id: PropTypes.number.isRequired,
   }),
 };
 

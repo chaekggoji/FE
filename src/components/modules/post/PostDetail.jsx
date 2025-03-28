@@ -12,7 +12,7 @@ import { getCommentListByPostId } from '@queries/post/getCommentListByPostId';
 import { writeComment } from '@queries/post/writeComment';
 
 // 임시 user
-const userId = 1;
+const loggedInUserId = 2;
 
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
@@ -47,8 +47,8 @@ const PostDetail = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: ({ postId, userId, content }) => {
-      return writeComment(postId, userId, content);
+    mutationFn: ({ postId, loggedInUserId, content }) => {
+      return writeComment(postId, loggedInUserId, content);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['comments', postId]);
@@ -77,7 +77,7 @@ const PostDetail = () => {
   };
 
   const onSubmit = (formData) => {
-    mutation.mutate({ postId, userId, content: formData.comment });
+    mutation.mutate({ postId, loggedInUserId, content: formData.comment });
     reset();
   };
 
