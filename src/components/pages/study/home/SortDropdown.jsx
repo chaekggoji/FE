@@ -1,51 +1,74 @@
 import { useRef } from 'react';
 import useModalDismiss from '@hooks/useModalDismiss';
-import { SORT_OPTIONS } from '@/constants/bookSearch';
 
-export default function SortDropdown({ sort, setSort, openDropdown, setOpenDropdown }) {
+export default function SortDropdown({
+  sort, setSort,
+  openDropdown, setOpenDropdown,
+  sortOptions = [],
+  buttonClassName = '',
+  menuClassName = '',
+  itemClassName = '',
+  widthClass = '',
+}) {
   const dropdownRef = useRef(null);
   const isSortOpen = openDropdown === 'sort';
 
-  // 정렬 드롭다운 열기/닫기 토글
   const toggleDropdown = () => {
-    if (isSortOpen) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown('sort');
-    }
+    setOpenDropdown(isSortOpen ? null : 'sort');
   };
 
   useModalDismiss(dropdownRef, () => {
     if (isSortOpen) setOpenDropdown(null);
   });
 
-  const displayedSort = sort || '정렬';
+  const currentSortOption = sortOptions.find((opt) => opt.value === sort);
+  const displayedSort = currentSortOption?.label || '정렬';
 
   return (
-    <div className='relative w-full sm:w-32 md:w-36 lg:w-40' ref={dropdownRef}>
-      {/* 드롭다운 버튼 */}
+    <div className={`relative ${widthClass}`} ref={dropdownRef}>
+      {/* ▼ 닫혀 있을 때 보이는 버튼 */}
       <button
         onClick={toggleDropdown}
-        className='bg-primary-200 border-2 border-primary-400/50 text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 w-full sm:w-32 md:w-36 lg:w-40 rounded-lg text-left'
+        className={`
+          border-2 px-4 py-2 w-full rounded-lg text-left
+          text-sm sm:text-base md:text-lg lg:text-xl
+          ${buttonClassName}
+        `}
       >
         {displayedSort}
       </button>
 
-      {/* 드롭다운 메뉴 */}
+      {/* ▼ 드롭다운 펼쳐졌을 때 메뉴 */}
       {isSortOpen && (
-        <div className='absolute w-full left-0 right-0 bg-white border-2 border-primary-300/50 rounded-lg shadow-md z-20'>
-          {SORT_OPTIONS.map((option) => (
-            <div
-              key={option.value}
-              className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg text-gray-950 hover:text-white cursor-pointer'
-              onClick={() => {
-                setSort(option.value);
-                setOpenDropdown(null);
-              }}
-            >
-              {option.label}
-            </div>
-          ))}
+        <div
+          className={`
+          absolute left-0 w-full
+          bg-white rounded-lg shadow-md z-20 border-2
+          ${menuClassName}
+        `}
+        >
+          {sortOptions.map((option) => {
+            const isSelected = sort === option.value;
+
+            return (
+              <div
+                key={option.label}
+                className={`
+                  p-3 cursor-pointer
+                  text-sm sm:text-base md:text-lg
+                  text-gray-900
+                  hover:bg-primary-200
+                  ${itemClassName}
+                `}
+                onClick={() => {
+                  setSort(option.value);
+                  setOpenDropdown(null);
+                }}
+              >
+                {option.label}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

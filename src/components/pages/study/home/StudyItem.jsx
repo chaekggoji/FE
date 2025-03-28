@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const StudyItem = ({ study, size = 'large' }) => {
   // study가 없을 경우 아무것도 렌더링하지 않음
   if (!study) return null;
+  console.log('스터디 데이터:', study);
 
   // 부모가 주는 너비만큼 알아서 맞추기
   const sizeClass = {
@@ -27,7 +28,7 @@ const StudyItem = ({ study, size = 'large' }) => {
         <div className='absolute top-2 left-2 bg-primary-300 shadow-2xl text-white px-2 py-1 text-xs md:text-sm lg:text-base rounded-3xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
   z-10 [@media(max-width:300px)]:hidden'
         >
-          {study.category || 'ETC'}
+          {study.books?.book_categories?.title || 'ETC'}
         </div>
       </div>
 

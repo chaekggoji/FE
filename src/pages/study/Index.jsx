@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 // hook
 import useMediaQuery from '@hooks/useMediaQuery';
+import { SORT_OPTIONS } from '@/constants/bookSearch';
 // 외부 패키지
 import supabase from '@/libs/supabase'; // Supabase 설정 파일 불러오기
 // 컴포넌트
@@ -202,6 +203,12 @@ export default function StudyHome() {
             setSort={setSort}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
+            sortOptions={SORT_OPTIONS}
+
+            buttonClassName='bg-primary-200 text-white border-primary-300'
+            menuClassName='border-primary-300'
+            itemClassName='rounded-none hover:text-white'
+            widthClass="w-48"
           />
         </div>
       </div>
