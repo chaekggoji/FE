@@ -20,10 +20,17 @@ const PhraseItem = ({ phraseData }) => {
       <div className="flex items-center px-8 py-2 border-t-1 border-slate-500 bg-slate-100 rounded-b-2xl">
         <div
           className="flex cursor-pointer items-center"
-          onClick={() => navigate(`/profile/${phraseData.user.id}`)}
+          onClick={() => navigate(`/profile/${phraseData.users.id}`)}
         >
-          <img src={defaultProfile} className="size-10 mr-2" />
-          <p className="font-bold">{phraseData.user.nickname}</p>
+          <img
+            src={
+              phraseData.users?.img_url
+                ? phraseData.users.img_url
+                : defaultProfile
+            }
+            className="size-10 mr-2 rounded-full object-cover"
+          />
+          <p className="font-bold">{phraseData.users.nickname}</p>
         </div>
         <div className="flex ml-auto">
           <img
@@ -31,7 +38,7 @@ const PhraseItem = ({ phraseData }) => {
             className="mr-2 cursor-pointer"
             onClick={() => setIsActive((prev) => !prev)}
           />
-          <p>3</p>
+          <p>{phraseData.likes}</p>
         </div>
       </div>
     </div>
@@ -43,10 +50,12 @@ PhraseItem.propTypes = {
     id: PropTypes.number.isRequired,
     page: PropTypes.number.isRequired,
     content: PropTypes.string.isRequired,
-    user: PropTypes.shape({
+    users: PropTypes.shape({
       id: PropTypes.number.isRequired,
       nickname: PropTypes.string,
+      img_url: PropTypes.string,
     }),
+    likes: PropTypes.number.isRequired,
   }),
 };
 
