@@ -2,15 +2,17 @@ import CustomInputField from '@components/common/CustomInputField';
 import CustomTextarea from '@components/common/CustomTextarea';
 import CategoryDropdown from '@components/pages/study/create/CategoryDropdown';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 
-const StudyForm = ({ studyForm, setStudyForm }) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({});
+const StudyForm = ({
+  studyForm,
+  setStudyForm,
+  categoryValue,
+  setCategoryValue,
+}) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setStudyForm((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <form className="flex flex-col gap-y-6 sm:gap-y-10">
@@ -19,13 +21,9 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
         type="text"
         placeholder="스터디 이름을 입력해주세요."
         id="studyName"
-        register={
-          (register('title'),
-          {
-            required: '스터디 이름을 입력해주세요.',
-          })
-        }
-        error={errors.title}
+        name="title"
+        value={studyForm?.title || null}
+        onblur={handleChange}
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-10">
         <CustomInputField
@@ -33,26 +31,18 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
           type="date"
           placeholder="스터디 시작일을 선택해주세요."
           id="studyStartDate"
-          register={
-            (register('start_date'),
-            {
-              required: '스터디 시작일을 선택해주세요.',
-            })
-          }
-          error={errors.start_date}
+          name="start_date"
+          value={studyForm?.start_date || null}
+          onblur={handleChange}
         />
         <CustomInputField
           labelText="스터디 종료일"
           type="date"
           placeholder="스터디 종료일을 선택해주세요."
           id="studyEndDate"
-          register={
-            (register('end_date'),
-            {
-              required: '스터디 종료일을 선택해주세요.',
-            })
-          }
-          error={errors.end_date}
+          name="end_date"
+          value={studyForm?.end_date || null}
+          onblur={handleChange}
         />
       </div>
       <CustomInputField
@@ -62,43 +52,47 @@ const StudyForm = ({ studyForm, setStudyForm }) => {
         max="8"
         placeholder="참여인원을 입력해주세요."
         id="studyCapacity"
-        register={
-          (register('capacity'),
-          {
-            required: '스터디 참여 인원을 입력해주세요.',
-          })
-        }
-        error={errors.capacity}
+        name="capacity"
+        value={studyForm?.capacity || null}
+        onblur={handleChange}
       />
-      <CategoryDropdown />
+      <CategoryDropdown
+        categoryValue={categoryValue}
+        setCategoryValue={setCategoryValue}
+      />
       <CustomTextarea
         labelText="스터디 소개"
         placeholder="스터디 소개를 입력해주세요."
-        register={
-          (register('description'),
-          {
-            required: '스터디 소개를 입력해주세요.',
-          })
-        }
-        error={errors.description}
+        id="studyInfo"
+        name="description"
+        value={studyForm?.description || null}
+        onblur={handleChange}
       />
       <CustomTextarea
         labelText="스터디 규칙"
         placeholder="스터디 규칙을 입력해주세요."
-        register={
-          (register('rule'),
-          {
-            required: '스터디 규칙을 입력해주세요.',
-          })
-        }
-        error={errors.description}
+        id="studyRule"
+        name="rule"
+        value={studyForm?.rule || null}
+        onblur={handleChange}
       />
+      <button
+        type="button"
+        onClick={() => {
+          console.log(studyForm);
+        }}
+      >
+        상태 테스트
+      </button>
     </form>
   );
 };
 
 StudyForm.propTypes = {
-  BookCategoryOption: PropTypes.object,
+  studyForm: PropTypes.object,
+  setStudyForm: PropTypes.func,
+  categoryValue: PropTypes.object,
+  setCategoryValue: PropTypes.func,
 };
 
 export default StudyForm;
