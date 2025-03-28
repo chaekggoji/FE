@@ -10,9 +10,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPostById } from '@queries/post/getPostById';
 import { getCommentListByPostId } from '@queries/post/getCommentListByPostId';
 import { writeComment } from '@queries/post/writeComment';
+import { deletePost } from '@queries/post/deletePost';
 
 // 임시 user
-const loggedInUserId = 2;
+const loggedInUserId = 1;
 
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
@@ -46,8 +47,8 @@ const PostDetail = () => {
     staleTime: 1000 * 10,
   });
 
-  const mutation = useMutation({
-    mutationFn: ({ postId, loggedInUserId, content }) => {
+  const writeCommentMutation = useMutation({
+    mutationFn: ({ postId, content }) => {
       return writeComment(postId, loggedInUserId, content);
     },
     onSuccess: () => {
@@ -60,9 +61,26 @@ const PostDetail = () => {
     },
   });
 
+  const deletePostMutation = useMutation({
+    mutationFn: ({ postId }) => {
+      return deletePost(postId, loggedInUserId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts', boardType]);
+      window.alert('게시글이 삭제되었습니다.');
+      navigate(-1, { replace: true });
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('게시글이 삭제 중 오류가 발생했습니다.');
+      navigate(-1, { replace: true });
+    },
+  });
+
   const handleEdit = () => {
     navigate('edit', {
       state: {
+        postId: postData.id,
         title: postData.title,
         content: postData.content,
       },
@@ -72,12 +90,16 @@ const PostDetail = () => {
   const handleDelete = () => {
     const ok = window.confirm('정말로 삭제하시겠습니까?');
     if (ok) {
-      navigate(-1, { replace: true });
+      deletePostMutation.mutate({ postId: postData.id });
     }
   };
 
   const onSubmit = (formData) => {
-    mutation.mutate({ postId, loggedInUserId, content: formData.comment });
+    writeCommentMutation.mutate({
+      postId,
+      loggedInUserId,
+      content: formData.comment,
+    });
     reset();
   };
 
@@ -103,18 +125,20 @@ const PostDetail = () => {
                 />
                 <p>{postData.users.nickname}</p>
               </div>
-              <div className="flex ml-auto gap-4">
-                <Button size={md ? 'medium' : 'small'} onClick={handleEdit}>
-                  수정
-                </Button>
-                <Button
-                  size={md ? 'medium' : 'small'}
-                  type="CTA Delete"
-                  onClick={handleDelete}
-                >
-                  삭제
-                </Button>
-              </div>
+              {postData.user_id === loggedInUserId && (
+                <div className="flex ml-auto gap-4">
+                  <Button size={md ? 'medium' : 'small'} onClick={handleEdit}>
+                    수정
+                  </Button>
+                  <Button
+                    size={md ? 'medium' : 'small'}
+                    type="CTA Delete"
+                    onClick={handleDelete}
+                  >
+                    삭제
+                  </Button>
+                </div>
+              )}
             </div>
             {/* 글 내용 */}
             <div className=" font-gowunbatang mb-8">{postData.content}</div>
