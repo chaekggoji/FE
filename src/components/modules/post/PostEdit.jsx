@@ -1,7 +1,7 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import useMediaQuery from '@hooks/useMediaQuery';
-import { editPost } from '@queries/post/editPost';
+import { editPost } from '@queries/post';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';

@@ -7,10 +7,12 @@ import CommentItem from '@components/modules/post/CommentItem';
 import { useForm } from 'react-hook-form';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPostById } from '@queries/post/getPostById';
-import { getCommentListByPostId } from '@queries/post/getCommentListByPostId';
-import { writeComment } from '@queries/post/writeComment';
-import { deletePost } from '@queries/post/deletePost';
+import {
+  deletePost,
+  getCommentListByPostId,
+  getPostById,
+  writeComment,
+} from '@queries/post';
 
 // 임시 user
 const loggedInUserId = 1;
