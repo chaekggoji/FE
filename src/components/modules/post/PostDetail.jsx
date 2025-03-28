@@ -12,7 +12,7 @@ import {
   getCommentListByPostId,
   getPostById,
   writeComment,
-} from '@queries/post';
+} from '@queries/posts';
 
 // 임시 user
 const loggedInUserId = 1;

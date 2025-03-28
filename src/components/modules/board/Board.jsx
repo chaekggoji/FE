@@ -7,7 +7,7 @@ import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
-import { getPostListByType } from '@queries/post';
+import { getPostListByType } from '@queries/posts';
 
 const title = {
   notice: '공지사항',
