@@ -34,7 +34,7 @@ const PhraseWrite = () => {
         구절 작성
       </Button>
       <form
-        className={`md:w-1/2 w-2/3 absolute top-full right-6 ring-slate-500 ring-1 bg-white p-6 z-10 flex flex-col gap-4 rounded-2xl transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`md:w-1/2 w-2/3 absolute top-full lg:right-10 md:right-8 right-6 ring-slate-500 ring-1 bg-white p-6 z-10 flex flex-col gap-4 rounded-2xl transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
