@@ -4,18 +4,18 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
 const title = {
-  notices: '공지사항 글 작성',
-  debates: '토론 글 작성',
+  notice: '공지사항 글 작성',
+  debate: '토론 글 작성',
 };
 
 const titlePlaceholder = {
-  notices: '공지사항 제목을 입력해주세요.',
-  debates: '함께 토론하고 싶은 주제를 입력해 주세요.',
+  notice: '공지사항 제목을 입력해주세요.',
+  debate: '함께 토론하고 싶은 주제를 입력해 주세요.',
 };
 
 const contentPlaceholder = {
-  notices: '공지사항 내용을 입력해주세요.',
-  debates: '토론 주제에 대한 내용을 입력해 주세요.',
+  notice: '공지사항 내용을 입력해주세요.',
+  debate: '토론 주제에 대한 내용을 입력해 주세요.',
 };
 
 const PostWrite = () => {

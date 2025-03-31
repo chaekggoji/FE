@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import useMediaQuery from '@hooks/useMediaQuery';
 
 const commentPlaceholder = {
-  notices: '게시글에 댓글을 남겨 보세요.',
-  debates: '토론 주제에 대한 자신의 생각을 남겨보세요.',
+  notice: '게시글에 댓글을 남겨 보세요.',
+  debate: '토론 주제에 대한 자신의 생각을 남겨보세요.',
 };
 
 const post = {
