@@ -7,7 +7,7 @@ import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
-import { getPostListByType } from '@queries/getPostListByType';
+import { getPostListByType } from '@queries/posts';
 
 const title = {
   notice: '공지사항',
@@ -44,7 +44,6 @@ const Board = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType],
     queryFn: () => {
-      console.log('게시글 목록 조회');
       return getPostListByType(studyId, boardType);
     },
     select: (res) => res.data,

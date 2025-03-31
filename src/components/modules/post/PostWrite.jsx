@@ -1,7 +1,12 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
+import { writePost } from '@queries/posts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+
+// 임시 유저
+const loggedInUserId = 1;
 
 const title = {
   notice: '공지사항 글 작성',
@@ -19,9 +24,26 @@ const contentPlaceholder = {
 };
 
 const PostWrite = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { boardType } = useParams();
+  const { studyId, boardType } = useParams();
   const { register, handleSubmit } = useForm();
+
+  const mutation = useMutation({
+    mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
+      return writePost(studyId, loggedInUserId, type, title, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts', boardType]);
+      window.alert('게시글을 작성하였습니다.');
+      navigate(-1, { replace: true });
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('게시글 작성 중 오류가 발생했습니다.');
+      navigate(-1, { replace: true });
+    },
+  });
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -30,8 +52,13 @@ const PostWrite = () => {
   };
 
   const onSubmit = (formData) => {
-    window.alert('글이 작성되었습니다.');
-    console.log(formData);
+    mutation.mutate({
+      studyId,
+      loggedInUserId,
+      type: boardType,
+      title: formData.title,
+      content: formData.content,
+    });
   };
 
   return (
