@@ -13,7 +13,6 @@ import SearchBar from '@components/pages/study/home/SearchBar';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
 
-
 export default function StudyHome() {
   const [studies, setStudies] = useState([]);
   const [books, setBooks] = useState([]);
@@ -29,26 +28,11 @@ export default function StudyHome() {
   const [openDropdown, setOpenDropdown] = useState(null);
   // 전체 몇 페이지 있는지를 저장
   const [totalPages, setTotalPages] = useState(1);
+  const [studyCount, setStudyCount] = useState(6); // 기본은 모바일 6개
 
-  const isMobile = useMediaQuery('(max-width: 767px)');
-  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isMobile = useMediaQuery('(max-width: 640px)');
+  const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-
-  // UI 확인용으로 넣은 임시 데이터
-  const studyList = [
-    { id: 1, category: '인문', title: '다슬이를 도와줘! 다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
-    { id: 2, category: '에세이', title: '친구 사귀는 법', participants: 4, capacity: 8, start_date: '2025-03-01', end_date: '2025-04-20', thumbnail: 'https://picsum.photos/120/174' },
-    { id: 3, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
-    { id: 4, category: '수필', title: '여기 왔던 덴데', participants: 3, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/173' },
-    { id: 5, category: '인문', title: '다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
-    { id: 6, category: '에세이', title: '친구 사귀는 법', participants: 4, capacity: 8, start_date: '2025-03-01', end_date: '2025-04-20', thumbnail: 'https://picsum.photos/120/174' },
-    { id: 7, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
-    { id: 8, category: '수필', title: '여기 왔던 덴데', participants: 3, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/173' },
-    { id: 9, category: '인문', title: '다슬이를 도와줘!', participants: 5, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/170' },
-    { id: 10, category: '에세이', title: '친구 사귀는 법', participants: 4, capacity: 8, start_date: '2025-03-01', end_date: '2025-04-20', thumbnail: 'https://picsum.photos/120/174' },
-    { id: 11, category: 'IT', title: '다음 판으로 갈래요', participants: 6, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/175' },
-    { id: 12, category: '수필', title: '여기 왔던 덴데', participants: 3, capacity: 8, start_date: '2025-03-01', end_date: '2025-03-31', thumbnail: 'https://picsum.photos/120/173' },
-  ];
 
   const onSearch = () => {
     setCurrentPage(1); // 검색 버튼 누르면 1페이지부터 다시 보기
@@ -64,14 +48,15 @@ export default function StudyHome() {
     bookCount = 4; // 데스크탑은 4개
   }
 
-  // 스터디 리스트 섹션 개수
-  let studyCount = 6; // 기본: 모바일 (2 × 3)
-
-  if (isTablet) {
-    studyCount = 9; // 태블릿 (3 × 3)
-  } else if (isDesktop) {
-    studyCount = 12; // 데스크탑 (4 × 3)
-  }
+  useEffect(() => {
+    if (isMobile) {
+      setStudyCount(6);
+    } else if (isTablet) {
+      setStudyCount(9);
+    } else {
+      setStudyCount(12);
+    }
+  }, [isMobile, isTablet]);
 
   useEffect(() => {
     async function fetchStudies() {
@@ -79,21 +64,29 @@ export default function StudyHome() {
       const from = (currentPage - 1) * itemsPerPage;
       const to = from + itemsPerPage - 1;
 
+      // 1. 스터디, 책, 카테고리 가져오기
       let query = supabase
         .from('studies')
-        .select('*', { count: 'exact' }); // 데이터를 가져오면서 전체 개수도 같이 가져오기
+        .select(`
+          *,
+          books (
+            id,
+            title,
+            thumb_url,
+            category_id,
+            book_categories(
+              id,
+              title
+            )
+          )
+        `, { count: 'exact' });
 
-      // 🔍 검색어 필터
+
+      // 검색 조건 적용
       if (searchKeyword) {
         const keyword = `%${searchKeyword}%`;
 
-        if (filter === 'study') {
-          // 스터디명 검색
-          query = query.ilike('title', keyword);
-        }
-
-        if (filter === 'all') {
-          // ALL일 경우: studies.title도 포함되도록
+        if (filter === 'study' || filter === 'all') {
           query = query.ilike('title', keyword);
         }
       }
@@ -104,8 +97,8 @@ export default function StudyHome() {
       }
 
       // 📂 카테고리 필터
-      if (category) {
-        query = query.eq('category', category); // category가 문자열로 있다면
+      if (category && category !== 'all') {
+        query = query.eq('books.category_id', category); // category가 문자열로 있다면
       }
 
       // 🔃 정렬
@@ -119,15 +112,40 @@ export default function StudyHome() {
       query = query.range(from, to);
 
       // Supabase에 요청
-      const { data, count, error } = await query;
+      const { data: studies, count, error } = await query;
 
       if (error) {
         console.error('스터디 불러오기 오류:', error);
-      } else {
-        setStudies(data); // 가져온 데이터 저장
-        setTotalPages(Math.ceil(count / itemsPerPage)); // 전체 페이지 수 반올림해서 저장
+        return;
       }
+
+      // 2. 스터디 참여자 목록 불러오기
+      const { data: participants, error: pError } = await supabase
+        .from('study_participants')
+        .select('study_id');
+      if (pError) {
+        console.error('참여자 불러오기 오류: ', pError.message);
+        return;
+      }
+
+      // 3. 참여 인원 수를 스터디별로 세기
+      const participantCountMap = {};
+      for (const p of participants) {
+        const id = p.study_id;
+        participantCountMap[id] = (participantCountMap[id] || 0) + 1;
+      }
+
+      // 4. 참여 인원 수를 스터디 데이터에 붙이기
+      const studiesWithCounts = studies.map((study) => ({
+        ...study,
+        participantCount: participantCountMap[study.id] || 0,
+      }));
+
+      // 5. 화면에 데이터 적용
+      setStudies(studiesWithCounts);
+      setTotalPages(Math.ceil(count / itemsPerPage));
     }
+
     async function fetchBooks() {
       let bookQuery = supabase.from('books').select('*');
 
@@ -151,10 +169,9 @@ export default function StudyHome() {
       }
     }
 
-
     fetchStudies();
     fetchBooks();
-  }, [searchKeyword, duration, category, sort, currentPage, studyCount]);
+  }, [currentPage, searchKeyword, category, duration, sort, studyCount]);
 
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
@@ -214,13 +231,13 @@ export default function StudyHome() {
       </div>
 
       {/* 스터디 리스트 */}
-      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center  gap-12 my-12'>
+      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12'>
         {studies.map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
             index={index}
-            totalItems={studyList.length}
+            totalItems={studies.length}
           />
         ))}
       </div>

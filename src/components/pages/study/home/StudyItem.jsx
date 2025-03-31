@@ -19,13 +19,14 @@ const StudyItem = ({ study, size = 'large' }) => {
       {/* 썸네일 이미지 영역 (상단 5:6 비율 유지) */}
       <div className='relative w-full aspect-[5/6] overflow-hidden rounded-t-lg'>
         <img
-          src={study.thumbnail || 'https://picsum.photos/120/174'}  // 임시 thumbnail을 사용
-          alt={study.title}
+          src={study.books?.thumb_url || 'https://picsum.photos/120/174'}
+          alt={study.books?.title || '책 이미지'}
           className='w-full h-full object-cover'
         />
+
         {/* 카테고리 라벨 */}
         {/* 300px 이하에서는 숨기기 */}
-        <div className='absolute top-2 left-2 bg-primary-300 shadow-2xl text-white px-2 py-1 text-xs md:text-sm lg:text-base rounded-3xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
+        <div className='absolute top-2 left-2 bg-primary-300 shadow-2xl text-white px-2 py-1 text-xs md:text-sm lg:text-base rounded-2xl truncate max-w-[80px] md:max-w-[100px] lg:max-w-[120px]
   z-10 [@media(max-width:300px)]:hidden'
         >
           {study.books?.book_categories?.title || 'ETC'}
@@ -37,7 +38,7 @@ const StudyItem = ({ study, size = 'large' }) => {
         {/* leadin-snug: 줄 간격은 너무 벌어지지 않도록, tracking-tight: 자간을 조금 좁혀서 정돈된 느낌 주기 */}
         <p className='truncate text-xl md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>스터디 명: {study.title || '스터디명 없음'}</p>
         <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
-          참여 인원: {study.participants || 0} / {study.capacity || 0}
+          참여 인원: {study.participantCount} / {study.capacity}
         </p>
         <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
           참여 기간: {study.start_date || '시작일 없음'} ~ {study.end_date || '종료일 없음'}
@@ -51,11 +52,14 @@ StudyItem.propTypes = {
   study: PropTypes.shape({
     title: PropTypes.string.isRequired,
     category: PropTypes.string,
-    thumbnail: PropTypes.string,
+    thumb_url: PropTypes.string,
     participants: PropTypes.number,
     capacity: PropTypes.number,
     start_date: PropTypes.string,
     end_date: PropTypes.string,
+    book_categories: PropTypes.shape({
+      title: PropTypes.string,
+    })
   }),
   size: PropTypes.oneOf(['large', 'medium']),  // large, medium 사이즈 옵션
 };

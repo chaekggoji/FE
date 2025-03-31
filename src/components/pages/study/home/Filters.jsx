@@ -39,7 +39,7 @@ export default function Filters({
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
             {DURATION_FILTERS.map((option) => (
               <div
-                key={option.value}
+                key={option.label}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
                   setDuration(option.label);
@@ -67,7 +67,7 @@ export default function Filters({
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
             {BOOK_CATEGORIES.map((option) => (
               <div
-                key={option.value}
+                key={option.label}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
                   setCategory(option.label);
