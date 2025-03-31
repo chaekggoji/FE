@@ -1,20 +1,41 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import useMediaQuery from '@hooks/useMediaQuery';
+import { editPost } from '@queries/posts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
+const loggedInUserId = 2;
+
 const title = {
-  notices: '공지사항 글 수정',
-  debates: '토론 글 수정',
+  notice: '공지사항 글 수정',
+  debate: '토론 글 수정',
 };
 
 const PostEdit = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { boardType } = useParams();
   const { register, handleSubmit } = useForm();
   const location = useLocation();
   const md = useMediaQuery('(min-width: 768px)');
+
+  const mutation = useMutation({
+    mutationFn: ({ title, content }) => {
+      return editPost(location.state.postId, loggedInUserId, title, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['post', location.state.postId]);
+      window.alert('게시글을 수정하였습니다.');
+      navigate(-1, { replace: true });
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('게시글 수정 중 오류가 발생했습니다.');
+      navigate(-1, { replace: true });
+    },
+  });
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -23,8 +44,7 @@ const PostEdit = () => {
   };
 
   const onSubmit = (formData) => {
-    window.alert('글이 수정되었습니다.');
-    console.log(formData);
+    mutation.mutate({ title: formData.title, content: formData.content });
   };
 
   return (

@@ -9,9 +9,13 @@ const StudyMembers = ({ participantData }) => {
       {participantData.map((participant) => {
         return (
           <img
-            src={profileDefaultIcon}
+            src={
+              participant.users.img_url
+                ? participant.users.img_url
+                : profileDefaultIcon
+            }
             key={participant.users.id}
-            className={`relative group lg:size-12 size-10 -mr-2`}
+            className={`relative group lg:size-12 size-10 -mr-2 rounded-full object-cover`}
             title={
               participant.users.nickname
                 ? participant.users.nickname

@@ -6,29 +6,13 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
 import useMediaQuery from '@hooks/useMediaQuery';
+import { useQuery } from '@tanstack/react-query';
+import { getPostListByType } from '@queries/posts';
 
 const title = {
-  notices: '공지사항',
-  debates: '토론 나눠요',
+  notice: '공지사항',
+  debate: '토론 나눠요',
 };
-
-const postList = [
-  {
-    id: 1,
-    title: '첫번째 게시글',
-    content: '첫번째 게시글의 내용입니다.',
-  },
-  {
-    id: 2,
-    title: '두번째 게시글',
-    content: '두번째 게시글의 내용입니다.',
-  },
-  {
-    id: 3,
-    title: '세번째 게시글',
-    content: '세번째 게시글의 내용입니다.',
-  },
-];
 
 const options = [
   { name: '조회수 많은 순', value: 'mostViewed' },
@@ -56,6 +40,16 @@ const Board = () => {
   }, [boardType]);
 
   const md = useMediaQuery('(min-width: 768px)');
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['posts', boardType],
+    queryFn: () => {
+      return getPostListByType(studyId, boardType);
+    },
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
@@ -89,9 +83,8 @@ const Board = () => {
             </div>
           </div>
           <hr className="md:hidden h-px border-0 bg-slate-500" />
-          {postList.map((post) => (
-            <BoardListItem key={post.id} post={post} />
-          ))}
+          {!isLoading &&
+            data.map((item) => <BoardListItem key={item.id} postData={item} />)}
         </div>
         <div className="h-[64px] flex items-center justify-center">
           <Pagination
