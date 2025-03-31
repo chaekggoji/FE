@@ -4,7 +4,9 @@ export const getPhraseList = (studyId) => {
   return supabase
     .from('phrases')
     .select(
-      `*,users (id,nickname,img_url)
+      `*,
+      users (id,nickname,img_url),
+      likes(user_id)
       `,
     )
     .eq('study_id', studyId)

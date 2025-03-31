@@ -32,6 +32,8 @@ const Phrases = () => {
     staleTime: 1000 * 10,
   });
 
+  if (data) console.log(data);
+
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'구절 공유해요'} />

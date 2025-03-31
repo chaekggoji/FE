@@ -4,7 +4,7 @@ import SmallDropdownBox from '@components/common/SmallDropdownBox';
 import { getRecentActivity } from '@utils/time';
 import { useNavigate } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteCommentById } from '@queries/posts';
+import { deleteComment } from '@queries/posts';
 
 const loggedInUserId = 1;
 
@@ -17,7 +17,7 @@ const CommentItem = ({ data }) => {
 
   const mutation = useMutation({
     mutationFn: ({ commentId }) => {
-      return deleteCommentById(commentId);
+      return deleteComment(commentId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['comments', data.post_id]);

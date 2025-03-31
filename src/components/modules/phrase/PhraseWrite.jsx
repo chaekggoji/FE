@@ -1,13 +1,21 @@
 import Button from '@components/common/Button';
 import useMediaQuery from '@hooks/useMediaQuery';
 import useModalDismiss from '@hooks/useModalDismiss';
+import { writePhrase } from '@queries/phrases/writePhrase';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router';
+
+// 임시 로그인 유저
+const loggedInUserId = 1;
 
 const PhraseWrite = () => {
+  const queryClient = useQueryClient();
   const formRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit } = useForm();
+  const { studyId } = useParams();
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -18,12 +26,31 @@ const PhraseWrite = () => {
     setIsOpen(false);
   });
 
+  const md = useMediaQuery('(min-width: 768px)');
+
+  const mutation = useMutation({
+    mutationFn: ({ studyId, loggedInUserId, page, content }) => {
+      return writePhrase(studyId, loggedInUserId, page, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['phrases', studyId]);
+      window.alert('구절을 작성하였습니다.');
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('구절 작성 중 오류가 발생했습니다.');
+    },
+  });
+
   const onSubmit = (formData) => {
-    window.alert(JSON.stringify(formData));
+    mutation.mutate({
+      studyId,
+      loggedInUserId,
+      page: formData.page,
+      content: formData.content,
+    });
     setIsOpen(false);
   };
-
-  const md = useMediaQuery('(min-width: 768px)');
 
   return (
     <div className="ml-auto" ref={formRef}>
