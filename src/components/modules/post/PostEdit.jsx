@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
-const loggedInUserId = 1;
+const loggedInUserId = 2;
 
 const title = {
   notice: '공지사항 글 수정',

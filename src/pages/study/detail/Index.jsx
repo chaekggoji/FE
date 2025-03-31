@@ -5,12 +5,10 @@ import StudyLeader from '@components/pages/study/detail/StudyLeader';
 import StudyRules from '@components/pages/study/detail/StudyRules';
 import { getStudyById } from '@queries/getStudyById';
 import { useQuery } from '@tanstack/react-query';
-import { useOutletContext, useParams } from 'react-router';
-import { useEffect } from 'react';
+import { Navigate, useParams } from 'react-router';
 
 const StudyDetailHome = () => {
   const { studyId } = useParams();
-  const { setIsError } = useOutletContext();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['study', studyId],
@@ -29,12 +27,9 @@ const StudyDetailHome = () => {
     staleTime: 1000 * 10, // 10초 동안 refetch 안 함
   });
 
-  // Layout에 Error 상태를 전달
-  useEffect(() => {
-    if (isError) {
-      setIsError(true);
-    }
-  }, [isError]);
+  if (isError) {
+    return <Navigate to="/error" replace />;
+  }
 
   return (
     <div className="relative">
