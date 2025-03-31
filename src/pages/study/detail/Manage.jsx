@@ -1,18 +1,13 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
 import { deleteStudyMember } from '@queries/study/deleteStudyMember';
-import { getStudyMemberList } from '@queries/study/getStudyMemberList';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useOutletContext, useParams } from 'react-router';
 
 const Manage = () => {
   const queryClient = useQueryClient();
   const { studyId } = useParams();
-  const { data, isLoading } = useQuery({
-    queryKey: ['members', studyId],
-    queryFn: () => getStudyMemberList(studyId),
-    select: (res) => res.data,
-  });
+  const { memberList } = useOutletContext();
 
   const mutation = useMutation({
     mutationFn: ({ userId, studyId }) => {
@@ -30,21 +25,19 @@ const Manage = () => {
     },
   });
 
-  console.log(data);
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'스터디원 관리'} />
       <ul>
-        {!isLoading &&
-          data.map((member) => (
-            <StudyMemberListItem
-              key={member.users.id}
-              memberData={member.users}
-              onDelete={() =>
-                mutation.mutate({ userId: member.users.id, studyId })
-              }
-            />
-          ))}
+        {memberList.slice(1).map((member) => (
+          <StudyMemberListItem
+            key={member.users.id}
+            memberData={member.users}
+            onDelete={() =>
+              mutation.mutate({ userId: member.users.id, studyId })
+            }
+          />
+        ))}
       </ul>
     </div>
   );

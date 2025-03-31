@@ -5,24 +5,20 @@ import StudyLeader from '@components/pages/study/detail/StudyLeader';
 import StudyRules from '@components/pages/study/detail/StudyRules';
 import { getStudyById } from '@queries/study/getStudyById';
 import { useQuery } from '@tanstack/react-query';
-import { Navigate, useParams } from 'react-router';
+import { Navigate, useOutletContext, useParams } from 'react-router';
 
 const StudyDetailHome = () => {
   const { studyId } = useParams();
+  const { memberList } = useOutletContext();
 
+  const leader = memberList.find((member) => member.role === 'leader');
   const { data, isLoading, isError } = useQuery({
     queryKey: ['study', studyId],
     queryFn: () => {
       return getStudyById(studyId);
     },
     select: (res) => {
-      // 응답에서 leader를 꺼내 study와 함께 반환
-      const study = res.data;
-      const leader = study.study_participants.find(
-        (participant) => participant.role === 'leader',
-      );
-
-      return { ...study, leader };
+      return res.data;
     },
     staleTime: 1000 * 10, // 10초 동안 refetch 안 함
   });
@@ -36,7 +32,7 @@ const StudyDetailHome = () => {
       {!isLoading && !isError && (
         <div className="flex flex-col">
           <StudyLeader
-            leaderData={data.leader.users}
+            leaderData={leader.users}
             className="lg:order-0 order-1"
           />
           <div className="lg:px-24 flex md:py-12 py-6 border-b-1 border-slate-200 md:flex-row flex-col">

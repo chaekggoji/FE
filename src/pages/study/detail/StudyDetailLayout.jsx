@@ -1,6 +1,8 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import FloatNavButton from '@pages/study/detail/FloatNavButton';
-import { Outlet } from 'react-router';
+import { getStudyMemberList } from '@queries/study/getStudyMemberList';
+import { useQuery } from '@tanstack/react-query';
+import { Outlet, useParams } from 'react-router';
 
 const pages = [
   {
@@ -26,6 +28,13 @@ const pages = [
 ];
 
 const StudyDetailLayout = () => {
+  const { studyId } = useParams();
+  const { data, isLoading } = useQuery({
+    queryKey: ['members', studyId],
+    queryFn: () => getStudyMemberList(studyId),
+    select: (res) => res.data,
+  });
+
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
       <>
@@ -38,7 +47,7 @@ const StudyDetailLayout = () => {
         </nav>
         <main className="grow relative">
           <FloatNavButton pages={pages} />
-          <Outlet />
+          {!isLoading && <Outlet context={{ memberList: data }} />}
         </main>
       </>
     </div>
