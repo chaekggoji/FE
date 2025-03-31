@@ -1,5 +1,6 @@
 import useModalDismiss from '@hooks/useModalDismiss';
 import supabase from '@libs/supabase';
+import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 
 const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
@@ -64,7 +65,7 @@ const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
           className="flex justify-between w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl focus:border-primary-300 focus:shadow focus:shadow-primary-300 cursor-pointer focus:outline-hidden"
           onClick={toggleDropdown}
         >
-          {categoryValue}
+          {categoryValue ? categoryValue : '도서 카테고리를 선택해주세요.'}
           {isDropdownOpen ? (
             <img src="/src/assets/icons/icon_arrow_top_24.svg" />
           ) : (
@@ -79,6 +80,11 @@ const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
       </div>
     </>
   );
+};
+
+CategoryDropdown.propTypes = {
+  categoryValue: PropTypes.string,
+  setCategoryValue: PropTypes.func,
 };
 
 export default CategoryDropdown;
