@@ -3,7 +3,7 @@ import StudyInfo from '@components/pages/study/detail/StudyInfo';
 import StudyIntro from '@components/pages/study/detail/StudyIntro';
 import StudyLeader from '@components/pages/study/detail/StudyLeader';
 import StudyRules from '@components/pages/study/detail/StudyRules';
-import { getStudyById } from '@queries/getStudyById';
+import { getStudyById } from '@queries/study/getStudyById';
 import { useQuery } from '@tanstack/react-query';
 import { Navigate, useParams } from 'react-router';
 

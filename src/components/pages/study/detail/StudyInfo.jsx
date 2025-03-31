@@ -3,7 +3,7 @@ import StudyMembers from '@components/pages/study/detail/StudyMembers';
 import { useLocation, useParams } from 'react-router';
 import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
-import { joinStudy } from '@queries/joinStudy';
+import { joinStudy } from '@queries/study/joinStudy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // 임시 로그인 변수

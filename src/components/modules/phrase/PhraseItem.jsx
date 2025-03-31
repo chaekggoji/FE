@@ -9,6 +9,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePhrase } from '@queries/phrases/deletePhrase';
 import supabase from '@libs/supabase';
 
+// 리팩토링 목록
+// - 좋아요 광클 했을 때 문제 발생 해결
+
 const loggedInUserId = 1;
 
 const PhraseItem = ({ phraseData }) => {

@@ -14,6 +14,9 @@ import {
   writeComment,
 } from '@queries/posts';
 
+// 리팩토링 목록
+// - 텍스트 에디터 사용한 데이터 뿌리기
+
 // 임시 user
 const loggedInUserId = 1;
 

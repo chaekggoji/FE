@@ -21,6 +21,10 @@ const PostEdit = () => {
   const location = useLocation();
   const md = useMediaQuery('(min-width: 768px)');
 
+  // 리팩토링 목록
+  // - 텍스트 에디터 사용
+  // - 사진 등록
+
   const mutation = useMutation({
     mutationFn: ({ title, content }) => {
       return editPost(location.state.postId, loggedInUserId, title, content);

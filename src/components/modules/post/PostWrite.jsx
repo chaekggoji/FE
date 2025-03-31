@@ -5,6 +5,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
+// 리팩토링 목록
+// - 텍스트 에디터 사용
+// - 사진 등록
+
 // 임시 유저
 const loggedInUserId = 1;
 

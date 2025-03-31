@@ -8,6 +8,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
+// 리팩토링 목록
+// - 정렬
+// - 무한 스크롤
+
 const options = [
   { name: '좋아요 많은 순', value: 'mostLiked' },
   { name: '페이지 순', value: 'pageAscending' },
@@ -31,8 +35,6 @@ const Phrases = () => {
     select: (res) => res.data,
     staleTime: 1000 * 10,
   });
-
-  if (data) console.log(data);
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
