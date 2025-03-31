@@ -8,10 +8,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 const Create = () => {
+  const navigate = useNavigate();
+
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
-
-  const navigate = useNavigate();
 
   // 전체 작성 완료 상태
   const [isComplete, setIsComplete] = useState(false);
