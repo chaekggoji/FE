@@ -1,7 +1,8 @@
 import Button from '@components/common/Button';
 import { useNavigate } from 'react-router';
 
-const CreateComplete = () => {
+const CreateComplete = ({ studyId }) => {
+  console.log(studyId);
   const navigate = useNavigate();
 
   return (
@@ -28,7 +29,7 @@ const CreateComplete = () => {
           size="large"
           type="CTA Abled"
           onClick={() => {
-            navigate('/study/1/home');
+            navigate(`/study/${studyId}/home`);
           }}
         >
           스터디로

@@ -14,9 +14,6 @@ const Create = () => {
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
 
-  // 전체 작성 완료 상태
-  const [isComplete, setIsComplete] = useState('');
-
   // 도서 검색 결과 리스트 상태
   const [bookList, setBookList] = useState();
 
@@ -31,6 +28,9 @@ const Create = () => {
 
   // step 2의 모든 입력란 입력이 완료된 경우, true 로 지정
   const isStepOneFilled = studyForm !== null && categoryValue;
+
+  // 전체 작성 완료 상태
+  const [studyId, setStudyId] = useState('');
 
   const isStepFilled =
     (currentStep === 0 && isBookSelected) ||
@@ -128,7 +128,7 @@ const Create = () => {
       }
 
       // 스터디 id 를 상태에 저장
-      setIsComplete(data[0].id);
+      setStudyId(data[0].id);
     } catch (err) {
       console.error('스터디 등록 오류: ', err.message);
       alert('스터디 등록 오류: ', err.message);
@@ -139,7 +139,7 @@ const Create = () => {
   return (
     <>
       <div className="my-6 md:my-10 md:mx-auto w-full max-w-[1100px] md:p-15 flex flex-col gap-y-7 sm:gap-y-10">
-        {!isComplete ? (
+        {!studyId ? (
           <>
             <ProgressBar
               currentStep={currentStep}
@@ -209,7 +209,7 @@ const Create = () => {
             </div>
           </>
         ) : (
-          <CreateComplete />
+          <CreateComplete studyId={studyId} />
         )}
       </div>
     </>
