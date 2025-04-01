@@ -74,6 +74,8 @@ const StudyForm = ({
       <CustomInputField
         labelText={`스터디 모집 인원`}
         type="number"
+        min="1"
+        max="8"
         placeholder="참여인원을 입력해주세요."
         id="studyCapacity"
         value={studyForm?.capacity || ''}
