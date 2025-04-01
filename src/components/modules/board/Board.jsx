@@ -9,6 +9,10 @@ import useMediaQuery from '@hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
 import { getPostListByType } from '@queries/posts';
 
+// 리팩토링 목록
+// - 정렬
+// - 페이지네이션
+
 const title = {
   notice: '공지사항',
   debate: '토론 나눠요',
