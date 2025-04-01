@@ -45,10 +45,6 @@ const SearchBook = ({
       );
       if (response.ok) {
         const bookSearchResults = await response.json();
-        console.log(response);
-        console.log(bookSearchResults);
-        console.log(bookSearchResults.meta);
-        console.log(bookSearchResults.documents);
         setBookList(bookSearchResults.documents);
       }
     } catch {

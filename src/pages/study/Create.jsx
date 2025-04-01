@@ -53,9 +53,6 @@ const Create = () => {
   };
 
   const handleSaveStudy = async () => {
-    console.log(studyForm);
-    console.log({ ...isBookSelected, category_id: categoryValue.id });
-    console.log(categoryValue);
     let bookId;
     let studyId;
 
@@ -65,13 +62,10 @@ const Create = () => {
         .from('books')
         .select('*')
         .eq('isbn', isBookSelected.isbn);
-      console.log(books);
 
       if (error) {
         throw new Error(`도서 정보 조회 오류: ${error.message}`);
       }
-
-      console.log('조회된 도서', books);
 
       // 선택한 도서가 없으면 새로운 도서 등록
       if (books.length === 0) {
@@ -97,11 +91,9 @@ const Create = () => {
 
         // 신규 등록된 도서 id 반환
         bookId = data[0].id;
-        console.log('신규 등록 도서 id', bookId);
       } else {
         // 이미 등록된 도서가 있으면 기존 도서 사용
         bookId = books[0].id;
-        console.log('기존 도서 id', bookId);
       }
     } catch (err) {
       console.error(err.message);
@@ -125,7 +117,6 @@ const Create = () => {
           },
         ])
         .select();
-      console.log(data);
 
       if (error) {
         throw new Error(`스터디 등록 오류: ${error.message}`);
@@ -146,7 +137,6 @@ const Create = () => {
         .from('study_participants')
         .insert([{ user_id: userId, study_id: studyId, role: 'leader' }])
         .select();
-      console.log(data);
 
       if (error) {
         throw new Error(`스터디 멤버 등록 오류: ${error.message}`);
