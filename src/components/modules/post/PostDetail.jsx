@@ -13,12 +13,10 @@ import {
   getPostById,
   writeComment,
 } from '@queries/posts';
+import useUserStore from '@store/useUserStore';
 
 // 리팩토링 목록
 // - 텍스트 에디터 사용한 데이터 뿌리기
-
-// 임시 user
-const loggedInUserId = 1;
 
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
@@ -26,6 +24,7 @@ const commentPlaceholder = {
 };
 
 const PostDetail = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const { boardType, postId } = useParams();
   const navigate = useNavigate();

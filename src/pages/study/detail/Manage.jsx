@@ -1,6 +1,7 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
 import { deleteStudyMember } from '@queries/study/deleteStudyMember';
+import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
@@ -8,9 +9,8 @@ import { useNavigate, useOutletContext, useParams } from 'react-router';
 // 리팩토링 목록
 // 403, 404 에러 페이지 연결
 
-const loggedInUserId = 2;
-
 const Manage = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { studyId } = useParams();

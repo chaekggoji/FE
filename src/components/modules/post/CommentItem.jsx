@@ -5,10 +5,10 @@ import { getRecentActivity } from '@utils/time';
 import { useNavigate } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteComment } from '@queries/posts';
-
-const loggedInUserId = 1;
+import useUserStore from '@store/useUserStore';
 
 const CommentItem = ({ data }) => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const handleProfileClick = () => {

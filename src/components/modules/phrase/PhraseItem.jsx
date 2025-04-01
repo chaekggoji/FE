@@ -8,13 +8,13 @@ import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePhrase } from '@queries/phrases/deletePhrase';
 import supabase from '@libs/supabase';
+import useUserStore from '@store/useUserStore';
 
 // 리팩토링 목록
 // - 좋아요 광클 했을 때 문제 발생 해결
 
-const loggedInUserId = 1;
-
 const PhraseItem = ({ phraseData }) => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const { studyId } = useParams();
   const navigate = useNavigate();

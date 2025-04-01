@@ -5,11 +5,10 @@ import useMediaQuery from '@hooks/useMediaQuery';
 import PropTypes from 'prop-types';
 import { joinStudy } from '@queries/study/joinStudy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-// 임시 로그인 변수
-const loggedInUserId = 3;
+import useUserStore from '@store/useUserStore';
 
 const StudyInfo = ({ studyData }) => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const { studyId } = useParams();
   // 반응형 버튼 제작을 위한 커스텀 훅 사용

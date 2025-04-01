@@ -2,15 +2,14 @@ import Button from '@components/common/Button';
 import useMediaQuery from '@hooks/useMediaQuery';
 import useModalDismiss from '@hooks/useModalDismiss';
 import { writePhrase } from '@queries/phrases/writePhrase';
+import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 
-// 임시 로그인 유저
-const loggedInUserId = 1;
-
 const PhraseWrite = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const formRef = useRef();
   const [isOpen, setIsOpen] = useState(false);

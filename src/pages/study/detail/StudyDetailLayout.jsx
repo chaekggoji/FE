@@ -1,10 +1,10 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import FloatNavButton from '@pages/study/detail/FloatNavButton';
 import { getStudyMemberList } from '@queries/study/getStudyMemberList';
+import useUserStore from '@store/useUserStore';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet, useParams } from 'react-router';
 
-const loggedInUserId = 1;
 const pages = [
   {
     route: 'home',
@@ -25,6 +25,7 @@ const pages = [
 ];
 
 const StudyDetailLayout = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const { studyId } = useParams();
   const { data, isLoading } = useQuery({
     queryKey: ['members', studyId],
