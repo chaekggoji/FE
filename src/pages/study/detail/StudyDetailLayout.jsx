@@ -53,7 +53,7 @@ const StudyDetailLayout = () => {
           ))}
         </nav>
         <main className="grow relative">
-          <FloatNavButton pages={pages} />
+          <FloatNavButton pages={visiblePages} />
           {!isLoading && <Outlet context={{ memberList: data }} />}
         </main>
       </>
