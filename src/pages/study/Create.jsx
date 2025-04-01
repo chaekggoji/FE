@@ -4,6 +4,7 @@ import ProgressBar from '@components/pages/study/create/ProgressBar';
 import SearchBook from '@components/pages/study/create/SearchBook';
 import StudyForm from '@components/pages/study/create/StudyForm';
 import StudyPreview from '@components/pages/study/create/StudyPreview';
+import supabase from '@libs/supabase';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -14,7 +15,7 @@ const Create = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   // 전체 작성 완료 상태
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState('');
 
   // 도서 검색 결과 리스트 상태
   const [bookList, setBookList] = useState();
@@ -48,8 +49,91 @@ const Create = () => {
     if (cancelCreate) navigate(-1);
   };
 
-  const handleSaveStudy = () => {
-    setIsComplete(!isComplete);
+  const handleSaveStudy = async () => {
+    console.log(studyForm);
+    console.log({ ...isBookSelected, category_id: categoryValue.id });
+    console.log(categoryValue);
+    let bookId;
+
+    // 선택한 도서 데이터 조회
+    try {
+      const { data: books, error } = await supabase
+        .from('books')
+        .select('*')
+        .eq('isbn', isBookSelected.isbn);
+      console.log(books);
+
+      if (error) {
+        throw new Error(`도서 정보 조회 오류: ${error.message}`);
+      }
+
+      console.log('조회된 도서', books);
+
+      // 선택한 도서가 없으면 새로운 도서 등록
+      if (books.length === 0) {
+        const { data, error } = await supabase
+          .from('books')
+          .insert([
+            {
+              isbn: isBookSelected.isbn,
+              title: isBookSelected.title,
+              publisher: isBookSelected.publisher,
+              author: isBookSelected.author.join(', '),
+              description: isBookSelected.description,
+              url: isBookSelected.url,
+              thumb_url: isBookSelected.thumb_url,
+              category_id: categoryValue.id,
+            },
+          ])
+          .select();
+
+        if (error) {
+          throw new Error(`도서 데이터 등록 오류: ${error.message}`);
+        }
+
+        // 신규 등록된 도서 id 반환
+        bookId = data[0].id;
+        console.log('신규 등록 도서 id', bookId);
+      } else {
+        // 이미 등록된 도서가 있으면 기존 도서 사용
+        bookId = books[0].id;
+        console.log('기존 도서 id', bookId);
+      }
+    } catch (err) {
+      console.error(err.message);
+      alert(err.message);
+      return;
+    }
+
+    try {
+      // 도서 id 를 포함하여 입력한 스터디 정보와 함께 스터디 등록
+      const { data, error } = await supabase
+        .from('studies')
+        .insert([
+          {
+            title: studyForm.title,
+            description: studyForm.description,
+            rule: studyForm.rule,
+            start_date: studyForm.start_date,
+            end_date: studyForm.end_date,
+            capacity: studyForm.capacity,
+            book_id: bookId,
+          },
+        ])
+        .select();
+      console.log(data);
+
+      if (error) {
+        throw new Error(`스터디 등록 오류: ${error.message}`);
+      }
+
+      // 스터디 id 를 상태에 저장
+      setIsComplete(data[0].id);
+    } catch (err) {
+      console.error('스터디 등록 오류: ', err.message);
+      alert('스터디 등록 오류: ', err.message);
+      return;
+    }
   };
 
   return (
