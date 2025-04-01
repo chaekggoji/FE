@@ -5,14 +5,15 @@ import SearchBook from '@components/pages/study/create/SearchBook';
 import StudyForm from '@components/pages/study/create/StudyForm';
 import StudyPreview from '@components/pages/study/create/StudyPreview';
 import supabase from '@libs/supabase';
+import useUserStore from '@store/useUserStore';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 const Create = () => {
   const navigate = useNavigate();
 
-  // 임시 사용자 id, 이후 전역 상태의 사용자 id 사용
-  const userId = 5;
+  // 로그인한 사용자 id 획득
+  const { loggedInUser } = useUserStore();
 
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
@@ -135,7 +136,9 @@ const Create = () => {
     try {
       const { data, error } = await supabase
         .from('study_participants')
-        .insert([{ user_id: userId, study_id: studyId, role: 'leader' }])
+        .insert([
+          { user_id: loggedInUser.id, study_id: studyId, role: 'leader' },
+        ])
         .select();
 
       if (error) {
