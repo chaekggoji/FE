@@ -1,6 +1,6 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import FloatNavButton from '@pages/study/detail/FloatNavButton';
-import { getStudyMemberList } from '@queries/study/getStudyMemberList';
+import { getStudyMemberList } from '@queries/study';
 import useUserStore from '@store/useUserStore';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet, useParams } from 'react-router';

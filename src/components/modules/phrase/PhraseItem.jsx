@@ -6,9 +6,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deletePhrase } from '@queries/phrases/deletePhrase';
 import supabase from '@libs/supabase';
 import useUserStore from '@store/useUserStore';
+import { deletePhrase } from '@queries/phrases';
 
 // 리팩토링 목록
 // - 좋아요 광클 했을 때 문제 발생 해결

@@ -3,7 +3,7 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useMediaQuery from '@hooks/useMediaQuery';
-import { getPhraseList } from '@queries/phrases/getPhraseList';
+import { getPhraseList } from '@queries/phrases';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router';
