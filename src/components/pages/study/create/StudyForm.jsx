@@ -101,7 +101,7 @@ const StudyForm = ({
         register={register('description', {
           required: '스터디 소개를 입력해주세요.',
           pattern: {
-            value: /^.{10,}$/,
+            value: /^[\s\S]{10,}$/,
             message: '최소 10자 이상 소개글을 적어주세요.',
           },
         })}
@@ -115,7 +115,7 @@ const StudyForm = ({
         register={register('rule', {
           required: '스터디 규칙을 입력해주세요.',
           pattern: {
-            value: /^.{10,}$/,
+            value: /^[\s\S]{10,}$/,
             message: '최소 10자 이상 규칙을 적어주세요.',
           },
         })}
