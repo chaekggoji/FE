@@ -2,9 +2,16 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
 import { deleteStudyMember } from '@queries/study/deleteStudyMember';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useOutletContext, useParams } from 'react-router';
+import { useEffect } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router';
+
+// 리팩토링 목록
+// 403, 404 에러 페이지 연결
+
+const loggedInUserId = 2;
 
 const Manage = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { studyId } = useParams();
   const { memberList } = useOutletContext();
@@ -24,6 +31,18 @@ const Manage = () => {
       window.alert('멤버를 내보내는 중 오류가 발생했습니다.');
     },
   });
+
+  //
+  useEffect(() => {
+    const isLeader = memberList?.some((member) => {
+      console.log(member);
+      return member.id === loggedInUserId && member.role === 'leader';
+    });
+
+    if (!isLeader) {
+      navigate('/403', { replace: true });
+    }
+  }, [memberList]);
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">

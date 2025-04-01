@@ -4,6 +4,7 @@ import { getStudyMemberList } from '@queries/study/getStudyMemberList';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet, useParams } from 'react-router';
 
+const loggedInUserId = 1;
 const pages = [
   {
     route: 'home',
@@ -21,10 +22,6 @@ const pages = [
     route: 'phrases',
     title: '구절 공유해요',
   },
-  {
-    route: 'manage',
-    title: '스터디원 관리',
-  },
 ];
 
 const StudyDetailLayout = () => {
@@ -35,11 +32,21 @@ const StudyDetailLayout = () => {
     select: (res) => res.data,
   });
 
+  // member중 로그인한 유저 id와 같고, role이 leader인 요소 있으면 true 반환
+  const isLeader = data?.some((member) => {
+    console.log(member);
+    return member.id === loggedInUserId && member.role === 'leader';
+  });
+
+  const visiblePages = isLeader
+    ? [...pages, { route: 'manage', title: '스터디원 관리' }]
+    : pages;
+
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
       <>
         <nav className="w-[220px] bg-primary-100 shrink-0 hidden lg:block">
-          {pages.map((page, index) => (
+          {visiblePages.map((page, index) => (
             <StudyNavLink key={index} to={page.route}>
               {page.title}
             </StudyNavLink>
