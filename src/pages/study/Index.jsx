@@ -12,6 +12,7 @@ import Filters from '@components/pages/study/home/Filters';
 import SearchBar from '@components/pages/study/home/SearchBar';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
+import { StudyNoResults } from '@components/pages/study/home/StudyNoResults';
 
 export default function StudyHome() {
   const [studies, setStudies] = useState([]);
@@ -34,9 +35,20 @@ export default function StudyHome() {
   const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
+  // 필터 상태를 '전체'로 설정하고 검색 실행
   const onSearch = () => {
-    setCurrentPage(1); // 검색 버튼 누르면 1페이지부터 다시 보기
-    setSearchKeyword(search); // 버튼 누를 때만 실제 검색어 적용
+    setFilter('전체');
+    setDuration('전체');
+    setCategory('전체');
+    setSort('최신순');
+    setSearchKeyword(search); // 실제 검색어 적용
+  };
+
+  // SearchBar에서 Enter키를 누를 때도 검색
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      onSearch();
+    }
   };
 
   // 추천 도서 섹션 개수
@@ -79,7 +91,8 @@ export default function StudyHome() {
               title
             )
           )
-        `, { count: 'exact' });
+        `, { count: 'exact' })
+        .ilike('title', `%${searchKeyword}%`); // 키워드 조건
 
 
       // 검색 조건 적용
@@ -87,7 +100,7 @@ export default function StudyHome() {
         const keyword = `%${searchKeyword}%`;
 
         if (filter === 'study' || filter === 'all') {
-          query = query.ilike('title', keyword);
+          query = query.ilike('title', keyword); // 스터디 제목
         }
       }
 
@@ -113,7 +126,6 @@ export default function StudyHome() {
 
       // Supabase에 요청
       const { data: studies, count, error } = await query;
-
       if (error) {
         console.error('스터디 불러오기 오류:', error);
         return;
@@ -232,14 +244,17 @@ export default function StudyHome() {
 
       {/* 스터디 리스트 */}
       <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12'>
-        {studies.map((study, index) => (
+        {studies.length === 0 ? (
+          <StudyNoResults key={searchKeyword} />
+        ) : (studies.map((study, index) => (
           <StudyItem
             key={study.id}
             study={study}
             index={index}
             totalItems={studies.length}
           />
-        ))}
+        ))
+        )}
       </div>
 
       {/* 페이지네이션 */}

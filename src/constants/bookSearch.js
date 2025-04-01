@@ -2,7 +2,7 @@
 
 // 검색 기준 옵션
 export const SEARCH_CATEGORIES = [
-  { value: 'all', label: 'ALL' },
+  { value: 'all', label: '전체' },
   { value: 'title', label: '도서명' },
   { value: 'study', label: '스터디 명' },
   { value: 'author', label: '저자명' },

@@ -12,8 +12,13 @@ const StudyItem = ({ study, size = 'large' }) => {
     medium: 'w-full',
   };
 
+  const handleStudyClick = (study) => {
+    // 버튼을 클릭하면 다른 페이지로 이동
+    window.location.href = `/study/${study.id}/home`;
+  };
+
   return (
-    <div className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
+    <div onClick={() => handleStudyClick(study)} className={`study-item shadow-book rounded-xl ${sizeClass[size]} relative`}>
       <div className='absolute rounded-xl bg-[linear-gradient(90deg,_rgba(95,95,95,0.1)_0%,_rgba(255,255,255,0)_4%)] inset-0 z-5' />
       {/* 썸네일 이미지 */}
       {/* 썸네일 이미지 영역 (상단 5:6 비율 유지) */}
