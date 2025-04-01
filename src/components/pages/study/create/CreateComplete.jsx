@@ -1,4 +1,5 @@
 import Button from '@components/common/Button';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
 const CreateComplete = ({ studyId }) => {
@@ -37,6 +38,10 @@ const CreateComplete = ({ studyId }) => {
       </div>
     </>
   );
+};
+
+CreateComplete.propTypes = {
+  studyId: PropTypes.number,
 };
 
 export default CreateComplete;
