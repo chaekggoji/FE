@@ -34,7 +34,6 @@ const StudyDetailLayout = () => {
 
   // member중 로그인한 유저 id와 같고, role이 leader인 요소 있으면 true 반환
   const isLeader = data?.some((member) => {
-    console.log(member);
     return member.id === loggedInUserId && member.role === 'leader';
   });
 
