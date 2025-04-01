@@ -11,6 +11,9 @@ import { useNavigate } from 'react-router';
 const Create = () => {
   const navigate = useNavigate();
 
+  // 임시 사용자 id, 이후 전역 상태의 사용자 id 사용
+  const userId = 5;
+
   // 현재 작성 중인 step 상태로 지정
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -54,6 +57,7 @@ const Create = () => {
     console.log({ ...isBookSelected, category_id: categoryValue.id });
     console.log(categoryValue);
     let bookId;
+    let studyId;
 
     // 선택한 도서 데이터 조회
     try {
@@ -128,10 +132,28 @@ const Create = () => {
       }
 
       // 스터디 id 를 상태에 저장
-      setStudyId(data[0].id);
+      studyId = data[0].id;
+      setStudyId(studyId);
     } catch (err) {
       console.error('스터디 등록 오류: ', err.message);
       alert('스터디 등록 오류: ', err.message);
+      return;
+    }
+
+    // 스터디 리더 데이터 추가
+    try {
+      const { data, error } = await supabase
+        .from('study_participants')
+        .insert([{ user_id: userId, study_id: studyId, role: 'leader' }])
+        .select();
+      console.log(data);
+
+      if (error) {
+        throw new Error(`스터디 멤버 등록 오류: ${error.message}`);
+      }
+    } catch (err) {
+      console.error(`스터디 멤버 등록 오류: `, err.message);
+      alert('스터디 멤버 등록 오류', err.message);
       return;
     }
   };
