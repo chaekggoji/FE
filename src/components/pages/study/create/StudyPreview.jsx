@@ -36,7 +36,7 @@ const StudyPreview = ({ studyForm, isBookSelected }) => {
             <BookItem
               size={md ? 'large' : 'medium'}
               title={isBookSelected.title}
-              author={isBookSelected.author}
+              author={isBookSelected.author.join(', ')}
               thumbnail={isBookSelected.thumb_url}
               link={isBookSelected.url}
             />
