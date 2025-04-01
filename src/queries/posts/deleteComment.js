@@ -1,5 +1,5 @@
 import supabase from '@libs/supabase';
 
-export const deleteCommentById = (commentId) => {
+export const deleteComment = (commentId) => {
   return supabase.from('comments').delete().eq('id', commentId);
 };

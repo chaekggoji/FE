@@ -2,11 +2,10 @@ import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { editPost } from '@queries/posts';
+import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
-
-const loggedInUserId = 2;
 
 const title = {
   notice: '공지사항 글 수정',
@@ -14,12 +13,17 @@ const title = {
 };
 
 const PostEdit = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { boardType } = useParams();
   const { register, handleSubmit } = useForm();
   const location = useLocation();
   const md = useMediaQuery('(min-width: 768px)');
+
+  // 리팩토링 목록
+  // - 텍스트 에디터 사용
+  // - 사진 등록
 
   const mutation = useMutation({
     mutationFn: ({ title, content }) => {

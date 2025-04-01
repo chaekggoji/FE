@@ -1,12 +1,14 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import { writePost } from '@queries/posts';
+import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
-// 임시 유저
-const loggedInUserId = 1;
+// 리팩토링 목록
+// - 텍스트 에디터 사용
+// - 사진 등록
 
 const title = {
   notice: '공지사항 글 작성',
@@ -24,6 +26,7 @@ const contentPlaceholder = {
 };
 
 const PostWrite = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { studyId, boardType } = useParams();
