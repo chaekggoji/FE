@@ -8,10 +8,11 @@ import DropdownBox from '@components/common/DropdownBox';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
 import { getPostListByType } from '@queries/posts';
+import usePagination from '@hooks/usePagination';
 
 // 리팩토링 목록
 // - 정렬
-// - 페이지네이션
+// - 페이지네이션 ✅
 
 const title = {
   notice: '공지사항',
@@ -37,7 +38,7 @@ const Board = () => {
     value: null,
   });
 
-  // 현재 페이지
+  // 페이지네이션 관련 로직
   const getPageFromURL = () => {
     const params = new URLSearchParams(location.search);
     const page = parseInt(params.get('page') || '1', 10);
@@ -49,21 +50,14 @@ const Board = () => {
     setCurrentPage(getPageFromURL());
   }, [boardType]);
 
-  const getFromAndTo = () => {
-    const ITEM_PER_PAGE = 3;
-    const from = (currentPage - 1) * ITEM_PER_PAGE;
-    const to = from + ITEM_PER_PAGE - 1;
-
-    // page가 1일때 : 0, 4
-    // page가 2일때 : 5, 9
-
-    return { from, to };
-  };
+  const ITEMS_PER_PAGE = 3;
+  const PAGES_PER_GROUP = 3;
+  const from = (currentPage - 1) * ITEMS_PER_PAGE;
+  const to = from + ITEMS_PER_PAGE - 1;
 
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType, currentPage],
     queryFn: () => {
-      const { from, to } = getFromAndTo();
       return getPostListByType(studyId, boardType, from, to);
     },
     select: (res) => ({
@@ -72,6 +66,18 @@ const Board = () => {
     }),
     staleTime: 1000 * 10,
   });
+
+  const pagination = usePagination(
+    currentPage,
+    data?.totalCount || 0,
+    ITEMS_PER_PAGE,
+    PAGES_PER_GROUP,
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    navigate(`?page=${page}`); // URL의 page 파라미터를 업데이트
+  };
 
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
@@ -115,8 +121,10 @@ const Board = () => {
             <div className="h-[64px] flex items-center justify-center">
               <Pagination
                 currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalCount={data.totalCount}
+                onPageChange={handlePageChange}
+                currentGroup={pagination.currentGroup}
+                hasPrev={pagination.hasPrev}
+                hasNext={pagination.hasNext}
               />
             </div>
           </>

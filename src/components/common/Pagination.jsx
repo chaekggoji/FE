@@ -1,73 +1,37 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-const ITEM_PER_PAGE = 3; // 페이지 별 게시글 개수
-const PAGES_PER_GROUP = 2; // 한 번에 볼수 있는 페이지 버튼 개수
 
-const Pagination = ({ currentPage, setCurrentPage, totalCount }) => {
-  const navigate = useNavigate();
-  const [pageGroups, setPageGroups] = useState([]);
-  const totalPages = Math.ceil(totalCount / ITEM_PER_PAGE);
-  const currentGroupIndex = Math.floor((currentPage - 1) / PAGES_PER_GROUP);
-
-  useEffect(() => {
-    const newPageGroups = [];
-    // i : 각 그룹의 첫 원소 지정
-    // j : 0부터 시작해 i에 더해지며 group에 push 됨.
-    // j는 버튼 개수보다 작아야 하며, i + j는 totalPages보다 작거나 같아야 함.
-    for (let i = 1; i <= totalPages; i += PAGES_PER_GROUP) {
-      const group = [];
-      for (let j = 0; j < PAGES_PER_GROUP && i + j <= totalPages; j++) {
-        group.push(i + j);
-      }
-      newPageGroups.push(group);
-    }
-    setPageGroups(newPageGroups);
-  }, []);
-
-  // 이전 버튼
-  const handleMovePrevious = () => {
-    if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      handleChangePage(newPage);
-    }
-  };
-
-  // 다음 버튼
-  const handleMoveNext = () => {
-    if (currentPage < totalPages) {
-      const newPage = currentPage + 1;
-      handleChangePage(newPage);
-    }
-  };
-
-  const handleChangePage = (newPage) => {
-    setCurrentPage(newPage);
-    navigate(`?page=${newPage}`); // URL의 page 파라미터를 업데이트
-  };
-
+const Pagination = ({
+  currentPage,
+  onPageChange,
+  currentGroup,
+  hasPrev,
+  hasNext,
+}) => {
   return (
     <div className="flex justify-center items-center gap-2 h-[64px] *:cursor-pointer">
+      {/* 이전 버튼 */}
       <div
-        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${currentPage === 1 ? 'opacity-60 pointer-events-none' : ''}`}
-        onClick={handleMovePrevious}
+        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${!hasPrev && 'opacity-60 pointer-events-none'}`}
+        onClick={() => hasPrev && onPageChange(currentPage - 1)}
       >
         이전
       </div>
-      {pageGroups?.[currentGroupIndex]?.map((item, index) => {
+      {/* 페이지 그룹 */}
+      {currentGroup.map((page) => {
         return (
           <div
-            key={index}
-            className={`px-4 py-1  border-slate-500 rounded-xl ${item === currentPage ? 'bg-primary-300 text-white' : 'border-1 border-slate-500 bg-white text-slate-500'} `}
-            onClick={() => handleChangePage(item)}
+            key={page}
+            className={`px-4 py-1  border-slate-500 rounded-xl ${page === currentPage ? 'bg-primary-300 text-white' : 'border-1 border-slate-500 bg-white text-slate-500'} `}
+            onClick={() => onPageChange(page)}
           >
-            {item}
+            {page}
           </div>
         );
       })}
+      {/* 다음 버튼 */}
       <div
-        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${currentPage === totalPages ? 'opacity-60 pointer-events-none' : ''}`}
-        onClick={handleMoveNext}
+        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${!hasNext && 'opacity-60 pointer-events-none'}`}
+        onClick={() => hasNext && onPageChange(currentPage + 1)}
       >
         다음
       </div>
@@ -77,8 +41,10 @@ const Pagination = ({ currentPage, setCurrentPage, totalCount }) => {
 
 Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
-  totalCount: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  currentGroup: PropTypes.array.isRequired,
+  hasPrev: Boolean.isRequired,
+  hasNext: Boolean.isRequired,
 };
 
 export default Pagination;
