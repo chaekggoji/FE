@@ -64,6 +64,7 @@ const Board = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType, currentPage],
     queryFn: () => {
+      // 알맞은 쿼리 API에 from과 to를 전달해 range를 조절 후 사용하시면 됩니다.
       return getPostListByType(studyId, boardType, from, to);
     },
     // posts와 totalCount를 분리해서 획득합니다.
@@ -132,6 +133,7 @@ const Board = () => {
               ))}
             </div>
             <div className="h-[64px] flex items-center justify-center">
+              {/* 🚩 Pagination 컴포넌트에 알맞은 props를 전달합니다. */}
               <Pagination
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
