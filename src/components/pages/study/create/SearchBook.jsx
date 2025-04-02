@@ -1,6 +1,7 @@
 import SearchField from '@components/common/SearchField';
+import Pagination from '@components/pages/study/home/Pagination';
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const KAKAO_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
 
@@ -12,6 +13,9 @@ const SearchBook = ({
 }) => {
   // input 란의 값을 useRef 로 추출
   const searchKeyword = useRef(null);
+
+  // 현재 페이지
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleBookSelect = (item) => {
     if (isBookSelected && isBookSelected.isbn === item.isbn) {
@@ -31,10 +35,10 @@ const SearchBook = ({
   };
 
   // ref 에 해당하는 input 의 value 를 추출, 함수 실행
-  const handleSearch = async () => {
+  const handleSearch = async (currentPage) => {
     try {
       const response = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=${searchKeyword.current.value}&sort=accuracy`,
+        `https://dapi.kakao.com/v3/search/book?query=${searchKeyword.current.value}&sort=accuracy&page=${currentPage}`,
         {
           method: 'GET',
           headers: {
@@ -96,7 +100,15 @@ const SearchBook = ({
       />
       <h1 className="text-4xl">검색 결과</h1>
       {bookList?.length !== 0 ? (
-        <ul className="flex flex-col gap-y-10">{bookSearchResults}</ul>
+        <>
+          <ul className="flex flex-col gap-y-10">{bookSearchResults}</ul>
+          {bookList && (
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
+        </>
       ) : (
         <div className="flex flex-col gap-y-10">
           <img
