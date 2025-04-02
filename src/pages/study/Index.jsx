@@ -35,14 +35,13 @@ export default function StudyHome() {
   const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
-  // 필터 상태를 '전체'로 설정하고 검색 실행
-  const onSearch = () => {
-    setFilter('전체');
-    setDuration('전체');
-    setCategory('전체');
-    setSort('최신순');
-    setSearchKeyword(search); // 실제 검색어 적용
-  };
+  useEffect(() => {
+    console.log("Updated searchKeyword:", searchKeyword); // searchKeyword 값이 변경될 때마다 출력
+    // searchKeyword가 변경되면 fetchStudies 호출
+    if (searchKeyword) {
+      fetchStudies(searchKeyword, filter, duration, category, sort);
+    }
+  }, [searchKeyword, filter, duration, category, sort]);  // 검색어, 필터, 기간, 카테고리, 정렬 변경 시마다 실행
 
   // SearchBar에서 Enter키를 누를 때도 검색
   const handleKeyPress = (event) => {
@@ -53,7 +52,6 @@ export default function StudyHome() {
 
   // 추천 도서 섹션 개수
   let bookCount = 2; // 기본값: 모바일은 2개
-
   if (isTablet) {
     bookCount = 3; // 태블릿은 3개
   } else if (isDesktop) {
@@ -153,6 +151,17 @@ export default function StudyHome() {
         participantCount: participantCountMap[study.id] || 0,
       }));
 
+      // 필터 상태를 '전체'로 설정하고 검색 실행
+      const onSearch = () => {
+        console.log("onSearch called");
+        setFilter('전체');
+        setDuration('전체');
+        setCategory('전체');
+        setSort('최신순');
+        setSearchKeyword(search); // 실제 검색어 적용
+        fetchStudies(search, filter, duration, category, sort);
+      };
+
       // 5. 화면에 데이터 적용
       setStudies(studiesWithCounts);
       setTotalPages(Math.ceil(count / itemsPerPage));
@@ -210,10 +219,14 @@ export default function StudyHome() {
         setSearch={setSearch}
         filter={filter}
         setFilter={setFilter}
+        setDuration={setDuration}  // setDuration 전달
+        setCategory={setCategory}  // setCategory 전달
+        setSort={setSort}          // setSort 전달
         onSearch={onSearch}
         openDropdown={openDropdown}
         setOpenDropdown={setOpenDropdown}
       />
+
 
       {/* 필터 & 정렬 */}
       <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-2 mt-4'>

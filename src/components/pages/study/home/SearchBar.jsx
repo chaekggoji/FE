@@ -6,24 +6,28 @@ import SearchIcon from '@assets/icons/icon_search_24.svg';
 export default function SearchBar({
   search, setSearch,
   filter, setFilter,
+  setDuration, setCategory, setSort,
   onSearch,
   openDropdown, setOpenDropdown
 }) {
+
+  console.log('setDuration:', setDuration);  // undefined 확인
+  console.log('setCategory:', setCategory);  // undefined 확인
+  console.log('setSort:', setSort);          // undefined 확인
   const filterRef = useRef(null);
   const isFilterOpen = openDropdown === 'search-filter';
   const dropdownWidth = 'w-36 sm:w-40'; // 버튼과 드롭다운의 동일 너비 유지
 
   // 기본값 설정 (검색 전)
   const handleSearch = () => {
+    console.log("onSearch called");
     // 검색 버튼 클릭 시 필터를 '전체'로 설정하고, 검색을 실행
     setFilter('전체');
     setDuration('전체');
     setCategory('전체');
     setSort('최신순');
     onSearch(); // 검색 실행
-    fetchStudies(search, filter, duration, category, sort);
   };
-
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
@@ -67,7 +71,10 @@ export default function SearchBar({
         <input
           type='text'
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            console.log(e.target.value);
+          }}
           onKeyUp={handleKeyPress}
           placeholder='원하는 스터디를 찾아보세요'
           className='flex-grow bg-white border-2 border-primary-300 text-base sm:text-xl rounded-lg px-4 py-2 focus:text-primary-300'
