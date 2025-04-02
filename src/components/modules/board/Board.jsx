@@ -43,15 +43,15 @@ const Board = () => {
     const page = parseInt(params.get('page') || '1', 10);
     return page;
   };
-  const [page, setPage] = useState(getPageFromURL());
+  const [currentPage, setCurrentPage] = useState(getPageFromURL());
 
   useEffect(() => {
-    setPage(getPageFromURL());
+    setCurrentPage(getPageFromURL());
   }, [boardType]);
 
   const getFromAndTo = () => {
-    const ITEM_PER_PAGE = 5;
-    const from = (page - 1) * ITEM_PER_PAGE;
+    const ITEM_PER_PAGE = 3;
+    const from = (currentPage - 1) * ITEM_PER_PAGE;
     const to = from + ITEM_PER_PAGE - 1;
 
     // page가 1일때 : 0, 4
@@ -61,7 +61,7 @@ const Board = () => {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ['posts', boardType, page],
+    queryKey: ['posts', boardType, currentPage],
     queryFn: () => {
       const { from, to } = getFromAndTo();
       return getPostListByType(studyId, boardType, from, to);
@@ -114,8 +114,8 @@ const Board = () => {
             </div>
             <div className="h-[64px] flex items-center justify-center">
               <Pagination
-                page={page}
-                setPage={setPage}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
                 totalCount={data.totalCount}
               />
             </div>
