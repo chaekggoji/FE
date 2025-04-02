@@ -39,27 +39,34 @@ const Board = () => {
   });
 
   // 페이지네이션 관련 로직
+  // 🚩 표시되어있는 코드를 데이터를 불러오는 컴포넌트에서 사용하시면 됩니다.
+
+  // 🚩 url search params에서 page 값을 가져옵니다.
   const getPageFromURL = () => {
     const params = new URLSearchParams(location.search);
     const page = parseInt(params.get('page') || '1', 10);
     return page;
   };
-  const [currentPage, setCurrentPage] = useState(getPageFromURL());
 
+  // 공지사항, 토론 게시판 이동시 currentPage를 초기화합니다.
   useEffect(() => {
     setCurrentPage(getPageFromURL());
   }, [boardType]);
 
+  // 🚩 페이지네이션 설정에 필요한 상태와 변수들입니다.
+  const [currentPage, setCurrentPage] = useState(getPageFromURL());
   const ITEMS_PER_PAGE = 3;
   const PAGES_PER_GROUP = 3;
-  const from = (currentPage - 1) * ITEMS_PER_PAGE;
-  const to = from + ITEMS_PER_PAGE - 1;
+  const from = (currentPage - 1) * ITEMS_PER_PAGE; // supabase 쿼리의 range에 전달
+  const to = from + ITEMS_PER_PAGE - 1; // supabase 쿼리의 range에 전달
 
+  // 🚩 useQuery를 이용해 페이지별 posts를 캐싱합니다.
   const { data, isLoading } = useQuery({
     queryKey: ['posts', boardType, currentPage],
     queryFn: () => {
       return getPostListByType(studyId, boardType, from, to);
     },
+    // posts와 totalCount를 분리해서 획득합니다.
     select: (res) => ({
       posts: res.data,
       totalCount: res.count,
@@ -67,6 +74,11 @@ const Board = () => {
     staleTime: 1000 * 10,
   });
 
+  // 🚩 usePagination 훅을 이용해 pagination 객체를 획득합니다.
+  // totalPages : 총 페이지 개수,
+  // currentGroup : 현재 페이지 그룹 ([1,2,3] 또는 [4,5,6])
+  // hasPrev, hasNext : 이전, 이후 페이지 존재 여부
+  // 위 프로퍼티들은 Pagination 컴포넌트로 전달됩니다.
   const pagination = usePagination(
     currentPage,
     data?.totalCount || 0,
@@ -74,6 +86,7 @@ const Board = () => {
     PAGES_PER_GROUP,
   );
 
+  // 🚩 매개변수로 전달받은 page로 이동하고, url 경로도 바꿉니다.
   const handlePageChange = (page) => {
     setCurrentPage(page);
     navigate(`?page=${page}`); // URL의 page 파라미터를 업데이트

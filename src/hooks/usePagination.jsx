@@ -11,7 +11,7 @@ const usePagination = (
 
   // pagesPerGroup 맞춰 pageGroups를 나누는 로직
   // 예시) totalPages가 7이고, pagesPerGroup 3이라면
-  // pageGroups는 [[1,2,3],[4,5,6],[7]]로 설정됨.
+  // pageGroups는 [[1,2,3],[4,5,6],[7]]로 설정됩니다.
   const pageGroups = useMemo(() => {
     const newPageGroups = [];
 
