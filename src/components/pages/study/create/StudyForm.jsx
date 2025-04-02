@@ -17,6 +17,7 @@ const StudyForm = ({
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange', // 입력할 때마다 유효성 검사 수행
+    defaultValues: studyForm,
   });
 
   // 모든 필드 값 실시간 감지
