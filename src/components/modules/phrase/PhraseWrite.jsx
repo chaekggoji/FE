@@ -1,7 +1,7 @@
 import Button from '@components/common/Button';
 import useMediaQuery from '@hooks/useMediaQuery';
 import useModalDismiss from '@hooks/useModalDismiss';
-import { writePhrase } from '@queries/phrases/writePhrase';
+import { writePhrase } from '@queries/phrases';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
