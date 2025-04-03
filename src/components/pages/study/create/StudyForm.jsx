@@ -38,7 +38,6 @@ const StudyForm = ({
         placeholder="스터디 이름을 입력해주세요."
         id="studyName"
         name="title"
-        value={studyForm?.title || ''}
         register={register('title', {
           required: '스터디 제목을 입력해주세요.',
           pattern: {
@@ -46,7 +45,7 @@ const StudyForm = ({
             message: '스터디 제목은 최소 3자, 최대 30자까지 작성 가능해요.',
           },
         })}
-        error={errors}
+        error={errors.title}
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-10">
         <CustomInputField
@@ -54,22 +53,20 @@ const StudyForm = ({
           type="date"
           placeholder="스터디 시작일을 선택해주세요."
           id="studyStartDate"
-          value={studyForm?.start_date || ''}
           register={register('start_date', {
             required: '스터디 시작일을 선택해주세요.',
           })}
-          error={errors}
+          error={errors.start_date}
         />
         <CustomInputField
           labelText="스터디 종료일"
           type="date"
           placeholder="스터디 종료일을 선택해주세요."
           id="studyEndDate"
-          value={studyForm?.end_date || ''}
           register={register('end_date', {
             required: '스터디 종료일을 선택해주세요.',
           })}
-          error={errors}
+          error={errors.end_date}
         />
       </div>
       <CustomInputField
@@ -79,7 +76,6 @@ const StudyForm = ({
         max="8"
         placeholder="참여인원을 입력해주세요."
         id="studyCapacity"
-        value={studyForm?.capacity || ''}
         register={register('capacity', {
           required: '스터디 참여 인원을 선택해주세요.',
           pattern: {
@@ -88,7 +84,7 @@ const StudyForm = ({
               '스터디 참여 인원은 스터디장 포함 최소 1명, 최대 8명까지만 선택할 수 있어요.',
           },
         })}
-        error={errors}
+        error={errors.capacity}
       />
       <CategoryDropdown
         categoryValue={categoryValue}
@@ -98,7 +94,6 @@ const StudyForm = ({
         labelText="스터디 소개"
         placeholder="스터디 소개를 입력해주세요."
         id="studyInfo"
-        value={studyForm?.description || ''}
         register={register('description', {
           required: '스터디 소개를 입력해주세요.',
           pattern: {
@@ -106,13 +101,12 @@ const StudyForm = ({
             message: '최소 10자 이상 소개글을 적어주세요.',
           },
         })}
-        error={errors}
+        error={errors.description}
       />
       <CustomTextarea
         labelText="스터디 규칙"
         placeholder="스터디 규칙을 입력해주세요."
         id="studyRule"
-        value={studyForm?.rule || ''}
         register={register('rule', {
           required: '스터디 규칙을 입력해주세요.',
           pattern: {
@@ -120,7 +114,7 @@ const StudyForm = ({
             message: '최소 10자 이상 규칙을 적어주세요.',
           },
         })}
-        error={errors}
+        error={errors.rule}
       />
     </form>
   );
