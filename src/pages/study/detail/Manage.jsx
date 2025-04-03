@@ -1,6 +1,6 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
-import { deleteStudyMember } from '@queries/study/deleteStudyMember';
+import { deleteStudyMember } from '@queries/study';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
