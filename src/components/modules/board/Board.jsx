@@ -13,6 +13,7 @@ import usePagination from '@hooks/usePagination';
 // 리팩토링 목록
 // - 정렬
 // - 페이지네이션 ✅
+// - 페이지 이동시 깜빡임 최소화
 
 const title = {
   notice: '공지사항',
@@ -55,8 +56,8 @@ const Board = () => {
 
   // 🚩 페이지네이션 설정에 필요한 상태와 변수들입니다.
   const [currentPage, setCurrentPage] = useState(getPageFromURL());
-  const ITEMS_PER_PAGE = 3;
-  const PAGES_PER_GROUP = 3;
+  const ITEMS_PER_PAGE = 7;
+  const PAGES_PER_GROUP = 5;
   const from = (currentPage - 1) * ITEMS_PER_PAGE; // supabase 쿼리의 range에 전달
   const to = from + ITEMS_PER_PAGE - 1; // supabase 쿼리의 range에 전달
 
