@@ -139,7 +139,7 @@ const Board = () => {
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
                 currentGroup={pagination.currentGroup}
-                hasPrev={}
+                hasPrev={pagination.hasPrev}
                 hasNext={pagination.hasNext}
               />
             </div>
