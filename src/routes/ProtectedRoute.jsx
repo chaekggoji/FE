@@ -1,8 +1,8 @@
+import useUserStore from '@store/useUserStore';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
 const ProtectedRoute = () => {
-  // const isLoggedIn = useUserStore(state => state.user);
-  const isLoggedIn = true;
+  const isLoggedIn = useUserStore((state) => state.loggedInUser);
   const location = useLocation();
 
   if (!isLoggedIn && location.pathname === '/') {

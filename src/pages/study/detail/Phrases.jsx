@@ -3,40 +3,14 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useMediaQuery from '@hooks/useMediaQuery';
+import { getPhraseList } from '@queries/phrases';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
-const phrases = [
-  {
-    id: 1,
-    page: 142,
-    content:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil commodi totam distinctio, incidunt aliquam repellat, quae iure autem quam vero quibusdam laudantium hic! Reiciendis, explicabo labore doloremque et illo ad!',
-    user: {
-      id: 1,
-      nickname: '유저1',
-    },
-  },
-  {
-    id: 2,
-    page: 152,
-    content:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil commodi totam distinctio, incidunt aliquam repellat, quae iure autem quam vero quibusdam laudantium hic! Reiciendis, explicabo labore doloremque et illo ad!',
-    user: {
-      id: 2,
-      nickname: '유저2',
-    },
-  },
-  {
-    id: 3,
-    page: 162,
-    content:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil commodi totam distinctio, incidunt aliquam repellat, quae iure autem quam vero quibusdam laudantium hic! Reiciendis, explicabo labore doloremque et illo ad!',
-    user: {
-      id: 3,
-      nickname: '유저3',
-    },
-  },
-];
+// 리팩토링 목록
+// - 정렬
+// - 무한 스크롤
 
 const options = [
   { name: '좋아요 많은 순', value: 'mostLiked' },
@@ -45,12 +19,22 @@ const options = [
 ];
 
 const Phrases = () => {
+  const { studyId } = useParams();
   const [selectedOption, setSelectedOption] = useState({
     name: '',
     value: null,
   });
 
   const md = useMediaQuery('(min-width: 768px)');
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['phrases', studyId],
+    queryFn: () => {
+      return getPhraseList(studyId);
+    },
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
@@ -65,9 +49,10 @@ const Phrases = () => {
         <PhraseWrite />
       </div>
       <div className="max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
-        {phrases.map((phrase) => (
-          <PhraseItem key={phrase.id} phraseData={phrase} />
-        ))}
+        {!isLoading &&
+          data.map((phrase) => (
+            <PhraseItem key={phrase.id} phraseData={phrase} />
+          ))}
       </div>
     </div>
   );

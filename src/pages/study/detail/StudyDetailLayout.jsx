@@ -1,8 +1,9 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
 import FloatNavButton from '@pages/study/detail/FloatNavButton';
-import { useState } from 'react';
-import { Outlet } from 'react-router';
-import errorImg from '@assets/images/error.png';
+import { getStudyMemberList } from '@queries/study';
+import useUserStore from '@store/useUserStore';
+import { useQuery } from '@tanstack/react-query';
+import { Outlet, useParams } from 'react-router';
 
 const pages = [
   {
@@ -10,48 +11,52 @@ const pages = [
     title: '스터디 홈',
   },
   {
-    route: 'notices',
+    route: 'notice',
     title: '공지사항',
   },
   {
-    route: 'debates',
+    route: 'debate',
     title: '토론 나눠요',
   },
   {
     route: 'phrases',
     title: '구절 공유해요',
   },
-  {
-    route: 'manage',
-    title: '스터디원 관리',
-  },
 ];
 
 const StudyDetailLayout = () => {
-  const [isError, setIsError] = useState();
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
+  const { studyId } = useParams();
+  const { data, isLoading } = useQuery({
+    queryKey: ['members', studyId],
+    queryFn: () => getStudyMemberList(studyId),
+    select: (res) => res.data,
+  });
+
+  // member중 로그인한 유저 id와 같고, role이 leader인 요소 있으면 true 반환
+  const isLeader = data?.some((member) => {
+    return member.id === loggedInUserId && member.role === 'leader';
+  });
+
+  const visiblePages = isLeader
+    ? [...pages, { route: 'manage', title: '스터디원 관리' }]
+    : pages;
+
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">
-      {isError && (
-        <div className="flex justify-center items-center flex-col gap-8 w-full">
-          <img src={errorImg} width="160px" />
-          <p className="text-2xl">존재하지 않는 페이지입니다.</p>
-        </div>
-      )}
-      {!isError && (
-        <>
-          <nav className="w-[220px] bg-primary-100 shrink-0 hidden lg:block">
-            {pages.map((page, index) => (
-              <StudyNavLink key={index} to={page.route}>
-                {page.title}
-              </StudyNavLink>
-            ))}
-          </nav>
-          <main className="grow relative">
-            <FloatNavButton pages={pages} />
-            <Outlet context={{ setIsError }} />
-          </main>
-        </>
-      )}
+      <>
+        <nav className="w-[220px] bg-primary-100 shrink-0 hidden lg:block">
+          {visiblePages.map((page, index) => (
+            <StudyNavLink key={index} to={page.route}>
+              {page.title}
+            </StudyNavLink>
+          ))}
+        </nav>
+        <main className="grow relative">
+          <FloatNavButton pages={visiblePages} />
+          {!isLoading && <Outlet context={{ memberList: data }} />}
+        </main>
+      </>
     </div>
   );
 };

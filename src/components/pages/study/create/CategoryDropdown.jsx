@@ -1,21 +1,30 @@
 import useModalDismiss from '@hooks/useModalDismiss';
-import { useRef, useState } from 'react';
+import supabase from '@libs/supabase';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 
-const CategoryDropdown = () => {
-  // 카테고리 더미 데이터(상수 처리 vs DB 호출 고려 중)
-  const BookCategoryList = [
-    { id: 1, title: '자기계발' },
-    { id: 2, title: '인문' },
-    { id: 3, title: '경제/경영' },
-    { id: 4, title: '처세' },
-    { id: 5, title: 'IT' },
-    { id: 6, title: '소설' },
-    { id: 7, title: '과학' },
-    { id: 8, title: '시/에세이' },
-    { id: 9, title: '역사/문화' },
-    { id: 10, title: '건강' },
-    { id: 11, title: '요리' },
-  ];
+const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('book_categories')
+          .select('id, title');
+
+        if (error) throw error;
+        setCategories(data);
+      } catch (error) {
+        console.error('카테고리 로드 에러:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -24,18 +33,15 @@ const CategoryDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const [dropdownValue, setDropdownValue] =
-    useState('도서 카테고리를 선택해주세요.');
-
   // 카테고리 드롭다운(추가 수정 예정)
-  const BookCategoryOption = BookCategoryList.map((item) => (
+  const BookCategoryOption = categories?.map((item) => (
     <li
       id={item.title}
       key={item.id}
       value={item.id}
       className="hover:bg-primary-100 cursor-pointer"
       onClick={() => {
-        setDropdownValue(item.title);
+        setCategoryValue({ id: item.id, title: item.title });
         setIsDropdownOpen(!isDropdownOpen);
       }}
     >
@@ -57,10 +63,11 @@ const CategoryDropdown = () => {
         <button
           type="button"
           className="flex justify-between w-full px-6 py-3 border border-gray-200 rounded-xl sm:text-xl focus:border-primary-300 focus:shadow focus:shadow-primary-300 cursor-pointer focus:outline-hidden"
-          id={dropdownValue.id}
           onClick={toggleDropdown}
         >
-          {dropdownValue}
+          {categoryValue
+            ? categoryValue.title
+            : '도서 카테고리를 선택해주세요.'}
           {isDropdownOpen ? (
             <img src="/src/assets/icons/icon_arrow_top_24.svg" />
           ) : (
@@ -75,6 +82,11 @@ const CategoryDropdown = () => {
       </div>
     </>
   );
+};
+
+CategoryDropdown.propTypes = {
+  categoryValue: PropTypes.string,
+  setCategoryValue: PropTypes.func,
 };
 
 export default CategoryDropdown;

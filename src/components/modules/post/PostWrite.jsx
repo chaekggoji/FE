@@ -1,27 +1,52 @@
 import Button from '@components/common/Button';
 import BoardTitle from '@components/modules/board/BoardTitle';
+import { writePost } from '@queries/posts';
+import useUserStore from '@store/useUserStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
+// 리팩토링 목록
+// - 텍스트 에디터 사용
+// - 사진 등록
+
 const title = {
-  notices: '공지사항 글 작성',
-  debates: '토론 글 작성',
+  notice: '공지사항 글 작성',
+  debate: '토론 글 작성',
 };
 
 const titlePlaceholder = {
-  notices: '공지사항 제목을 입력해주세요.',
-  debates: '함께 토론하고 싶은 주제를 입력해 주세요.',
+  notice: '공지사항 제목을 입력해주세요.',
+  debate: '함께 토론하고 싶은 주제를 입력해 주세요.',
 };
 
 const contentPlaceholder = {
-  notices: '공지사항 내용을 입력해주세요.',
-  debates: '토론 주제에 대한 내용을 입력해 주세요.',
+  notice: '공지사항 내용을 입력해주세요.',
+  debate: '토론 주제에 대한 내용을 입력해 주세요.',
 };
 
 const PostWrite = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { boardType } = useParams();
+  const { studyId, boardType } = useParams();
   const { register, handleSubmit } = useForm();
+
+  const mutation = useMutation({
+    mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
+      return writePost(studyId, loggedInUserId, type, title, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts', boardType]);
+      window.alert('게시글을 작성하였습니다.');
+      navigate(-1, { replace: true });
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('게시글 작성 중 오류가 발생했습니다.');
+      navigate(-1, { replace: true });
+    },
+  });
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -30,8 +55,13 @@ const PostWrite = () => {
   };
 
   const onSubmit = (formData) => {
-    window.alert('글이 작성되었습니다.');
-    console.log(formData);
+    mutation.mutate({
+      studyId,
+      loggedInUserId,
+      type: boardType,
+      title: formData.title,
+      content: formData.content,
+    });
   };
 
   return (

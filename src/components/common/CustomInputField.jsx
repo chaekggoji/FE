@@ -1,3 +1,4 @@
+import InputError from '@components/common/InputError';
 import PropTypes from 'prop-types';
 
 const CustomInputField = ({
@@ -10,6 +11,7 @@ const CustomInputField = ({
   placeholder,
   children,
   register,
+  error,
 }) => {
   return (
     <div>
@@ -33,6 +35,7 @@ const CustomInputField = ({
         />
         {children}
       </div>
+      <InputError target={error} />
     </div>
   );
 };
@@ -47,6 +50,7 @@ CustomInputField.propTypes = {
   placeholder: PropTypes.string,
   children: PropTypes.node,
   register: PropTypes.object,
+  error: PropTypes.object,
 };
 
 export default CustomInputField;
