@@ -8,12 +8,14 @@ const DropdownBox = ({
   options,
   className,
   size = 'medium',
+  onOptionChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownBoxRef = useRef(null);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
+    onOptionChange(option);
     setIsOpen(false);
   };
 
@@ -63,6 +65,7 @@ DropdownBox.propTypes = {
   ),
   className: PropTypes.string,
   size: PropTypes.string,
+  onOptionChange: PropTypes.func.isRequired,
 };
 
 export default DropdownBox;

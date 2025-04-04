@@ -11,7 +11,7 @@ import { getPostListByType } from '@queries/posts';
 import usePagination from '@hooks/usePagination';
 
 // 리팩토링 목록
-// - 정렬
+// - 정렬 ✅
 // - 페이지네이션 ✅
 // - 페이지 이동시 깜빡임 최소화
 
@@ -33,11 +33,22 @@ const Board = () => {
   const navigate = useNavigate();
   const md = useMediaQuery('(min-width: 768px)');
 
-  // 게시판 정렬 옵션
-  const [selectedOption, setSelectedOption] = useState({
-    name: '',
-    value: null,
+  // 정렬 관련 로직
+  const getSortByFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    const sortBy = params.get('sortBy') || '';
+    return sortBy;
+  };
+
+  const [sortOption, setSortOption] = useState({
+    name: '정렬 기준',
+    value: getSortByFromURL(),
   });
+
+  const handleSortOptionChange = (sortOption) => {
+    setSortOption(sortOption);
+    navigate(`?sortBy=${sortOption.value}`); // URL의 page 파라미터를 업데이트
+  };
 
   // 페이지네이션 관련 로직
   // 🚩 표시되어있는 코드를 데이터를 불러오는 컴포넌트에서 사용하시면 됩니다.
@@ -63,10 +74,10 @@ const Board = () => {
 
   // 🚩 useQuery를 이용해 페이지별 posts를 캐싱합니다.
   const { data, isLoading } = useQuery({
-    queryKey: ['posts', boardType, currentPage],
+    queryKey: ['posts', boardType, currentPage, sortOption.value],
     queryFn: () => {
       // 알맞은 쿼리 API에 from과 to를 전달해 range를 조절 후 사용하시면 됩니다.
-      return getPostListByType(studyId, boardType, from, to);
+      return getPostListByType(studyId, boardType, from, to, sortOption.value);
     },
     // posts와 totalCount를 분리해서 획득합니다.
     select: (res) => ({
@@ -102,9 +113,10 @@ const Board = () => {
           <>
             <div className="flex items-center px-6 h-12">
               <DropdownBox
-                selectedOption={selectedOption}
-                setSelectedOption={setSelectedOption}
+                selectedOption={sortOption}
+                setSelectedOption={setSortOption}
                 options={options}
+                onOptionChange={handleSortOptionChange}
                 size={md ? 'medium' : 'small'}
               />
               <Button
