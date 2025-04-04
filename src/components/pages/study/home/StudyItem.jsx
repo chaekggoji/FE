@@ -55,13 +55,23 @@ const StudyItem = ({ study, size = 'large' }) => {
 
 StudyItem.propTypes = {
   study: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
+    participantCount: PropTypes.number,
     category: PropTypes.string,
     thumb_url: PropTypes.string,
     participants: PropTypes.number,
     capacity: PropTypes.number,
     start_date: PropTypes.string,
     end_date: PropTypes.string,
+    books: PropTypes.shape({
+      thumb_url: PropTypes.string,
+      title: PropTypes.string,
+      author: PropTypes.string,
+      book_categories: PropTypes.shape({
+        title: PropTypes.string,
+      }),
+    }),
     book_categories: PropTypes.shape({
       title: PropTypes.string,
     })

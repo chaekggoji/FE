@@ -17,7 +17,7 @@ const Pagination = ({
         이전
       </div>
       {/* 페이지 그룹 */}
-      {currentGroup.map((page) => {
+      {currentGroup?.map((page) => {
         return (
           <div
             key={page}
