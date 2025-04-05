@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { DURATION_FILTERS, BOOK_CATEGORIES } from '@/constants/bookSearch';
+import { DURATION_FILTERS } from '@/constants/bookSearch';
 import useModalDismiss from '@hooks/useModalDismiss';
 
 export default function Filters({
@@ -42,7 +42,7 @@ export default function Filters({
                 key={option.label}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
-                  setDuration(option.label);
+                  setDuration(option.value);
                   setOpenDropdown(null);
                 }}
               >
@@ -65,16 +65,16 @@ export default function Filters({
 
         {isCategoryOpen && (
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
-            {BOOK_CATEGORIES.map((option) => (
+            {categoryList.map((title) => (
               <div
-                key={option.label}
+                key={title}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
-                  setCategory(option.label);
+                  setCategory(title);
                   setOpenDropdown(null);
                 }}
               >
-                {option.label}
+                {title}
               </div>
             ))}
           </div>
