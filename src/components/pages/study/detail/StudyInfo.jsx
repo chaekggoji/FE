@@ -1,19 +1,47 @@
 import Button from '@components/common/Button';
 import StudyMembers from '@components/pages/study/detail/StudyMembers';
-import { useLocation } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import useMediaQuery from '@hooks/useMediaQuery';
+import PropTypes from 'prop-types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useUserStore from '@store/useUserStore';
+import { joinStudy } from '@queries/study';
 
-const StudyInfo = () => {
+const StudyInfo = ({ studyData }) => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
+  const queryClient = useQueryClient();
+  const { studyId } = useParams();
   // 반응형 버튼 제작을 위한 커스텀 훅 사용
   const md = useMediaQuery('(min-width: 768px)');
   const { pathname } = useLocation();
 
+  const isParticipant = studyData.study_participants
+    .map((participant) => participant.users.id)
+    .includes(loggedInUserId);
+
+  const mutation = useMutation({
+    mutationFn: ({ studyId, userId }) => {
+      return joinStudy(studyId, userId);
+    },
+    onSuccess: () => {
+      console.log('inserted');
+      queryClient.invalidateQueries(['study', studyId]); // study 상세 재조회
+      window.alert('스터디에 참여하였습니다.');
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('스터디 참여 중 오류가 발생했습니다.');
+    },
+  });
+
+  const handleParticipate = async (studyId, userId) => {
+    mutation.mutate({ studyId, userId });
+  };
+
   return (
-    <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6">
+    <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6 pr-4">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
-      <h3 className="lg:text-3xl text-2xl">
-        무라카미 하루키 신작 같이 읽어요!
-      </h3>
+      <h3 className="lg:text-3xl text-2xl">{studyData.title}</h3>
       <div className="flex">
         <div className="flex-1/3 flex flex-col gap-4 lg:text-2xl text-xl">
           <p>스터디 진행 도서</p>
@@ -21,9 +49,11 @@ const StudyInfo = () => {
           <p>모집 인원</p>
         </div>
         <div className="flex-2/3 flex flex-col gap-4 lg:text-2xl text-xl">
-          <p>신의 아이들은 모두 춤춘다</p>
-          <p>2025-04-01 ~ 2025-04-30</p>
-          <p>8명</p>
+          <p>{studyData.books.title}</p>
+          <p>
+            {studyData.start_date} ~ {studyData.end_date}
+          </p>
+          <p>{studyData.capacity}</p>
         </div>
       </div>
       {pathname !== '/study/create' && (
@@ -31,29 +61,26 @@ const StudyInfo = () => {
         <>
           <div>
             <p className="text-2xl mb-4">현재 스터디원</p>
-            <StudyMembers
-              memberList={[
-                { id: 1, nickname: '오동환' },
-                { id: 2, nickname: '오다슬' },
-                { id: 3, nickname: '이선재' },
-                { id: 4, nickname: '강지훈' },
-                { id: 5, nickname: '황은지' },
-                { id: 6, nickname: null },
-              ]}
-            />
+            <StudyMembers participantData={studyData.study_participants} />
           </div>
-          <div className="ml-auto">
-            <Button
-              size={md ? 'medium' : 'small'}
-              onClick={() => window.alert('스터디에 참여하였습니다.')}
-            >
-              스터디 참여하기
-            </Button>
-          </div>
+          {!isParticipant && (
+            <div className="ml-auto">
+              <Button
+                size={md ? 'medium' : 'small'}
+                onClick={() => handleParticipate(studyId, loggedInUserId)}
+              >
+                스터디 참여하기
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>
   );
+};
+
+StudyInfo.propTypes = {
+  studyData: PropTypes.object,
 };
 
 export default StudyInfo;

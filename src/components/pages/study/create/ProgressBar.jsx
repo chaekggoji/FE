@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const ProgressBar = ({
   currentStep,
   setCurrentStep,
-  isStepZeroFilled,
+  isBookSelected,
   isStepOneFilled,
 }) => {
   return (
@@ -15,7 +15,9 @@ const ProgressBar = ({
         }}
       >
         <div className="flex justify-center items-center bg-primary-300 text-white w-10 h-10 rounded-full">
-          {isStepZeroFilled ? (
+          {currentStep > 0 && isBookSelected ? (
+            <img src="/src/assets/icons/icon_check_24.svg" />
+          ) : currentStep === 0 && isBookSelected ? (
             <img src="/src/assets/icons/icon_check_24.svg" />
           ) : (
             '1'
@@ -33,7 +35,11 @@ const ProgressBar = ({
           className={`flex justify-center items-center ${currentStep >= 1 ? 'bg-primary-300 text-white' : 'bg-white text-black border-2 border-primary-300'}  w-10 h-10 rounded-full`}
         >
           {isStepOneFilled ? (
-            <img src="/src/assets/icons/icon_check_24.svg" />
+            currentStep >= 1 ? (
+              <img src="/src/assets/icons/icon_check_24.svg" />
+            ) : (
+              <img src="/src/assets/icons/icon_check_black_24.svg" />
+            )
           ) : (
             '2'
           )}
@@ -61,7 +67,7 @@ const ProgressBar = ({
 ProgressBar.propTypes = {
   currentStep: PropTypes.number.isRequired,
   setCurrentStep: PropTypes.func.isRequired,
-  isStepZeroFilled: PropTypes.bool.isRequired,
+  isBookSelected: PropTypes.bool.isRequired,
   isStepOneFilled: PropTypes.bool.isRequired,
 };
 

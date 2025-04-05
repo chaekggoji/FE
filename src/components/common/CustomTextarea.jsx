@@ -1,3 +1,4 @@
+import InputError from '@components/common/InputError';
 import PropTypes from 'prop-types';
 
 const CustomTextarea = ({
@@ -9,6 +10,8 @@ const CustomTextarea = ({
   max,
   placeholder,
   children,
+  register,
+  error,
 }) => {
   return (
     <div>
@@ -29,9 +32,11 @@ const CustomTextarea = ({
           max={max}
           className="w-full placeholder-gray-300 focus:outline-hidden resize-none"
           rows="6"
+          {...register}
         />
         {children}
       </div>
+      <InputError target={error} />
     </div>
   );
 };
@@ -45,6 +50,8 @@ CustomTextarea.propTypes = {
   type: PropTypes.string,
   placeholder: PropTypes.string,
   children: PropTypes.node,
+  register: PropTypes.object,
+  error: PropTypes.object,
 };
 
 export default CustomTextarea;

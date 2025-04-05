@@ -1,13 +1,20 @@
 import Button from '@components/common/Button';
 import useMediaQuery from '@hooks/useMediaQuery';
 import useModalDismiss from '@hooks/useModalDismiss';
+import { writePhrase } from '@queries/phrases';
+import useUserStore from '@store/useUserStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router';
 
 const PhraseWrite = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
+  const queryClient = useQueryClient();
   const formRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit } = useForm();
+  const { studyId } = useParams();
 
   const handleCancle = (event) => {
     event.preventDefault();
@@ -18,12 +25,31 @@ const PhraseWrite = () => {
     setIsOpen(false);
   });
 
+  const md = useMediaQuery('(min-width: 768px)');
+
+  const mutation = useMutation({
+    mutationFn: ({ studyId, loggedInUserId, page, content }) => {
+      return writePhrase(studyId, loggedInUserId, page, content);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['phrases', studyId]);
+      window.alert('구절을 작성하였습니다.');
+    },
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('구절 작성 중 오류가 발생했습니다.');
+    },
+  });
+
   const onSubmit = (formData) => {
-    window.alert(JSON.stringify(formData));
+    mutation.mutate({
+      studyId,
+      loggedInUserId,
+      page: formData.page,
+      content: formData.content,
+    });
     setIsOpen(false);
   };
-
-  const md = useMediaQuery('(min-width: 768px)');
 
   return (
     <div className="ml-auto" ref={formRef}>
@@ -34,7 +60,7 @@ const PhraseWrite = () => {
         구절 작성
       </Button>
       <form
-        className={`md:w-1/2 w-2/3 absolute top-full right-6 ring-slate-500 ring-1 bg-white p-6 z-10 flex flex-col gap-4 rounded-2xl transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`md:w-1/2 w-2/3 absolute top-full lg:right-10 md:right-8 right-6 ring-slate-500 ring-1 bg-white p-6 z-10 flex flex-col gap-4 rounded-2xl transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onSubmit={handleSubmit(onSubmit)}
       >
         <input

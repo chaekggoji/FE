@@ -1,34 +1,49 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { DURATION_FILTERS, BOOK_CATEGORIES } from '@/constants/bookSearch';
+import useModalDismiss from '@hooks/useModalDismiss';
 
-export default function Filters({ duration, setDuration, category, setCategory }) {
-  const [isDurationOpen, setIsDurationOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+export default function Filters({
+  duration, setDuration,
+  category, setCategory,
+  openDropdown, setOpenDropdown
+}) {
+  // 드롭다운 너비 동일하게 하기
+  const dropdownWidth = 'w-full sm:w-28 md:w-32 lg:w-36';
 
-  // 드롭다운 열기/닫기 토글
-  const toggleDurationDropdown = () => setIsDurationOpen(!isDurationOpen);
-  const toggleCategoryDropdown = () => setIsCategoryOpen(!isCategoryOpen);
+  const durationRef = useRef(null);
+  const categoryRef = useRef(null);
+
+  const isDurationOpen = openDropdown === 'duration';
+  const isCategoryOpen = openDropdown === 'category';
+
+  useModalDismiss(durationRef, () => {
+    if (isDurationOpen) setOpenDropdown(null);
+  });
+
+  useModalDismiss(categoryRef, () => {
+    if (isCategoryOpen) setOpenDropdown(null);
+  });
 
   return (
-    <div className='flex gap-x-4'>
+    <div className='flex flex-wrap gap-4'>
       {/* 기간 드롭다운 */}
-      <div className='relative bg-white rounded-lg text-left'>
+      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={durationRef}>
         <button
-          onClick={toggleDurationDropdown}
-          className={`border text-2xl px-4 py-2 rounded-lg w-40 text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
+          onClick={() => setOpenDropdown(isDurationOpen ? null : 'duration')}
+          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
         >
           {duration || '기간 선택'}
         </button>
 
         {isDurationOpen && (
-          <div className='absolute text-2xl left-0 right-0 text-gray-950 bg-white border rounded-lg shadow-lg z-100'>
+          <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
             {DURATION_FILTERS.map((option) => (
               <div
                 key={option.value}
-                className='p-4 hover:bg-primary-200 cursor-pointer'
+                className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
                   setDuration(option.label);
-                  setIsDurationOpen(false);
+                  setOpenDropdown(null);
                 }}
               >
                 {option.label}
@@ -39,22 +54,24 @@ export default function Filters({ duration, setDuration, category, setCategory }
       </div>
 
       {/* 카테고리 드롭다운 */}
-      <div className='relative bg-white rounded-lg text-left'>
+      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={categoryRef}>
         <button
-          onClick={toggleCategoryDropdown}
-          className={`border text-2xl px-4 py-2 rounded-lg w-40 text-left ${isCategoryOpen ? 'bg-primary-200' : ''}`}
+          onClick={() => setOpenDropdown(isCategoryOpen ? null : 'category')}
+          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isCategoryOpen ? 'bg-primary-200' : ''}`}
         >
-          {category || '카테고리 선택'} {/* 선택된 label을 보여줌 */}
+          {category || '카테고리 선택'}
         </button>
+
+
         {isCategoryOpen && (
-          <div className='absolute text-2xl left-0 right-0 text-gray-950 bg-white border rounded-lg shadow-md z-100'>
+          <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
             {BOOK_CATEGORIES.map((option) => (
               <div
                 key={option.value}
-                className='p-4 hover:bg-primary-200 cursor-pointer'
+                className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
                   setCategory(option.label);
-                  setIsCategoryOpen(false);
+                  setOpenDropdown(null);
                 }}
               >
                 {option.label}

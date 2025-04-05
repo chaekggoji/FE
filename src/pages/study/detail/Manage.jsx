@@ -1,48 +1,61 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
+import { deleteStudyMember } from '@queries/study';
+import useUserStore from '@store/useUserStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router';
 
-const memberList = [
-  {
-    id: 1,
-    nickname: '스터디원1',
-  },
-  {
-    id: 2,
-    nickname: '스터디원2',
-  },
-  {
-    id: 3,
-    nickname: '스터디원3',
-  },
-  {
-    id: 4,
-    nickname: '스터디원4',
-  },
-  {
-    id: 5,
-    nickname: '스터디원5',
-  },
-  {
-    id: 6,
-    nickname: '스터디원6',
-  },
-  {
-    id: 7,
-    nickname: '스터디원7',
-  },
-  {
-    id: 8,
-    nickname: '스터디원8',
-  },
-];
+// 리팩토링 목록
+// 403, 404 에러 페이지 연결
 
 const Manage = () => {
+  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { studyId } = useParams();
+  const { memberList } = useOutletContext();
+
+  const mutation = useMutation({
+    mutationFn: ({ userId, studyId }) => {
+      return deleteStudyMember(userId, studyId);
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(['members', studyId]);
+      window.alert('정상적으로 스터디 멤버를 내보냈습니다.');
+    },
+
+    onError: (error) => {
+      console.log(error.message);
+      window.alert('멤버를 내보내는 중 오류가 발생했습니다.');
+    },
+  });
+
+  //
+  useEffect(() => {
+    const isLeader = memberList?.some((member) => {
+      console.log(member);
+      return member.id === loggedInUserId && member.role === 'leader';
+    });
+
+    if (!isLeader) {
+      navigate('/403', { replace: true });
+    }
+  }, [memberList]);
+
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'스터디원 관리'} />
       <ul>
-        {memberList.map((member) => (
-          <StudyMemberListItem key={member.id} memberData={member} />
+        {memberList.slice(1).map((member) => (
+          <StudyMemberListItem
+            key={member.users.id}
+            memberData={member.users}
+            onDelete={() =>
+              mutation.mutate({ userId: member.users.id, studyId })
+            }
+          />
         ))}
       </ul>
     </div>

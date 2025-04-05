@@ -1,7 +1,8 @@
 import Button from '@components/common/Button';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 
-const CreateComplete = () => {
+const CreateComplete = ({ studyId }) => {
   const navigate = useNavigate();
 
   return (
@@ -28,7 +29,7 @@ const CreateComplete = () => {
           size="large"
           type="CTA Abled"
           onClick={() => {
-            navigate('/study/1/home');
+            navigate(`/study/${studyId}/home`);
           }}
         >
           스터디로
@@ -36,6 +37,10 @@ const CreateComplete = () => {
       </div>
     </>
   );
+};
+
+CreateComplete.propTypes = {
+  studyId: PropTypes.number,
 };
 
 export default CreateComplete;

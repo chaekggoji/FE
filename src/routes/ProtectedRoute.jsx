@@ -1,7 +1,9 @@
+import useUserStore from '@store/useUserStore';
 import useLoginStore from '@store/loginStore';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
 const ProtectedRoute = () => {
+  const isLoggedIn = useUserStore((state) => state.loggedInUser);
   const { user } = useLoginStore(); // 로그인 여부
   const location = useLocation();
 

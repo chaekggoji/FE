@@ -16,7 +16,7 @@ import ProtectedRoute from '@routes/ProtectedRoute';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import PostWrite from '@components/modules/post/PostWrite';
 import PostDetail from '@components/modules/post/PostDetail';
 import Board from '@components/modules/board/Board';
@@ -25,6 +25,7 @@ import PostEdit from '@components/modules/post/PostEdit';
 const router = createBrowserRouter([
   {
     path: '/',
+    errorElement: <Error />,
     element: <Layout />,
     children: [
       /* 로그인 전 접근 가능 */
@@ -48,11 +49,23 @@ const router = createBrowserRouter([
             element: <StudyDetailLayout />,
             children: [
               {
+                index: true,
+                element: <Navigate to="home" replace />,
+              },
+              {
                 path: 'home',
                 element: <StudyDetailHome />,
               },
               {
                 path: ':boardType',
+                // 유효한 boardType이 아닐 시 에러 페이지로 이동
+                loader: ({ params }) => {
+                  const validTypes = ['notice', 'debate'];
+                  if (!validTypes.includes(params.boardType)) {
+                    throw new Response('Not Found', { status: 404 });
+                  }
+                  return null;
+                },
                 children: [
                   { index: true, element: <Board /> },
                   { path: 'write', element: <PostWrite /> },
@@ -105,9 +118,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
-      // 존재하지 않는 페이지 처리 (404)
-      { path: '*', element: <Error /> },
 
       // 테스팅 라우트
       {
