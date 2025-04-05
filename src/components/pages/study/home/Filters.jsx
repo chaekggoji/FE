@@ -5,7 +5,8 @@ import useModalDismiss from '@hooks/useModalDismiss';
 export default function Filters({
   duration, setDuration,
   category, setCategory,
-  openDropdown, setOpenDropdown
+  openDropdown, setOpenDropdown,
+  categoryList
 }) {
   // 드롭다운 너비 동일하게 하기
   const dropdownWidth = 'w-full sm:w-28 md:w-32 lg:w-36';
@@ -65,6 +66,19 @@ export default function Filters({
 
         {isCategoryOpen && (
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
+
+            {/* ✅ 카테고리 전체 옵션 추가 */}
+            <div
+              className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
+              onClick={() => {
+                setCategory(''); // 전체 보기 상태로
+                setOpenDropdown(null);
+              }}
+            >
+              카테고리 전체
+            </div>
+
+            {/* ✅ Supabase에서 가져온 카테고리 목록 */}
             {categoryList.map((title) => (
               <div
                 key={title}
@@ -79,6 +93,7 @@ export default function Filters({
             ))}
           </div>
         )}
+
       </div>
     </div>
   );

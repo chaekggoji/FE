@@ -10,7 +10,7 @@ export const SEARCH_CATEGORIES = [
 
 // 진행 기간 필터
 export const DURATION_FILTERS = [
-  { value: 'duration_all', label: '기간 전체' },
+  { value: '', label: '기간 전체' },
   { value: '1m', label: '1개월 미만' },
   { value: '3m', label: '3개월 미만' },
   { value: '6m', label: '6개월 미만' },

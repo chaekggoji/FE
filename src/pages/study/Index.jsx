@@ -134,25 +134,33 @@ export default function StudyHome() {
       }
 
       // 3. 기간 필터링 (1m, 3m, 6m, 6m+)
-      if (duration && duration !== 'duration_all') {
+      if (duration && duration !== '기간 전체') {
         filteredStudies = filteredStudies.filter((s) => {
           const start = new Date(s.start_date);
           const end = new Date(s.end_date);
           const durationInDays = (end - start) / (1000 * 60 * 60 * 24);
-          if (duration === '1m') return durationInDays < 31;
-          if (duration === '3m') return durationInDays < 92;
-          if (duration === '6m') return durationInDays < 182;
-          if (duration === '6m+') return durationInDays >= 183;
+          if (duration === '1개월 미만') return durationInDays < 31;
+          if (duration === '3개월 미만') return durationInDays < 92;
+          if (duration === '6개월 미만') return durationInDays < 182;
+          if (duration === '6개월 이상') return durationInDays >= 183;
           return true;
         });
       }
 
+
       // 4. 카테고리 필터링
-      if (category && !['category_all', '카테고리 전체'].includes(category)) {
+      if (
+        typeof category === 'string' &&
+        category !== 'category_all' &&
+        category !== '카테고리 전체' &&
+        categoryList.includes(category)
+      ) {
         filteredStudies = filteredStudies.filter(
           (s) => s.books?.book_categories?.title === category
         );
       }
+
+
 
       // 5. 참여자 수 조회 → participantCount 계산
       const { data: participants, error: pError } = await supabase
