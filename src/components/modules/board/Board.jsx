@@ -11,9 +11,7 @@ import { getPostListByType } from '@queries/posts';
 import usePagination from '@hooks/usePagination';
 
 // 리팩토링 목록
-// - 정렬 ✅
-// - 페이지네이션 ✅
-// - 페이지 이동시 깜빡임 최소화
+// - 페이지 이동,정렬시 깜빡임 최소화
 
 const title = {
   notice: '공지사항',
@@ -34,17 +32,27 @@ const Board = () => {
   const md = useMediaQuery('(min-width: 768px)');
 
   // 정렬 관련 로직
-  const getSortByFromURL = () => {
+  // ⭐ 표시된 코드는 정렬 관련 코드입니다.
+
+  // ⭐ url에서 sortBy 파라미터의 값을 가져오는 함수
+  // sortOption state의 초기값에 사용됩니다.
+  const getSortOptionFromURL = () => {
     const params = new URLSearchParams(location.search);
-    const sortBy = params.get('sortBy') || '';
-    return sortBy;
+    const value = params.get('sortBy');
+    return (
+      options.find((option) => option.value === value) || {
+        name: '정렬 기준',
+        value: '',
+      }
+    );
   };
 
-  const [sortOption, setSortOption] = useState({
-    name: '정렬 기준',
-    value: getSortByFromURL(),
-  });
+  // ⭐ DropdownBox 컴포넌트에서 옵션 선택에 따라 변경되는 상태
+  // name, value 속성을 가진 객체로 관리됩니다.
+  const [sortOption, setSortOption] = useState(getSortOptionFromURL());
 
+  // ⭐ DropdownBox에서 옵션이 선택되었을 때
+  // 상태를 변경하고, url에 파라미터를 넣는 함수
   const handleSortOptionChange = (sortOption) => {
     setSortOption(sortOption);
     navigate(`?sortBy=${sortOption.value}`); // URL의 page 파라미터를 업데이트
@@ -100,9 +108,13 @@ const Board = () => {
   );
 
   // 🚩 매개변수로 전달받은 page로 이동하고, url 경로도 바꿉니다.
+  // ⭐ sorting 후 페이지 이동을 하면 url에서 sortBy, page 파라미터
+  // 둘 다 사용하기 위해 코드를 수정했습니다.
   const handlePageChange = (page) => {
+    const params = new URLSearchParams(location.search);
     setCurrentPage(page);
-    navigate(`?page=${page}`); // URL의 page 파라미터를 업데이트
+    params.set('page', page); // url에서 page와 sortBy 파라미터 동시 적용
+    navigate(`?${params.toString()}`);
   };
 
   return (
@@ -112,11 +124,11 @@ const Board = () => {
         {!isLoading && (
           <>
             <div className="flex items-center px-6 h-12">
+              {/* ⭐ DropdownBox에 sort 관련 로직을 props로 전달합니다. (드롭박스는 UI만 관리하도록 로직 분리)  */}
               <DropdownBox
                 selectedOption={sortOption}
-                setSelectedOption={setSortOption}
                 options={options}
-                onOptionChange={handleSortOptionChange}
+                onChange={handleSortOptionChange}
                 size={md ? 'medium' : 'small'}
               />
               <Button
