@@ -20,6 +20,7 @@ export default function SearchBar({
   });
 
   const handleSearch = () => {
+    setOpenDropdown(null); // ✅ 드롭다운 닫기
     onSearch();
   };
 
@@ -62,12 +63,22 @@ export default function SearchBar({
           type='text'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          onKeyUp={handleKeyPress}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') {
+              setOpenDropdown(null);  // 드롭다운 닫고
+              if (search.trim() !== '') onSearch(); // 검색 실행
+            }
+          }}
           placeholder='원하는 스터디를 찾아보세요'
           className='flex-grow bg-white border-2 border-primary-300 text-base sm:text-xl rounded-lg px-4 py-2 focus:text-primary-300'
         />
         <button
-          onClick={handleSearch}
+          onClick={() => {
+            setOpenDropdown(null); // ✅ 드롭다운 강제 닫기
+            if (search.trim() !== '') {
+              onSearch(); // ✅ 입력값이 있을 때만 실행
+            }
+          }}
           className='bg-primary-200 rounded-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14'
         >
           <img src={SearchIcon} alt='검색' className='w-6 h-6 sm:w-7 sm:h-7' />

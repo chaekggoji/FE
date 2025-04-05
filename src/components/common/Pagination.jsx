@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+import PropTypes, { bool } from 'prop-types';
 
 const Pagination = ({
   currentPage,
   onPageChange,
-  currentGroup,
+  currentGroup = [],
   hasPrev,
   hasNext,
 }) => {
@@ -43,8 +43,8 @@ Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   currentGroup: PropTypes.array.isRequired,
-  hasPrev: Boolean.isRequired,
-  hasNext: Boolean.isRequired,
+  hasPrev: bool.isRequired,
+  hasNext: bool.isRequired,
 };
 
 export default Pagination;

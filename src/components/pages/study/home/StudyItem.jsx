@@ -42,6 +42,12 @@ const StudyItem = ({ study, size = 'large' }) => {
       <div className='text w-full text-left px-4 my-3 z-20 relative space-y-1'>
         {/* leadin-snug: 줄 간격은 너무 벌어지지 않도록, tracking-tight: 자간을 조금 좁혀서 정돈된 느낌 주기 */}
         <p className='truncate text-xl md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>스터디 명: {study.title || '스터디명 없음'}</p>
+        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
+          도서명: {study.books?.title || '제목 없음'}
+        </p>
+        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words text-gray-600'>
+          저자: {study.books?.author || '작자 미상'}
+        </p>
         <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
           참여 인원: {study.participantCount} / {study.capacity}
         </p>

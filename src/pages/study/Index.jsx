@@ -29,10 +29,17 @@ export default function StudyHome() {
   const [totalPages, setTotalPages] = useState(1);
   const [studyCount, setStudyCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [randomKeyword, setRandomKeyword] = useState('');
+  const [searchOptions, setSearchOptions] = useState(null); // 처음엔 null
+
 
   const isMobile = useMediaQuery('(max-width: 640px)');
   const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
+
+  const DEFAULT_CATEGORY = '카테고리 전체';
+  const DEFAULT_DURATION = '기간 선택';
+
 
   useEffect(() => {
     if (isMobile) setStudyCount(6);
@@ -41,79 +48,92 @@ export default function StudyHome() {
   }, [isMobile, isTablet, isDesktop]);
 
   useEffect(() => {
+    if (searchOptions) {
+      fetchStudies(searchOptions);
+    }
+  }, [searchOptions, currentPage]);
+
+  useEffect(() => {
+    if (studyCount > 0) {
+      fetchBooksFromKakao();
+      setSearchOptions({
+        keyword: '',
+        filter: 'all',
+        duration: '',
+        category: '',
+        sort: 'latest',
+      }); // ✅ 최초는 최신 정렬만
+    }
+  }, [studyCount]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase.from('book_categories').select('title');
-      if (!error && data) setCategoryList(data.map((c) => c.title));
+      if (!error && data) {
+        const titles = data.map((c) => c.title);
+        setCategoryList(titles);
+
+        // ✅ 랜덤 키워드 선택
+        const random = titles[Math.floor(Math.random() * titles.length)];
+        setRandomKeyword(random);
+      }
     };
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    if (studyCount > 0) {
-      fetchStudies(searchKeyword, filter, duration, category, sort);
-      fetchBooksFromKakao(searchKeyword);
-    }
-  }, [currentPage, studyCount, searchKeyword, filter, duration, category, sort]);
-
   // 📁 Index.jsx 내의 fetchStudies 함수 (검색 버튼 클릭 시에만 실행)
-  async function fetchStudies(keyword, filter, duration, category, sort) {
+  async function fetchStudies({ keyword, filter, duration, category, sort }) {
     setLoading(true);
-
     try {
       const itemsPerPage = studyCount;
       const from = (currentPage - 1) * itemsPerPage;
       const to = from + itemsPerPage - 1;
 
-      let query = supabase
+      // 1. Supabase에서 스터디 + 책 + 카테고리 조인해서 가져오기
+      const { data: fetchedStudies, error } = await supabase
         .from('studies')
         .select(`
-          *,
-          books (
+        *,
+        books (
+          id,
+          title,
+          author,
+          thumb_url,
+          category_id,
+          book_categories (
             id,
-            title,
-            author,
-            thumb_url,
-            category_id,
-            book_categories (
-              id,
-              title
-            )
+            title
           )
-        `, { count: 'exact' });
+        )
+      `);
 
-      const { data: fetchedStudies, error } = await query;
-      if (error || !fetchedStudies) throw new Error('스터디 불러오기 실패');
+      if (error || !fetchedStudies) throw new Error('스터디 데이터를 불러오는 데 실패했습니다.');
 
+      // 2. 키워드 필터링 (도서명/저자명/스터디명/전체)
       let filteredStudies = [...fetchedStudies];
-
       if (keyword) {
-        const lowerKeyword = keyword.toLowerCase();
+        const lower = keyword.toLowerCase();
         if (filter === 'title') {
-          filteredStudies = filteredStudies.filter((s) =>
-            s.books?.title?.toLowerCase().includes(lowerKeyword)
-          );
+          filteredStudies = filteredStudies.filter(s => s.books?.title?.toLowerCase().includes(lower));
         } else if (filter === 'author') {
-          filteredStudies = filteredStudies.filter((s) =>
-            s.books?.author?.toLowerCase().includes(lowerKeyword)
-          );
+          filteredStudies = filteredStudies.filter(s => s.books?.author?.toLowerCase().includes(lower));
         } else if (filter === 'study') {
-          filteredStudies = filteredStudies.filter((s) =>
-            s.title?.toLowerCase().includes(lowerKeyword)
-          );
+          filteredStudies = filteredStudies.filter(s => s.title?.toLowerCase().includes(lower));
         } else {
           filteredStudies = filteredStudies.filter((s) => {
             const studyTitle = s.title?.toLowerCase() || '';
             const bookTitle = s.books?.title?.toLowerCase() || '';
             const bookAuthor = s.books?.author?.toLowerCase() || '';
             return (
-              studyTitle.includes(lowerKeyword) ||
-              bookTitle.includes(lowerKeyword) ||
-              bookAuthor.includes(lowerKeyword)
+              studyTitle.includes(lower) ||
+              bookTitle.includes(lower) ||
+              bookAuthor.includes(lower)
             );
           });
         }
       }
 
+      // 3. 기간 필터링 (1m, 3m, 6m, 6m+)
       if (duration && duration !== 'duration_all') {
         filteredStudies = filteredStudies.filter((s) => {
           const start = new Date(s.start_date);
@@ -127,22 +147,14 @@ export default function StudyHome() {
         });
       }
 
-      if (category && category !== 'category_all') {
+      // 4. 카테고리 필터링
+      if (category && !['category_all', '카테고리 전체'].includes(category)) {
         filteredStudies = filteredStudies.filter(
           (s) => s.books?.book_categories?.title === category
         );
       }
 
-      // 정렬 옵션 처리
-      if (sort === 'latest') {
-        filteredStudies.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
-      } else if (sort === 'popular') {
-        filteredStudies.sort((a, b) => (b.participantCount || 0) - (a.participantCount || 0));
-      } else if (sort === 'alphabetical') {
-        filteredStudies.sort((a, b) => a.title.localeCompare(b.title));
-      }
-
-      // 참여자 수 가져오기
+      // 5. 참여자 수 조회 → participantCount 계산
       const { data: participants, error: pError } = await supabase
         .from('study_participants')
         .select('study_id');
@@ -154,47 +166,61 @@ export default function StudyHome() {
         participantCountMap[p.study_id] = (participantCountMap[p.study_id] || 0) + 1;
       }
 
-      const studiesWithCounts = filteredStudies.map((study) => ({
-        ...study,
-        participantCount: participantCountMap[study.id] || 0,
-      }));
+      // 6. 참여자 수 추가 및 정렬 기준에 따라 정렬
+      const studiesWithCounts = filteredStudies.map((study) => {
+        const participantCount = participantCountMap[study.id] || 0;
+        const remain = (study.capacity || 0) - participantCount;
+        return { ...study, participantCount, remain };
+      });
 
+      if (sort === 'latest') {
+        studiesWithCounts.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
+      } else if (sort === 'popular') {
+        studiesWithCounts.sort((a, b) => {
+          if (a.remain === b.remain) {
+            return new Date(b.start_date) - new Date(a.start_date);
+          }
+          return a.remain - b.remain; // 잔여 인원 오름차순
+        });
+      } else if (sort === 'alphabetical') {
+        studiesWithCounts.sort((a, b) => a.title.localeCompare(b.title));
+      }
+
+      // 7. 페이징 적용
       setStudies(studiesWithCounts.slice(from, to + 1));
-      setTotalPages(Math.ceil(filteredStudies.length / itemsPerPage));
+      setTotalPages(Math.ceil(studiesWithCounts.length / itemsPerPage));
     } catch (err) {
       console.error('📛 fetchStudies 에러:', err);
-      alert('스터디 데이터를 불러오는 중 문제가 발생했습니다.');
+      alert('스터디 목록을 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   }
 
-
-  // 🔄 스터디 리스트는 검색어가 있을 때, 페이지 변경될 때만 갱신
   useEffect(() => {
-    if (searchKeyword) {
-      fetchStudies(searchKeyword, filter, duration, category, sort);
+    if (studyCount > 0 && searchOptions && typeof searchOptions.keyword !== 'undefined') {
+      fetchStudies(searchOptions);
     }
-  }, [currentPage]);
+  }, [searchOptions, currentPage, studyCount]);
 
-
-  // ✅ 검색 버튼(onSearch) 클릭 시에만 스터디 리스트 fetch
   const onSearch = () => {
+    setSearchOptions({
+      keyword: search,
+      filter,
+      category: category === DEFAULT_CATEGORY ? '' : category,
+      duration: duration === DEFAULT_DURATION ? '' : duration,
+      sort,
+    });
     setCurrentPage(1);
-    setSearchKeyword(search);
   };
 
-  // ✅ 페이지 이동 시에만 fetch 실행
-  useEffect(() => {
-    if (searchKeyword) {
-      fetchStudies(searchKeyword, filter, duration, category, sort);
-    }
-  }, [currentPage]);
-
   async function fetchBooksFromKakao(keyword) {
+    console.log('🔥 fetchStudies 실행:', { keyword, filter, category, duration, sort });
     try {
+      const query = keyword || randomKeyword || '인문'; // fallback까지 안전하게
+
       const response = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(keyword || '인문')}&size=12`,
+        `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=12`,
         {
           headers: {
             Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_API_KEY}`,
@@ -219,9 +245,6 @@ export default function StudyHome() {
       setBooks([]);
     }
   }
-
-
-
 
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
@@ -284,7 +307,7 @@ export default function StudyHome() {
             로딩 중입니다...
           </p>
         ) : studies.length === 0 ? (
-          <StudyNoResults keyword={searchKeyword} />
+          <StudyNoResults keyword={searchOptions?.keyword} />
         ) : (
           studies.map((study) => (
             <StudyItem key={study.id} study={study} />
