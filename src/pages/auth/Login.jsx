@@ -1,12 +1,12 @@
 import Button from '@components/common/Button';
 import supabase from '@libs/supabase';
-import useUserStore from '@store/userStore';
+import useLoginStore from '@store/loginStore';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser } = useUserStore();
+  const { setUser } = useLoginStore();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

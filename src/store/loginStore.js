@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 // 스토리지를 사용할 경우
-const useUserStore = create(
+const useLoginStore = create(
   persist(
     (set) => ({
       user: null,
@@ -23,4 +23,4 @@ const useUserStore = create(
   ),
 );
 
-export default useUserStore;
+export default useLoginStore;

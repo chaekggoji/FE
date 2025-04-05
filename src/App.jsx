@@ -1,11 +1,11 @@
 import router from '@routes/routes';
-import useUserStore from '@store/userStore';
+import useLoginStore from '@store/loginStore';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
 
 function App() {
-  const { user, setUser } = useUserStore();
+  const { user, setUser } = useLoginStore();
 
   useEffect(() => {
     const cookieUser = Cookies.get('user');

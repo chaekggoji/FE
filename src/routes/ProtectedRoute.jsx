@@ -1,8 +1,8 @@
-import useUserStore from '@store/userStore';
+import useLoginStore from '@store/loginStore';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
 const ProtectedRoute = () => {
-  const { user } = useUserStore(); // 로그인 여부
+  const { user } = useLoginStore(); // 로그인 여부
   const location = useLocation();
 
   if (!user && location.pathname === '/') {

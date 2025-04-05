@@ -4,11 +4,11 @@ import alarm from '@assets/icons/icon_alarm_37.svg';
 import noAlarm from '@assets/icons/icon_no_alarm_37.svg';
 import noProfile from '@assets/icons/icon_profile_default_36.svg';
 import { useState } from 'react';
-import useUserStore from '@store/userStore';
+import useLoginStore from '@store/loginStore';
 import supabase from '@libs/supabase';
 
 const Header = () => {
-  const { user, resetUser } = useUserStore(); // Zustand 상태
+  const { user, resetUser } = useLoginStore(); // Zustand 상태
   const [isAlarm, setIsAlarm] = useState(false); // 알림은 임시 상태
   const navigate = useNavigate();
 
