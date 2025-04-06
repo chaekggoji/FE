@@ -1,12 +1,12 @@
 import Button from '@components/common/Button';
 import supabase from '@libs/supabase';
-import useLoginStore from '@store/loginStore';
+import useUserStore from '@store/useUserStore';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser } = useLoginStore();
+  const { setAuthUser, setProfile } = useUserStore();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,9 +17,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid) {
-      return;
-    }
+    if (!isFormValid) return;
 
     try {
       setLoading(true);
@@ -30,19 +28,26 @@ const Login = () => {
         password,
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      setUser(data.user);
-      console.log('로그인 성공');
+      setAuthUser(data.user);
+
+      const { data: profileData, error: profileError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('auth_id', data.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      setProfile(profileData);
+
       alert('로그인 성공');
-      navigate('/'); // 성공 시에만 이동
+      navigate('/');
     } catch (error) {
       console.error('로그인 에러:', error);
       setError(error.message || '로그인 중 오류가 발생했습니다.');
       alert('로그인 실패');
-      // 실패 시 이동하지 않음
     } finally {
       setLoading(false);
     }
