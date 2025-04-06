@@ -1,36 +1,57 @@
 import supabase from '@libs/supabase';
 import router from '@routes/routes';
-import useLoginStore from '@store/loginStore';
+import useUserStore from '@store/useUserStore';
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
 
 function App() {
-  const { user, setUser } = useLoginStore();
+  const { setAuthUser, setProfile, resetUser } = useUserStore();
 
   useEffect(() => {
-    // 초기 세션 확인 및 업데이트
     const getSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (session) {
-        setUser(session.user);
+
+      if (session?.user) {
+        setAuthUser(session.user);
+
+        const { data: profileData } = await supabase
+          .from('users')
+          .select('*')
+          .eq('auth_id', session.user.id)
+          .single();
+
+        if (profileData) {
+          setProfile(profileData);
+        }
       }
     };
 
     getSession();
 
-    // Auth 상태 변화 구독
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session ? session.user : null);
+      async (_event, session) => {
+        if (session?.user) {
+          setAuthUser(session.user);
+
+          const { data: profileData } = await supabase
+            .from('users')
+            .select('*')
+            .eq('auth_id', session.user.id)
+            .single();
+
+          setProfile(profileData);
+        } else {
+          resetUser();
+        }
       },
     );
 
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [setUser]);
+  }, [setAuthUser, setProfile, resetUser]);
 
   return <RouterProvider router={router} />;
 }
