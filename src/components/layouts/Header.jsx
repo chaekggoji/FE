@@ -36,7 +36,7 @@ const Header = () => {
       <nav className="flex items-center gap-5">
         {authUser ? (
           <>
-            <Link to="#" className="hidden sm:block">
+            <Link to="study/create" className="hidden sm:block">
               스터디 생성
             </Link>
             <img
