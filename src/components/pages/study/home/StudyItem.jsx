@@ -39,20 +39,22 @@ const StudyItem = ({ study, size = 'large' }) => {
       </div>
 
       {/* 텍스트 영역 */}
-      <div className='text w-full text-left px-4 my-3 z-20 relative space-y-1'>
+      <div className='text w-full text-left z-20 relative space-y-1'>
         {/* leadin-snug: 줄 간격은 너무 벌어지지 않도록, tracking-tight: 자간을 조금 좁혀서 정돈된 느낌 주기 */}
-        <p className='truncate text-xl md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>스터디 명: {study.title || '스터디명 없음'}</p>
-        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
-          도서명: {study.books?.title || '제목 없음'}
+        <div className='bg-primary-300 text-white'>
+          <p className='truncate text-3xl pl-4 py-3 md:text-2xl lg:text-[1.75rem] leading-snug break-words tracking-tight'>{study.title || '스터디명 없음'}</p>
+        </div>
+        <p className='truncate text-base px-4 mt-3 md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
+          <span className='text-primary-300'>[도서명]</span> {study.books?.title || '제목 없음'}
         </p>
-        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words text-gray-600'>
-          저자: {study.books?.author || '작자 미상'}
+        <p className='truncate text-base px-4 my-2 md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
+          <span className='text-primary-300'>[저자]</span> {study.books?.author || '작자 미상'}
         </p>
-        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
-          참여 인원: {study.participantCount} / {study.capacity}
+        <p className='truncate text-base px-4 my-2 md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
+          <span className='text-primary-300'>[참여 인원]</span> {study.participantCount} / {study.capacity}
         </p>
-        <p className='truncate text-base md:text-lg lg:text-xl leading-snug break-words'>
-          참여 기간: {study.start_date || '시작일 없음'} ~ {study.end_date || '종료일 없음'}
+        <p className='truncate text-base px-4 mb-3 my-2 md:text-lg lg:text-xl leading-snug break-words text-gray-800'>
+          <span className='text-primary-300'>[참여 기간]</span> {study.start_date || '시작일 없음'} ~ {study.end_date || '종료일 없음'}
         </p>
       </div>
     </div>

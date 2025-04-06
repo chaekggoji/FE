@@ -33,7 +33,7 @@ export default function Filters({
           onClick={() => setOpenDropdown(isDurationOpen ? null : 'duration')}
           className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
         >
-          {duration || '기간 선택'}
+          {DURATION_FILTERS.find(opt => opt.value === duration)?.label || '기간 선택'}
         </button>
 
         {isDurationOpen && (
