@@ -262,7 +262,7 @@ export default function StudyHome() {
       setStudies(studiesWithCounts.slice(from, to + 1));
       setTotalPages(Math.ceil(studiesWithCounts.length / itemsPerPage));
     } catch (err) {
-      alert('스터디 목록을 불러오는 중 오류가 발생했습니다.');
+      console.err('스터디 목록을 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
