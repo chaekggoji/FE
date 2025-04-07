@@ -22,20 +22,13 @@ export const getPostListByType = (studyId, type, from, to, sortBy) => {
 
   if (sortBy) {
     if (sortBy === 'mostViewed') {
-      console.log('1');
       query.order('views', { ascending: false });
     } else if (sortBy === 'mostCommented') {
-      console.log('2');
-
       query.order('comment_count', { ascending: false });
     } else if (sortBy === 'recent') {
-      console.log('3');
-
       query.order('recent_activity', { ascending: false });
     }
   } else {
-    console.log('4');
-
     query.order('created_at', { ascending: false }); // default : 최신 순 정렬
   }
 
