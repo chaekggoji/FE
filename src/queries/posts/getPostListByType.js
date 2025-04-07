@@ -1,6 +1,6 @@
 import supabase from '@libs/supabase';
 
-export const getPostListByType = (studyId, type, from, to, sortBy) => {
+export const getPostListByType = (studyId, type, from, to) => {
   const query = supabase
     .from('posts')
     .select(
@@ -18,19 +18,8 @@ export const getPostListByType = (studyId, type, from, to, sortBy) => {
       { count: 'exact' },
     )
     .eq('type', type)
-    .eq('study_id', studyId);
-
-  if (sortBy) {
-    if (sortBy === 'mostViewed') {
-      query.order('views', { ascending: false });
-    } else if (sortBy === 'mostCommented') {
-      query.order('comment_count', { ascending: false });
-    } else if (sortBy === 'recent') {
-      query.order('recent_activity', { ascending: false });
-    }
-  } else {
-    query.order('created_at', { ascending: false }); // default : 최신 순 정렬
-  }
+    .eq('study_id', studyId)
+    .order('created_at', { ascending: false }); // 최신 순 정렬
 
   if (typeof from === 'number' && typeof to === 'number') {
     query.range(from, to);

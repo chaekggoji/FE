@@ -4,7 +4,11 @@ import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { getPhraseList } from '@queries/phrases';
-import { useQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -20,16 +24,13 @@ const options = [
 
 const Phrases = () => {
   const { studyId } = useParams();
-  const cursorRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState({
     name: '',
     value: null,
   });
-  const [phrases, setPhrases] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
   const md = useMediaQuery('(min-width: 768px)');
 
+  // 1️⃣ 무한 스크롤 구현 X
   // const { data, isLoading } = useQuery({
   //   queryKey: ['phrases', studyId],
   //   queryFn: () => {
@@ -39,34 +40,53 @@ const Phrases = () => {
   //   staleTime: 1000 * 10,
   // });
 
-  useEffect(() => {
-    const fetchInitialPhrases = async () => {
-      setIsLoading(true);
-      const res = await getPhraseList(studyId);
-      setPhrases(res.data);
-      if (res.data.length > 0) {
-        const last = res.data[res.data.length - 1];
-        cursorRef.current = last.created_at; // 업데이트만, 리렌더 X
-        console.log(cursorRef.current);
-      }
-      setIsLoading(false);
-    };
+  // 2️⃣ fetch로 데이터 5개씩 불러오기 (cursor based)
+  // const cursorRef = useRef(null);
+  // const [phrases, setPhrases] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
 
-    fetchInitialPhrases();
-  }, [studyId]);
+  // useEffect(() => {
+  //   const fetchInitialPhrases = async () => {
+  //     setIsLoading(true);
+  //     const res = await getPhraseList(studyId);
+  //     setPhrases(res.data);
+  //     if (res.data.length > 0) {
+  //       const last = res.data[res.data.length - 1];
+  //       cursorRef.current = last.created_at; // 업데이트만, 리렌더 X
+  //       console.log(cursorRef.current);
+  //     }
+  //     setIsLoading(false);
+  //   };
 
-  const fetchMorePhrases = async () => {
-    if (cursorRef.current === null) return;
-    setIsLoading(true);
+  //   fetchInitialPhrases();
+  // }, [studyId]);
 
-    const res = await getPhraseList(studyId, cursorRef.current);
-    if (res.data.length > 0) {
-      setPhrases((prev) => [...prev, ...res.data]);
-      const last = res.data[res.data.length - 1];
-      cursorRef.current = last.created_at;
-    }
-    setIsLoading(false);
-  };
+  // const fetchMorePhrases = async () => {
+  //   if (cursorRef.current === null) return;
+  //   setIsLoading(true);
+
+  //   const res = await getPhraseList(studyId, cursorRef.current);
+  //   if (res.data.length > 0) {
+  //     setPhrases((prev) => [...prev, ...res.data]);
+  //     const last = res.data[res.data.length - 1];
+  //     cursorRef.current = last.created_at;
+  //   }
+  //   setIsLoading(false);
+  // };
+
+  // 3️⃣ useInfiniteQuery 무한 스크롤
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['phrases', studyId],
+      queryFn: async ({ pageParam = null }) => {
+        return await getPhraseList(studyId, pageParam);
+      },
+      getNextPageParam: (lastPage) => {
+        if (lastPage.length === 0) return undefined;
+        return lastPage[lastPage.length - 1].created_at;
+      },
+      staleTime: 1000 * 10,
+    });
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
@@ -81,11 +101,23 @@ const Phrases = () => {
         <PhraseWrite />
       </div>
       <div className="max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
-        {!isLoading &&
+        {/* {!isLoading &&
           phrases.map((phrase) => (
             <PhraseItem key={phrase.id} phraseData={phrase} />
+          ))} */}
+
+        {!isLoading &&
+          data?.pages.map((page, i) => (
+            <div key={i} className="flex flex-col gap-4">
+              {page.map((phrase) => (
+                <PhraseItem key={phrase.id} phraseData={phrase} />
+              ))}
+            </div>
           ))}
-        <button onClick={fetchMorePhrases}>데이터 불러오기</button>
+
+        {hasNextPage && (
+          <button onClick={fetchNextPage}>데이터 불러오기</button>
+        )}
       </div>
     </div>
   );
