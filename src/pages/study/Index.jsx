@@ -136,8 +136,8 @@ export default function StudyHome() {
 
       setBooks(result.documents);
     } catch (error) {
-      alert('책 정보를 불러오는 중 문제가 발생했습니다.');
-      setBooks([]);
+      console.error('📛 카카오 책 API 에러:', error);
+      setBooks(result.documents);
     }
   }
 
