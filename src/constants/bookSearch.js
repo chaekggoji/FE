@@ -2,6 +2,7 @@
 
 // 검색 기준 옵션
 export const SEARCH_CATEGORIES = [
+  { value: 'all', label: '전체' },
   { value: 'title', label: '도서명' },
   { value: 'study', label: '스터디 명' },
   { value: 'author', label: '저자명' },
@@ -9,6 +10,7 @@ export const SEARCH_CATEGORIES = [
 
 // 진행 기간 필터
 export const DURATION_FILTERS = [
+  { value: '', label: '기간 전체' },
   { value: '1m', label: '1개월 미만' },
   { value: '3m', label: '3개월 미만' },
   { value: '6m', label: '6개월 미만' },
@@ -17,6 +19,7 @@ export const DURATION_FILTERS = [
 
 // 도서 카테고리 필터
 export const BOOK_CATEGORIES = [
+  { value: 'category_all', label: '카테고리 전체' },
   { value: 'humanities', label: '인문' },
   { value: 'current_affairs', label: '시사/상식' },
   { value: 'science', label: '과학' },
