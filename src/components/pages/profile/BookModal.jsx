@@ -12,13 +12,32 @@ import PhraseItem from '@components/modules/phrase/PhraseItem';
 
 // 3. 아이콘, 이미지
 import close from '@assets/icons/icon_x_24.svg';
+import { useLocation, useNavigate } from 'react-router';
 
 // isOpen: 모달 표시 여부(불리언), onRequestClose: 모달을 닫을 때 호출되는 함수
 const BookModal = ({ isOpen, onRequestClose }) => {
   // 현재 화면 너비 상태 관리(반응형)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // 페이지네이션 상태
-  const [currentPage, setCurrentPage] = useState(1);
+  // TODO: 페이지네이션, 현재는 데이터 로직 없이 UI만 먼저 구현 -> 데이터 로직과 함께 구현하기
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const getPageFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    const page = parseInt(params.get('page') || '1', 10);
+    return page;
+  };
+
+  const [currentPage, setCurrentPage] = useState(getPageFromURL());
+
+  const currentGroup = [1, 2, 3];
+  const hasPrev = currentPage > 1;
+  const hasNext = currentPage < 10;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    navigate(`?page=${page}`);
+  };
 
   // 윈도우 크기 변경 감지 및 상태 업데이트
   useEffect(() => {
@@ -217,7 +236,10 @@ const BookModal = ({ isOpen, onRequestClose }) => {
           <div>
             <Pagination
               currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
+              onPageChange={handlePageChange}
+              currentGroup={currentGroup}
+              hasPrev={hasPrev}
+              hasNext={hasNext}
             />
           </div>
         </div>
