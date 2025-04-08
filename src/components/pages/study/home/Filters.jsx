@@ -1,11 +1,12 @@
 import { useRef } from 'react';
-import { DURATION_FILTERS, BOOK_CATEGORIES } from '@/constants/bookSearch';
+import { DURATION_FILTERS } from '@/constants/bookSearch';
 import useModalDismiss from '@hooks/useModalDismiss';
 
 export default function Filters({
   duration, setDuration,
   category, setCategory,
-  openDropdown, setOpenDropdown
+  openDropdown, setOpenDropdown,
+  categoryList
 }) {
   // 드롭다운 너비 동일하게 하기
   const dropdownWidth = 'w-full sm:w-28 md:w-32 lg:w-36';
@@ -32,17 +33,17 @@ export default function Filters({
           onClick={() => setOpenDropdown(isDurationOpen ? null : 'duration')}
           className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
         >
-          {duration || '기간 선택'}
+          {DURATION_FILTERS.find(opt => opt.value === duration)?.label || '기간 선택'}
         </button>
 
         {isDurationOpen && (
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
             {DURATION_FILTERS.map((option) => (
               <div
-                key={option.value}
+                key={option.label}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
-                  setDuration(option.label);
+                  setDuration(option.value);
                   setOpenDropdown(null);
                 }}
               >
@@ -65,20 +66,34 @@ export default function Filters({
 
         {isCategoryOpen && (
           <div className={`absolute left-0 z-50 text-base md:text-xl text-gray-950 bg-white border rounded-lg shadow-lg ${dropdownWidth}`}>
-            {BOOK_CATEGORIES.map((option) => (
+
+            {/* ✅ 카테고리 전체 옵션 추가 */}
+            <div
+              className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
+              onClick={() => {
+                setCategory(''); // 전체 보기 상태로
+                setOpenDropdown(null);
+              }}
+            >
+              카테고리 전체
+            </div>
+
+            {/* ✅ Supabase에서 가져온 카테고리 목록 */}
+            {categoryList.map((title) => (
               <div
-                key={option.value}
+                key={title}
                 className='p-3 hover:bg-primary-200 text-sm sm:text-base md:text-lg cursor-pointer'
                 onClick={() => {
-                  setCategory(option.label);
+                  setCategory(title);
                   setOpenDropdown(null);
                 }}
               >
-                {option.label}
+                {title}
               </div>
             ))}
           </div>
         )}
+
       </div>
     </div>
   );

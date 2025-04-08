@@ -1,5 +1,5 @@
+import Pagination from '@components/common/Pagination';
 import SearchField from '@components/common/SearchField';
-import Pagination from '@components/pages/study/home/Pagination';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
