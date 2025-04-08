@@ -26,9 +26,9 @@ export default function Filters({
   });
 
   return (
-    <div className='flex flex-wrap gap-4'>
+    <div className='flex flex-wrap'>
       {/* 기간 드롭다운 */}
-      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={durationRef}>
+      <div className='relative min-w-[7rem] sm:min-w-[8rem] md:min-w-[9rem] lg:min-w-[11rem] shrink-0' ref={durationRef}>
         <button
           onClick={() => setOpenDropdown(isDurationOpen ? null : 'duration')}
           className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
@@ -55,7 +55,7 @@ export default function Filters({
       </div>
 
       {/* 카테고리 드롭다운 */}
-      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={categoryRef}>
+      <div className='relative min-w-[7rem] sm:min-w-[8rem] md:min-w-[9rem] lg:min-w-[11rem] shrink-0' ref={categoryRef}>
         <button
           onClick={() => setOpenDropdown(isCategoryOpen ? null : 'category')}
           className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isCategoryOpen ? 'bg-primary-200' : ''}`}
