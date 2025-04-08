@@ -5,7 +5,7 @@ import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { getPhraseList } from '@queries/phrases';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
 // 리팩토링 목록
@@ -39,6 +39,24 @@ const Phrases = () => {
     staleTime: 1000 * 10,
   });
 
+  const lastItemRef = useRef(null);
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isLoading) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (lastItemRef.current) observerRef.current.observe(lastItemRef.current);
+  }, [data, hasNextPage]);
+
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'구절 공유해요'} />
@@ -55,15 +73,15 @@ const Phrases = () => {
         {!isLoading &&
           data?.pages.map((page, i) => (
             <div key={i} className="flex flex-col gap-4">
-              {page.map((phrase) => (
-                <PhraseItem key={phrase.id} phraseData={phrase} />
+              {page.map((phrase, i, pages) => (
+                <PhraseItem
+                  key={phrase.id}
+                  phraseData={phrase}
+                  ref={i === pages.length - 1 ? lastItemRef : null}
+                />
               ))}
             </div>
           ))}
-
-        {hasNextPage && (
-          <button onClick={fetchNextPage}>데이터 불러오기</button>
-        )}
       </div>
     </div>
   );
