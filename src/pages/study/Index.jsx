@@ -9,6 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 // 컴포넌트
 import Pagination from '@components/common/Pagination';
 import SortDropdown from '@components/pages/study/home/SortDropdown';
+import Button from '@components/common/Button';
 import Filters from '@components/pages/study/home/Filters';
 import SearchBar from '@components/pages/study/home/SearchBar';
 import BookItem from '@components/common/BookItem';
@@ -98,15 +99,35 @@ export default function StudyHome() {
   }, []);
 
   // 검색 버튼 클릭 시 실행되는 함수
-  const onSearch = () => {
-    const options = {
-      keyword: search,
-      filter,
-      category: category === DEFAULT_CATEGORY ? '' : category,
-      duration: duration === DEFAULT_DURATION ? '' : duration,
-      sort,
-    };
-    setSearchOptions(options);
+  const onSearch = (keyword, filter, duration, category, sort) => {
+    if (!keyword.trim()) {
+      handleResetSearch();
+      return;
+    }
+    const options = { keyword, filter, duration, category, sort };
+    updateSearchParams(options);
+    setCurrentPage(1);
+  };
+
+  const DEFAULTS = {
+    keyword: '',
+    filter: 'all',
+    duration: '',
+    category: '',
+    sort: 'latest'
+  };
+
+  const updateSearchParams = (options) => {
+    const newParams = new URLSearchParams();
+    Object.entries(options).forEach(([key, val]) => {
+      if (val) newParams.set(key, val);
+    });
+    setSearchParams(newParams);
+  };
+
+  // 검색 초기화 함수
+  const handleResetSearch = () => {
+    updateSearchParams(DEFAULTS);
     setCurrentPage(1);
   };
 
@@ -136,7 +157,6 @@ export default function StudyHome() {
 
       setBooks(result.documents);
     } catch (error) {
-      console.error('📛 카카오 책 API 에러:', error);
       setBooks(result.documents);
     }
   }
@@ -211,7 +231,6 @@ export default function StudyHome() {
         });
       }
 
-
       // 4. 카테고리 필터링
       if (
         typeof category === 'string' &&
@@ -223,8 +242,6 @@ export default function StudyHome() {
           (s) => s.books?.book_categories?.title === category
         );
       }
-
-
 
       // 5. 참여자 수 조회 → participantCount 계산
       const { data: participants, error: pError } = await supabase
@@ -307,30 +324,37 @@ export default function StudyHome() {
         setOpenDropdown={setOpenDropdown}
       />
 
-      {/* 필터 & 정렬 */}
-      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-2 mt-4'>
-        <Filters
-          duration={duration}
-          setDuration={setDuration}
-          category={category}
-          setCategory={setCategory}
-          openDropdown={openDropdown}
-          setOpenDropdown={setOpenDropdown}
-          categoryList={categoryList}
-        />
-        <div className='md:ml-auto'>
+      {/* 필터 & 정렬 & 검색 초기화 */}
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-4'>
+        <div className='flex flex-wrap md:flex-row items-center gap-4'>
           <SortDropdown
             sort={sort}
             setSort={setSort}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
             sortOptions={SORT_OPTIONS}
-            buttonClassName='bg-primary-200 text-white border-primary-300'
+            buttonClassName='bg-primary-200 border-2 border-primary-400/50 text-white text-sm sm:text-base md:text-lg lg:text-xl pl-4 py-2 w-full min-w-[96px]'
             menuClassName='border-primary-300'
             itemClassName='rounded-none hover:text-white'
-            widthClass='w-48'
+            widthClass='w-36'
+          />
+          <Filters
+            duration={duration}
+            setDuration={setDuration}
+            category={category}
+            setCategory={setCategory}
+            openDropdown={openDropdown}
+            setOpenDropdown={setOpenDropdown}
+            categoryList={categoryList}
           />
         </div>
+        <Button
+          size={null}
+          type={null}
+          className='bg-primary-200 border-2 border-primary-300/50 hover:bg-primary-300 text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-3'
+          onClick={handleResetSearch}>
+          검색 초기화
+        </Button>
       </div>
 
       {/* 스터디 리스트 */}
