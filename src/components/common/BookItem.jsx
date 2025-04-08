@@ -51,7 +51,7 @@ const BookItem = ({
             className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center ${captionClass}`}
           >
             <p className="mr-auto w-full truncate">{title}</p>
-            <p className="ml-auto text-end w-full truncate">by {author}</p>
+            <p className="ml-auto text-end w-2/3 truncate">by {author}</p>
           </div>
         )}
       </div>
