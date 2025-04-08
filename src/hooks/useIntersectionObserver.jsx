@@ -5,7 +5,7 @@ const useIntersectionObserver = (onIntersect) => {
   const targetRef = useRef(null); // 관찰할 DOM 노드
 
   useEffect(() => {
-    // 기존의 관찰 설정정을 초기화합니다.
+    // 기존의 관찰 설정을 초기화합니다.
     if (!targetRef.current) return;
     if (observerRef.current) observerRef.current.disconnect();
 
