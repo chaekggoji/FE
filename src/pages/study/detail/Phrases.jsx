@@ -2,10 +2,11 @@ import DropdownBox from '@components/common/DropdownBox';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { getPhraseList } from '@queries/phrases';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 // 리팩토링 목록
@@ -39,23 +40,13 @@ const Phrases = () => {
     staleTime: 1000 * 10,
   });
 
-  const lastItemRef = useRef(null);
-  const observerRef = useRef(null);
+  const handleIntersect = () => {
+    if (hasNextPage && !isLoading) {
+      fetchNextPage();
+    }
+  };
 
-  useEffect(() => {
-    if (observerRef.current) observerRef.current.disconnect();
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isLoading) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 1.0 },
-    );
-
-    if (lastItemRef.current) observerRef.current.observe(lastItemRef.current);
-  }, [data, hasNextPage]);
+  const lastItemRef = useIntersectionObserver(handleIntersect);
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
