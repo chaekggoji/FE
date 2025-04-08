@@ -4,16 +4,16 @@ import { useRef, useState } from 'react';
 
 const DropdownBox = ({
   selectedOption,
-  setSelectedOption,
   options,
   className,
   size = 'medium',
+  onChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownBoxRef = useRef(null);
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+    onChange?.(option);
     setIsOpen(false);
   };
 
@@ -53,8 +53,7 @@ const DropdownBox = ({
 };
 
 DropdownBox.propTypes = {
-  selectedOption: PropTypes.string.isRequired,
-  setSelectedOption: PropTypes.func.isRequired,
+  selectedOption: PropTypes.object.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -63,6 +62,7 @@ DropdownBox.propTypes = {
   ),
   className: PropTypes.string,
   size: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default DropdownBox;
