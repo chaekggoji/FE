@@ -8,6 +8,13 @@ import { Link } from 'react-router';
 import BookModal from '@components/pages/profile/BookModal';
 
 const ProfileHome = () => {
+  const userData = {
+    id: 1,
+    name: '쓴비',
+    introduction: '떼쓰기를 좋아하는 쓴비입니다 :)',
+    categories: ['자기계발', '소설', 'IT'],
+  };
+
   // 현재 선택된 탭 상태
   const [activeTab, setActiveTab] = useState('studies');
 
@@ -76,30 +83,31 @@ const ProfileHome = () => {
           </div>
           {/* 간단한 프로필 */}
           <div className="grow">
-            <h1 className="lg:text-4xl">쓴비 님</h1>
+            <h1 className="lg:text-4xl">{userData.name} 님</h1>
             <p className="mt-2 lg:text-2xl text-gray-500">
-              떼쓰기를 좋아하는 쓴비입니다 :)
+              {userData.introduction}
             </p>
             <div className="-mx-1 mt-0.5 flex items-center gap-1.5 text-primary-400">
-              <ProfileCategoryTag text="자기계발" />
-              <ProfileCategoryTag text="소설" />
-              <ProfileCategoryTag text="IT" />
+              {userData.categories.map((category) => (
+                <ProfileCategoryTag key={category} text={category} />
+              ))}
             </div>
           </div>
         </div>
 
-        {/* 내 정보 수정, 로그아웃 버튼들 */}
+        {/* 프로필 - 내 정보 수정, 로그아웃 버튼 */}
         <div className="flex justify-end gap-2.5">
           <Link to="/profile/1/edit">
             <Button>내 정보 수정</Button>
           </Link>
-          <Button type="CTA Lined">로그아웃</Button>
+          <Link to="/">
+            <Button type="CTA Lined">로그아웃</Button>
+          </Link>
         </div>
       </div>
 
-      {/* 스터디 / 도서 목록 */}
+      {/* 스터디 / 도서 탭 메뉴 */}
       <div className="mt-10">
-        {/* 탭 메뉴*/}
         <div className="flex items-center gap-2.5 w-3/4 max-w-5xl min-w-[20.4375rem] mx-auto pl-5 text-center">
           <button
             className={`w-24 py-0.5 rounded-t-lg border-t-4 box-border text-xl cursor-pointer ${
@@ -137,7 +145,7 @@ const ProfileHome = () => {
         ) : (
           // 최근 도서
           <div className="w-3/4 max-w-5xl min-w-[20.4375rem] mx-auto py-5 px-10 bg-white rounded-xl flex flex-col gap-5">
-            {/* 나의 독서 현황 - 변동사항이 생길것 같아서 따로 컴포넌트화로 하지 않음 */}
+            {/* 나의 독서 현황 - 디자인에 변동사항이 생길 수도 있을 것 같아 추후에 컴포넌트로 변경 예정 */}
             <div className="w-full border-gray-200 border-2 rounded-lg p-5 shadow-sm mt-10 mx-auto">
               <h3 className="text-3xl font-bold mb-4 pb-2 border-b border-gray-100">
                 나의 도서 현황
