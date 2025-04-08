@@ -58,4 +58,7 @@ const CompletedStudyCard = () => {
   );
 };
 
+// TODO: 데이터를 가져온 후에 PropTypes를 설정
+// CompletedStudyCard.propTypes = {};
+
 export default CompletedStudyCard;
