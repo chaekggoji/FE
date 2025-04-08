@@ -6,7 +6,7 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { getPhraseList } from '@queries/phrases';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router';
 
 // 리팩토링 목록
@@ -27,7 +27,14 @@ const Phrases = () => {
   });
   const md = useMediaQuery('(min-width: 768px)');
 
-  // 🌀 useInfiniteQuery 무한 스크롤
+  // 🌀 무한 스크롤 관련 로직
+
+  // 🌀 useInfiniteQuery를 사용해 데이터를 불러와서 캐싱하고,
+  // 무한 스크롤 구현에 필요한 속성들(data, fetchNextPage 등)을 획득합니다.
+  // 동작 방식
+  // 1. queryFn에서 pageParam(초기값 null)을 전달해 데이터를 불러옵니다.
+  // (❗데이터 패치 함수는 data를 리턴해야 해서 async await을 사용했습니다.)
+  //
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['phrases', studyId],
     queryFn: async ({ pageParam = null }) => {
