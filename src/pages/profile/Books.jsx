@@ -4,6 +4,7 @@ import SortDropdown from '@components/pages/study/home/SortDropdown';
 import BookModal from '@components/pages/profile/BookModal';
 import { STATUS_FILTER } from '@/constants/bookSearch';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 const Books = () => {
   // 모달 상태 관리 추가
@@ -69,9 +70,29 @@ const Books = () => {
     },
   ];
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState('all');
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  // TODO: 현재는 데이터 로직 없이 UI만 먼저 구현 -> 데이터 로직과 함께 구현하기
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const getPageFromURL = () => {
+    const params = new URLSearchParams(location.search);
+    const page = parseInt(params.get('page') || '1', 10);
+    return page;
+  };
+
+  const [currentPage, setCurrentPage] = useState(getPageFromURL());
+
+  const currentGroup = [1, 2, 3];
+  const hasPrev = currentPage > 1;
+  const hasNext = currentPage < 10;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    navigate(`?page=${page}`);
+  };
 
   return (
     <div className="lg:p-20 md:p-16 sm:p-10">
@@ -107,7 +128,10 @@ const Books = () => {
         <div className="py-7.5">
           <Pagination
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            onPageChange={handlePageChange}
+            currentGroup={currentGroup}
+            hasPrev={hasPrev}
+            hasNext={hasNext}
           />
         </div>
       </div>
