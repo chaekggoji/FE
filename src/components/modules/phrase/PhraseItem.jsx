@@ -56,7 +56,7 @@ const PhraseItem = ({ phraseData }) => {
   };
 
   return (
-    <div className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm">
+    <div className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm bg-white">
       <div className="flex px-8 pb-2">
         <p>p.{phraseData.page}</p>
         {loggedInUserId === phraseData.user_id ? (

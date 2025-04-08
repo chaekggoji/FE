@@ -11,7 +11,7 @@ const Pagination = ({
     <div className="flex justify-center items-center gap-2 h-[64px] *:cursor-pointer">
       {/* 이전 버튼 */}
       <div
-        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${!hasPrev && 'opacity-60 pointer-events-none'}`}
+        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 bg-white ${!hasPrev && 'opacity-60 pointer-events-none'}`}
         onClick={() => hasPrev && onPageChange(currentPage - 1)}
       >
         이전
@@ -30,7 +30,7 @@ const Pagination = ({
       })}
       {/* 다음 버튼 */}
       <div
-        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 ${!hasNext && 'opacity-60 pointer-events-none'}`}
+        className={`px-4 py-1 border-1 border-slate-500 rounded-xl text-slate-500 bg-white ${!hasNext && 'opacity-60 pointer-events-none'}`}
         onClick={() => hasNext && onPageChange(currentPage + 1)}
       >
         다음

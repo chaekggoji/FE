@@ -36,3 +36,10 @@ export const SORT_OPTIONS = [
   { value: 'popular', label: '인기순' },
   { value: 'alphabetical', label: '가나다순' },
 ];
+
+// 스터디/도서 필터 옵션
+export const STATUS_FILTER = [
+  { value: 'all', label: '전체' },
+  { value: 'inProgress', label: '진행 중' },
+  { value: 'completed', label: '완료' },
+];
