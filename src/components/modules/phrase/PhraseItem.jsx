@@ -56,7 +56,7 @@ const PhraseItem = ({ phraseData }) => {
   };
 
   return (
-    <div className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm">
+    <div className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm bg-white">
       <div className="flex px-8 pb-2">
         <p>p.{phraseData.page}</p>
         {loggedInUserId === phraseData.user_id ? (
@@ -80,7 +80,9 @@ const PhraseItem = ({ phraseData }) => {
             }
             className="size-10 mr-2 rounded-full object-cover"
           />
-          <p className="font-bold">{phraseData.users.nickname}</p>
+          <p className="font-bold">
+            {phraseData?.users?.nickname || '사용자 이름 없음'}
+          </p>
         </div>
         <div className="flex ml-auto">
           <img
@@ -88,7 +90,7 @@ const PhraseItem = ({ phraseData }) => {
             className="mr-2 cursor-pointer"
             onClick={handleToggleLike}
           />
-          <p>{phraseData.likes.length}</p>
+          <p>{phraseData?.likes?.length || 0}</p>
         </div>
       </div>
     </div>
