@@ -73,6 +73,7 @@ export default function StudyHome() {
     setSort('latest');
     setSearchOptions(defaultOptions);
     setCurrentPage(1);
+    setQueryParams({}); // URL도 초기화
   };
 
   useEffect(() => {
@@ -137,6 +138,13 @@ export default function StudyHome() {
   }, []);
 
   const onSearch = () => {
+    if (!search.trim()) {
+      // 빈 검색어면 검색 초기화 실행
+      handleResetSearch();
+      setQueryParams({}); // URL 파라미터도 제거
+      return;
+    }
+
     const options = {
       keyword: search,
       filter,
