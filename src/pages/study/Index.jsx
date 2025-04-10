@@ -73,7 +73,7 @@ export default function StudyHome() {
     setSort('latest');
     setSearchOptions(defaultOptions);
     setCurrentPage(1);
-    setQueryParams({}); // URL도 초기화
+    setQueryParams({}, true); // URL도 초기화, 두 번째 인자 true는 replace라는 의미
   };
 
   useEffect(() => {
@@ -166,6 +166,38 @@ export default function StudyHome() {
       page: pageNum.toString(),
     }));
   };
+
+  useEffect(() => {
+    if (!searchOptions) {
+      return;
+    };
+
+    const isInitial = !search.trim() && !searchOptions.keyword?.trim();
+
+    if (isInitial) {
+      const updated = {
+        keyword: '',
+        filter: 'all',
+        category: '',
+        duration: '',
+        sort,
+      };
+
+      // 검색 조건 상태 반영
+      setSearchOptions(updated);
+
+      // URL 쿼리도 초기화 + 최신 sort 반영
+      setQueryParams({
+        keyword: '',
+        filter: 'all',
+        category: '',
+        duration: '',
+        sort,
+        page: '1',
+      });
+    }
+  }, [sort]);
+
 
   async function fetchBooksFromKakao(keyword) {
     try {
