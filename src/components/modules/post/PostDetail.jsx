@@ -6,7 +6,12 @@ import { useNavigate, useParams } from 'react-router';
 import CommentItem from '@components/modules/post/CommentItem';
 import { useForm } from 'react-hook-form';
 import useMediaQuery from '@hooks/useMediaQuery';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   deletePost,
   getCommentListByPostId,
@@ -14,6 +19,7 @@ import {
   writeComment,
 } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
 // 리팩토링 목록
 // - 텍스트 에디터 사용한 데이터 뿌리기
@@ -36,16 +42,6 @@ const PostDetail = () => {
     queryKey: ['post', postId],
     queryFn: () => {
       return getPostById(postId);
-    },
-    select: (res) => res.data,
-    staleTime: 1000 * 10,
-  });
-
-  // post에 달린 댓글 리스트를 불러오는 useQuery
-  const { data: commentListData, isLoading: commentListIsLoading } = useQuery({
-    queryKey: ['comments', postId],
-    queryFn: () => {
-      return getCommentListByPostId(postId);
     },
     select: (res) => res.data,
     staleTime: 1000 * 10,
@@ -107,6 +103,32 @@ const PostDetail = () => {
     reset();
   };
 
+  // 댓글 목록 무한 스크롤
+  const {
+    data: commentListData,
+    fetchNextPage,
+    hasNextPage,
+    isLoading: commentListIsLoading,
+  } = useInfiniteQuery({
+    queryKey: ['comments', postId],
+    queryFn: async ({ pageParam = null }) => {
+      return await getCommentListByPostId(postId, pageParam);
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.length === 0) return undefined;
+      return lastPage[lastPage.length - 1].created_at;
+    },
+    staleTime: 1000 * 10,
+  });
+
+  const handleIntersect = () => {
+    if (hasNextPage && !commentListIsLoading) {
+      fetchNextPage();
+    }
+  };
+
+  const lastItemRef = useIntersectionObserver(handleIntersect);
+
   return (
     <>
       {!postIsLoading && (
@@ -166,8 +188,16 @@ const PostDetail = () => {
               {/* 댓글 목록 */}
               <ul className="flex flex-col gap-4">
                 {!commentListIsLoading &&
-                  commentListData.map((comment) => (
-                    <CommentItem key={comment.id} data={comment} />
+                  commentListData?.pages.map((page, i) => (
+                    <div key={i} className="flex flex-col gap-4">
+                      {page.map((comment, i, pages) => (
+                        <CommentItem
+                          key={comment.id}
+                          data={comment}
+                          ref={i === pages.length - 1 ? lastItemRef : null}
+                        />
+                      ))}
+                    </div>
                   ))}
               </ul>
             </div>

@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteComment } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
+import { forwardRef } from 'react';
 
-const CommentItem = ({ data }) => {
+const CommentItem = forwardRef(({ data }, ref) => {
   const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -34,7 +35,10 @@ const CommentItem = ({ data }) => {
   };
 
   return (
-    <li className="p-4 ring-2 ring-slate-300 rounded-2xl font-gowunbatang md:text-[1rem] text-sm">
+    <li
+      className="p-4 ring-2 ring-slate-300 rounded-2xl font-gowunbatang md:text-[1rem] text-sm"
+      ref={ref}
+    >
       <div className="flex items-center mb-2">
         <div
           className="flex items-center cursor-pointer"
@@ -60,7 +64,7 @@ const CommentItem = ({ data }) => {
       <p>{data.content}</p>
     </li>
   );
-};
+});
 
 CommentItem.propTypes = {
   data: PropTypes.shape({
@@ -72,5 +76,7 @@ CommentItem.propTypes = {
     post_id: PropTypes.number.isRequired,
   }),
 };
+
+CommentItem.displayName = 'CommentItem'; // eslint 오류 해결
 
 export default CommentItem;

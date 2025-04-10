@@ -1,6 +1,7 @@
 import supabase from '@libs/supabase';
 
-export const getPhraseList = (studyId, cursor) => {
+export const getPhraseList = async (studyId, cursor) => {
+
   const query = supabase
     .from('phrases')
     .select(
@@ -18,5 +19,7 @@ export const getPhraseList = (studyId, cursor) => {
 
   query.limit(5);
 
-  return query;
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
 };
