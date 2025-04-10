@@ -21,7 +21,6 @@ const options = [
 
 const Phrases = () => {
   const { studyId } = useParams();
-  const cursorRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState({
     name: '',
     value: null,
@@ -92,7 +91,6 @@ const Phrases = () => {
               ))}
             </div>
           ))}
-        <button onClick={fetchMorePhrases}>데이터 불러오기</button>
       </div>
     </div>
   );
