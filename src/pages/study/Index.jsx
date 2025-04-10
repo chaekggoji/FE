@@ -213,6 +213,20 @@ export default function StudyHome() {
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
+      {/* 추천 도서 영역 */}
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 my-12'>
+        {books.slice(0, isDesktop ? 4 : isTablet ? 3 : 2).map((book, index) => (
+          <div key={index} className='w-full flex justify-center'>
+            <BookItem
+              title={book.title}
+              author={book.authors?.[0] || '작자 미상'}
+              thumbnail={book.thumbnail}
+              link={book.url}
+              size='large'
+            />
+          </div>
+        ))}
+      </div>
       <SearchBar
         search={search}
         setSearch={setSearch}
