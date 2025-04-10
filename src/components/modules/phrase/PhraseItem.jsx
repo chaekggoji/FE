@@ -83,7 +83,9 @@ const PhraseItem = forwardRef(({ phraseData }, ref) => {
             }
             className="size-10 mr-2 rounded-full object-cover"
           />
-          <p className="font-bold">{phraseData.users.nickname}</p>
+          <p className="font-bold">
+            {phraseData?.users?.nickname || '사용자 이름 없음'}
+          </p>
         </div>
         <div className="flex ml-auto">
           <img
@@ -91,7 +93,7 @@ const PhraseItem = forwardRef(({ phraseData }, ref) => {
             className="mr-2 cursor-pointer"
             onClick={handleToggleLike}
           />
-          <p>{phraseData.likes.length}</p>
+          <p>{phraseData?.likes?.length || 0}</p>
         </div>
       </div>
     </div>

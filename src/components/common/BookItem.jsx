@@ -6,6 +6,8 @@ const BookItem = ({
   author,
   thumbnail = null,
   link = null,
+  onClick = null,
+  showCaption = true,
   className,
   ...props
 }) => {
@@ -22,27 +24,36 @@ const BookItem = ({
     small: 'h-[40px] text-xs p-2',
   }[size];
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else if (link) {
+      window.open(link, '_blank');
+    } else {
+      window.alert('상세 정보가 제공되지 않는 도서입니다.');
+    }
+  };
+
   return (
     <>
       <div
         className={`rounded-tr-2xl rounded-br-2xl relative shadow-book cursor-pointer ${sizeClass} ${className}`}
-        onClick={() => {
-          link
-            ? window.open(link, '_blank')
-            : window.alert('상세 정보가 제공되지 않는 도서입니다.');
-        }}
+        onClick={handleClick}
         {...props}
       >
         <img
           src={thumbnail ? thumbnail : bookCoverPlaceholder}
           className="w-full h-full object-cover rounded-tr-2xl rounded-br-2xl"
+          alt={title}
         />
-        <div
-          className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center ${captionClass}`}
-        >
-          <p className="mr-auto w-full truncate">{title}</p>
-          <p className="ml-auto text-end w-full truncate">by {author}</p>
-        </div>
+        {showCaption && (
+          <div
+            className={`w-full bg-white rounded-br-2xl absolute left-0 bottom-0 flex flex-col justify-center ${captionClass}`}
+          >
+            <p className="mr-auto w-full truncate">{title}</p>
+            <p className="ml-auto text-end w-2/3 truncate">by {author}</p>
+          </div>
+        )}
       </div>
     </>
   );
@@ -55,6 +66,8 @@ BookItem.propTypes = {
   thumbnail: PropTypes.string,
   link: PropTypes.string,
   className: PropTypes.string,
+  onClick: PropTypes.func,
+  showCaption: PropTypes.bool,
 };
 
 export default BookItem;
