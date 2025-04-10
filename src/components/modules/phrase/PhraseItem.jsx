@@ -2,7 +2,7 @@ import defaultProfile from '@assets/icons/icon_no_profile_24.svg';
 import emptyHeartIcon from '@assets/icons/icon_heart_24.svg';
 import filledHeartIcon from '@assets/icons/icon_heart_filled_24.svg';
 import SmallDropdownBox from '@components/common/SmallDropdownBox';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import { deletePhrase } from '@queries/phrases';
 // 리팩토링 목록
 // - 좋아요 광클 했을 때 문제 발생 해결
 
-const PhraseItem = ({ phraseData }) => {
+const PhraseItem = forwardRef(({ phraseData }, ref) => {
   const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const { studyId } = useParams();
@@ -56,7 +56,10 @@ const PhraseItem = ({ phraseData }) => {
   };
 
   return (
-    <div className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm bg-white">
+    <div
+      className="flex flex-col pt-4 ring-1 ring-slate-500 rounded-2xl font-gowunbatang md:text-[1rem] text-sm"
+      ref={ref}
+    >
       <div className="flex px-8 pb-2">
         <p>p.{phraseData.page}</p>
         {loggedInUserId === phraseData.user_id ? (
@@ -95,7 +98,7 @@ const PhraseItem = ({ phraseData }) => {
       </div>
     </div>
   );
-};
+});
 
 PhraseItem.propTypes = {
   phraseData: PropTypes.shape({
@@ -111,5 +114,7 @@ PhraseItem.propTypes = {
     likes: PropTypes.number.isRequired,
   }),
 };
+
+PhraseItem.displayName = 'PhraseItem'; // eslint 오류 해결
 
 export default PhraseItem;
