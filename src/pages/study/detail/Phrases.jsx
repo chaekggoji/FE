@@ -14,8 +14,8 @@ import { useNavigate, useParams } from 'react-router';
 // - 무한 스크롤 ✅
 
 const options = [
-  { name: '좋아요 많은 순', value: 'likes' },
-  { name: '페이지 순', value: 'page' },
+  { name: '좋아요 많은 순', value: 'mostLiked' },
+  { name: '페이지 순', value: 'pageAscending' },
   { name: '초기화', value: null },
 ];
 
@@ -62,11 +62,21 @@ const Phrases = () => {
     },
     getNextPageParam: (lastPage) => {
       if (lastPage.length === 0) return undefined;
-      // console.log(
-      //   lastPage[lastPage.length - 1],
-      //   lastPage[lastPage.length - 1].created_at,
-      // );
-      return lastPage[lastPage.length - 1].created_at;
+
+      const lastItem = lastPage[lastPage.length - 1];
+      if (sortOption.value === 'mostLiked') {
+        return {
+          like_count: lastItem.like_count,
+          created_at: lastItem.created_at,
+        };
+      } else if (sortOption.value === 'pageAscending') {
+        return {
+          page: lastItem.page,
+          created_at: lastItem.created_at,
+        };
+      } else {
+        return lastItem.created_at;
+      }
     },
     staleTime: 1000 * 10,
   });
