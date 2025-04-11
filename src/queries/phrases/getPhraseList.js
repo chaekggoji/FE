@@ -18,11 +18,9 @@ export const getPhraseList = async (studyId, cursor, sortBy) => {
         .order('created_at', { ascending: false });
 
       if (cursor) {
-        const { like_count, created_at } = cursor;
-        console.log(like_count, created_at);
+        const { likeCount, createdAt } = cursor;
         query.or(
-          // eslint-disable-next-line camelcase
-          `like_count.lt.${like_count},and(like_count.eq.${like_count},created_at.lt.${created_at})`,
+          `like_count.lt.${likeCount},and(like_count.eq.${likeCount},created_at.lt.${createdAt})`,
         );
       }
     } // 최신 순 정렬
@@ -32,10 +30,9 @@ export const getPhraseList = async (studyId, cursor, sortBy) => {
         .order('created_at', { ascending: false });
 
       if (cursor) {
-        const { page, created_at } = cursor;
+        const { page, createdAt } = cursor;
         query.or(
-          // eslint-disable-next-line camelcase
-          `page.gt.${page},and(page.eq.${page},created_at.lt.${created_at})`,
+          `page.gt.${page},and(page.eq.${page},created_at.lt.${createdAt})`,
         );
       }
     }

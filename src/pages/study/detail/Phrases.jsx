@@ -66,13 +66,13 @@ const Phrases = () => {
       const lastItem = lastPage[lastPage.length - 1];
       if (sortOption.value === 'mostLiked') {
         return {
-          like_count: lastItem.like_count,
-          created_at: lastItem.created_at,
+          likeCount: lastItem.like_count,
+          createdAt: lastItem.created_at,
         };
       } else if (sortOption.value === 'pageAscending') {
         return {
           page: lastItem.page,
-          created_at: lastItem.created_at,
+          createdAt: lastItem.created_at,
         };
       } else {
         return lastItem.created_at;
