@@ -26,7 +26,7 @@ export default function Filters({
   });
 
   return (
-    <div className='flex flex-wrap gap-4'>
+    <div className='flex flex-wrap'>
       {/* 기간 드롭다운 */}
       <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0 cursor-pointer' ref={durationRef}>
         <button
