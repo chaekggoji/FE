@@ -16,6 +16,7 @@ import Button from '@components/common/Button';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
 import { StudyNoResults } from '@components/pages/study/home/StudyNoResults';
+import RecommendedBookSlider from '@pages/study/detail/RecommendedBookSlider';
 
 export default function StudyHome() {
   // 스터디 & 책 목록 상태
@@ -47,41 +48,6 @@ export default function StudyHome() {
   const DEFAULT_DURATION = '기간 선택';
   // 모든 필터 조건, 카테고리 목록, 화면 크기 기준 스터디 수, 데이터 로딩 완료 여부까지 준비가 끝났을 때만 스터디 목록을 보여주기 위해 사용되는 상태
   const isReady = searchOptions && categoryList.length > 0 && studyCount > 0 && !loading;
-  const scrollRef = useRef(null);
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const getCardWidth = () => {
-    const width = window.innerWidth;
-    if (width < 640) return scrollRef.current.offsetWidth * 0.4;      // mobile (w-[40%])
-    if (width < 768) return scrollRef.current.offsetWidth * 0.285;    // sm
-    return scrollRef.current.offsetWidth * 0.22;                      // md & lg
-  };
-
-  const handleScrollNext = () => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const itemWidth = getCardWidth() + 16;
-    const totalPages = Math.ceil(books.length / cardsPerPage);
-    const newIndex = slideIndex + 1;
-
-    container.scrollTo({
-      left: container.scrollLeft + itemWidth * cardsPerPage,
-      behavior: 'smooth',
-    });
-
-    setSlideIndex(newIndex);
-
-    if (newIndex > totalPages) {
-      setTimeout(() => {
-        container.scrollTo({
-          left: itemWidth * visibleCount,
-          behavior: 'auto',
-        });
-        setSlideIndex(1);
-      }, 500);
-    }
-  };
 
   const generatePageGroup = (currentPage, totalPages, groupSize = 5) => {
     const start = Math.floor((currentPage - 1) / groupSize) * groupSize + 1;
@@ -116,14 +82,6 @@ export default function StudyHome() {
     else if (isTablet) setStudyCount(9);
     else if (isDesktop) setStudyCount(12);
   }, [isMobile, isTablet, isDesktop]);
-
-  useEffect(() => {
-    if (scrollRef.current && books.length > 0) {
-      const itemWidth = getCardWidth() + 16;
-      scrollRef.current.scrollLeft = itemWidth * visibleCount;
-      setSlideIndex(1);
-    }
-  }, [books]);
 
   useEffect(() => {
     if (searchOptions && categoryList.length > 0) {
@@ -352,71 +310,13 @@ export default function StudyHome() {
     }
   }
 
-  const getCardsPerPage = () => {
-    const width = window.innerWidth;
-    if (width < 640) return 2;
-    if (width < 1024) return 3;
-    return 4;
-  };
-
-  const cardsPerPage = getCardsPerPage();
-  const visibleCount = cardsPerPage;
-  const clonedBooks = books.length > 0
-    ? [
-      ...books.slice(-visibleCount), // 끝에서 복제
-      ...books,
-      ...books.slice(0, visibleCount), // 처음에서 복제
-    ]
-    : [];
-
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       {/* 추천 도서 */}
-      {/* <div className='flex overflow-x-auto my-12 px-4 scrollbar-hide snap-x snap-mandatory'>
-        {books.slice(0, 12).map((book, index) => (
-          <div key={index} className={`flex-shrink-0 snap-start
-            w-[180px] sm:w-[200px] md:w-[240px] lg:w-[260px]
-            ${index !== books.length - 1 ? 'mr-6' : ''}`}>
-            <BookItem
-              title={book.title}
-              author={book.authors?.[0] || '작자 미상'}
-              thumbnail={book.thumbnail}
-              link={book.url}
-              size='large'
-            />
-          </div>
-        ))}
-      </div> */}
-      <div className="relative py-10">
-        <div
-          ref={scrollRef}
-          className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth px-4"
-        >
-          {clonedBooks.map((book, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 snap-start w-[160px] sm:w-[220px] md:w-[260px] lg:w-[300px] mr-4"
-            >
-              <BookItem
-                title={book.title}
-                author={book.authors?.[0] || '작자 미상'}
-                thumbnail={book.thumbnail}
-                link={book.url}
-                size="large"
-              />
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={handleScrollNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 pt-2 bg-primary-200 hover:bg-primary-300 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center"
-        >
-          <span className="text-xl translate-x-[1px] translate-y-[-1px]">▶</span>
-        </button>
-
-      </div>
+      {books.length > 0 && (
+        <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={true} />
+      )}
 
       {/* 검색 바 / 필터 */}
       <SearchBar
