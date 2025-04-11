@@ -1,9 +1,10 @@
 // React 라이브러리
 import { useState, useEffect } from 'react';
-// hook
+// 사용자 정의 훅 및 상수
 import useMediaQuery from '@hooks/useMediaQuery';
 import { SORT_OPTIONS } from '@/constants/bookSearch';
-// 외부 패키지
+import { useQueryParams } from '@hooks/useQueryParams.jsx';
+// 외부 API 및 라이브러리
 import supabase from '@/libs/supabase';
 import ClipLoader from "react-spinners/ClipLoader";
 // 컴포넌트
@@ -11,38 +12,42 @@ import Pagination from '@components/common/Pagination';
 import SortDropdown from '@components/pages/study/home/SortDropdown';
 import Filters from '@components/pages/study/home/Filters';
 import SearchBar from '@components/pages/study/home/SearchBar';
+import Button from '@components/common/Button';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
 import { StudyNoResults } from '@components/pages/study/home/StudyNoResults';
 
 export default function StudyHome() {
-  const [studies, setStudies] = useState([]); // 화면에 보여줄 스터디 목록
-  const [books, setBooks] = useState([]); // 상단 추천 도서 리스트 (카카오 API)
-  const [randomKeyword, setRandomKeyword] = useState(''); // 상단 도서 추천용 랜덤 키워드 (카테고리 중 하나 선택)
-  const [search, setSearch] = useState(''); // 검색창 입력값
-  const [filter, setFilter] = useState('all'); // 검색 필터 (도서명 / 저자명 / 스터디명 / 전체)
-  const [duration, setDuration] = useState(''); // 기간 필터 ('1m', '3m', ...)
-  const [category, setCategory] = useState(''); // 카테고리 필터 (supabase에서 동적으로 가져옴)
-  const [categoryList, setCategoryList] = useState([]); // Supabase에서 받아온 카테고리 리스트
-  const [sort, setSort] = useState('latest'); // 정렬 방식(최신순, 인기순, 가나다순)
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
-  const [openDropdown, setOpenDropdown] = useState(null); // 열려 있는 드롭다운 종류
+  // 스터디 & 책 목록 상태
+  const [studies, setStudies] = useState([]);
+  const [books, setBooks] = useState([]);
+  // 검색 관련 상태
+  const [randomKeyword, setRandomKeyword] = useState('');
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('all');
+  const [duration, setDuration] = useState('');
+  const [category, setCategory] = useState('');
+  // 기타 UI 상태
+  const [categoryList, setCategoryList] = useState([]);
+  const [sort, setSort] = useState('latest');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  const [studyCount, setStudyCount] = useState(0); // 화면 크기에 따라 스터디 수 결정
+  const [loading, setLoading] = useState(false);
+  const [searchOptions, setSearchOptions] = useState(null);
+  // 쿼리 파라미터 (URL 상태)
+  const [queryParams, setQueryParams] = useQueryParams();
 
-  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수(스터디 수 기반 계산)
-  const [studyCount, setStudyCount] = useState(0); // 화면 너비에 따른 한 페이지 당 표시할 스터디 개수
-  const [loading, setLoading] = useState(false); // 로딩 상태 여부
-  const [searchOptions, setSearchOptions] = useState(null); // 검색 조건 객체 (버튼 클릭 시 기준으로 저장됨)
-
-  // 반응형 기준 설정
   const isMobile = useMediaQuery('(max-width: 640px)');
   const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1023px)');
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-
-  // 필터: 카테고리, 기간
+  // 셀렉트 기본값
   const DEFAULT_CATEGORY = '카테고리 전체';
   const DEFAULT_DURATION = '기간 선택';
+  // 모든 필터 조건, 카테고리 목록, 화면 크기 기준 스터디 수, 데이터 로딩 완료 여부까지 준비가 끝났을 때만 스터디 목록을 보여주기 위해 사용되는 상태
+  const isReady = searchOptions && categoryList.length > 0 && studyCount > 0 && !loading;
 
-  // 현재 페이지 그룹 계산 -> Pagination에 넘김
   const generatePageGroup = (currentPage, totalPages, groupSize = 5) => {
     const start = Math.floor((currentPage - 1) / groupSize) * groupSize + 1;
     const end = Math.min(start + groupSize - 1, totalPages);
@@ -53,43 +58,78 @@ export default function StudyHome() {
   const hasPrev = currentGroup[0] > 1;
   const hasNext = currentGroup[currentGroup.length - 1] < totalPages;
 
-  // 스터디 카드 개수 설정
+  const handleResetSearch = () => {
+    const defaultOptions = {
+      keyword: '',
+      filter: 'all',
+      duration: '',
+      category: '',
+      sort: 'latest',
+    };
+    setSearch('');
+    setFilter('all');
+    setDuration('');
+    setCategory('');
+    setSort('latest');
+    setSearchOptions(defaultOptions);
+    setCurrentPage(1);
+    setQueryParams({}, true); // URL도 초기화, 두 번째 인자 true는 replace라는 의미
+  };
+
   useEffect(() => {
     if (isMobile) setStudyCount(6);
     else if (isTablet) setStudyCount(9);
     else if (isDesktop) setStudyCount(12);
   }, [isMobile, isTablet, isDesktop]);
 
-  // 검색 실행 시 fetch
   useEffect(() => {
-    if (searchOptions) {
+    if (searchOptions && categoryList.length > 0) {
       fetchStudies(searchOptions);
     }
-  }, [searchOptions, currentPage]);
+  }, [searchOptions, currentPage, categoryList]);
 
-  // 초기 렌더링 시 책, 검색 기본조건 세팅
+  useEffect(() => {
+    const keyword = queryParams.get('keyword') || '';
+    const filter = queryParams.get('filter') || 'all';
+    const category = queryParams.get('category') || '';
+    const duration = queryParams.get('duration') || '';
+    const sort = queryParams.get('sort') || 'latest';
+    const page = parseInt(queryParams.get('page') || '1', 10);
+
+    // URL 파라미터를 상태에 반영하여 검색 조건 초기 세팅
+    setSearch(keyword);
+    setFilter(filter);
+    setCategory(category);
+    setDuration(duration);
+    setSort(sort);
+    setCurrentPage(page);
+
+    // 검색 조건 객체로 저장 (이걸 기반으로 fetchStudies 실행됨)
+    setSearchOptions({ keyword, filter, category, duration, sort });
+  }, [queryParams, studyCount]); // studyCount가 설정된 후 실행되도록 의존성에 추가
+
   useEffect(() => {
     if (studyCount > 0) {
       fetchBooksFromKakao();
-      setSearchOptions({
-        keyword: '',
-        filter: 'all',
-        duration: '',
-        category: '',
-        sort: 'latest',
-      }); // ✅ 최초는 최신 정렬만
+      // 이미 searchOptions가 있으면(쿼리에서 읽어왔을 경우) 초기화 X
+      if (!searchOptions) {
+        setSearchOptions({
+          keyword: '',
+          filter: 'all',
+          duration: '',
+          category: '',
+          sort: 'latest',
+        });
+      }
     }
   }, [studyCount]);
 
-  // 카테고리 데이터 가져오기 (Supabase의 book_categories 테이블의 title)
   useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase.from('book_categories').select('title');
       if (!error && data) {
         const titles = data.map((c) => c.title);
         setCategoryList(titles);
-
-        // ✅ 랜덤 키워드 선택
         const random = titles[Math.floor(Math.random() * titles.length)];
         setRandomKeyword(random);
       }
@@ -97,8 +137,14 @@ export default function StudyHome() {
     fetchCategories();
   }, []);
 
-  // 검색 버튼 클릭 시 실행되는 함수
   const onSearch = () => {
+    if (!search.trim()) {
+      // 빈 검색어면 검색 초기화 실행
+      handleResetSearch();
+      setQueryParams({}); // URL 파라미터도 제거
+      return;
+    }
+
     const options = {
       keyword: search,
       filter,
@@ -106,15 +152,72 @@ export default function StudyHome() {
       duration: duration === DEFAULT_DURATION ? '' : duration,
       sort,
     };
+    setQueryParams({ ...options, page: '1' }); // URL에 저장
     setSearchOptions(options);
     setCurrentPage(1);
   };
 
-  // 카카오 API 도서 썸네일 불러오기
+  const handlePageChange = (pageNum) => {
+    setCurrentPage(pageNum);
+
+    // 기존 URL에서 파라미터 유지한 채 page만 수정
+    setQueryParams(prev => ({
+      ...Object.fromEntries(queryParams.entries()),
+      page: pageNum.toString(),
+    }));
+  };
+
+  useEffect(() => {
+    if (!searchOptions) {
+      return;
+    };
+
+    const isInitial = !search.trim() && !searchOptions.keyword?.trim();
+
+    if (isInitial) {
+      const updated = {
+        keyword: '',
+        filter: 'all',
+        category: '',
+        duration: '',
+        sort,
+      };
+
+      // 검색 조건 상태 반영
+      setSearchOptions(updated);
+
+      // URL 쿼리도 초기화 + 최신 sort 반영
+      setQueryParams({
+        keyword: '',
+        filter: 'all',
+        category: '',
+        duration: '',
+        sort,
+        page: '1',
+      });
+    } else {
+      // ✅ 검색어가 있는 상태에서 정렬만 바뀐 경우 반영
+      const updated = {
+        ...searchOptions,
+        sort,
+      };
+
+      setSearchOptions(updated);
+
+      setQueryParams({
+        ...Object.fromEntries(queryParams.entries()),
+        sort,
+        page: '1',
+      });
+
+      setCurrentPage(1);
+    }
+  }, [sort]);
+
+
   async function fetchBooksFromKakao(keyword) {
     try {
-      const query = keyword || randomKeyword || '인문'; // fallback까지 안전하게
-
+      const query = keyword || randomKeyword || '인문';
       const response = await fetch(
         `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=12`,
         {
@@ -123,85 +226,49 @@ export default function StudyHome() {
           },
         }
       );
-
-      if (!response.ok) {
-        throw new Error(`카카오 API 오류: HTTP ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`카카오 API 오류: HTTP ${response.status}`);
       const result = await response.json();
-
-      if (!result || !Array.isArray(result.documents)) {
-        throw new Error('책 데이터를 불러오는 데 실패했습니다.');
-      }
-
+      if (!result || !Array.isArray(result.documents)) throw new Error('책 데이터를 불러오는 데 실패했습니다.');
       setBooks(result.documents);
     } catch (error) {
-      console.error('📛 카카오 책 API 에러:', error);
-      setBooks(result.documents);
+      setBooks([]);
     }
   }
 
-  // 📁 Index.jsx 내의 fetchStudies 함수 (검색 버튼 클릭 시에만 실행)
   async function fetchStudies({ keyword, filter, duration, category, sort }) {
     setLoading(true);
     try {
       const itemsPerPage = studyCount;
-      if (!itemsPerPage || itemsPerPage <= 0) {
-        return;
-      }
+      if (!itemsPerPage || itemsPerPage <= 0) return;
       const from = (currentPage - 1) * itemsPerPage;
       const to = from + itemsPerPage - 1;
 
-      // 1. Supabase에서 스터디 + 책 + 카테고리 조인해서 가져오기
       const { data: fetchedStudies, error } = await supabase
         .from('studies')
-        .select(`
-        *,
-        books (
-          id,
-          title,
-          author,
-          thumb_url,
-          category_id,
-          book_categories (
-            id,
-            title
-          )
-        )
-      `);
+        .select(`*, books(id, title, author, thumb_url, category_id, book_categories(id, title))`);
 
       if (error || !fetchedStudies) throw new Error('스터디 데이터를 불러오는 데 실패했습니다.');
 
-      // 2. 키워드 필터링 (도서명/저자명/스터디명/전체)
       let filteredStudies = [...fetchedStudies];
+      // 키워드 필터
       if (keyword) {
         const lower = keyword.toLowerCase();
-        if (filter === 'title') {
-          filteredStudies = filteredStudies.filter(s => s.books?.title?.toLowerCase().includes(lower));
-        } else if (filter === 'author') {
-          filteredStudies = filteredStudies.filter(s => s.books?.author?.toLowerCase().includes(lower));
-        } else if (filter === 'study') {
-          filteredStudies = filteredStudies.filter(s => s.title?.toLowerCase().includes(lower));
-        } else {
-          filteredStudies = filteredStudies.filter((s) => {
-            const studyTitle = s.title?.toLowerCase() || '';
-            const bookTitle = s.books?.title?.toLowerCase() || '';
-            const bookAuthor = s.books?.author?.toLowerCase() || '';
-            return (
-              studyTitle.includes(lower) ||
-              bookTitle.includes(lower) ||
-              bookAuthor.includes(lower)
-            );
-          });
-        }
+        if (filter === 'title') filteredStudies = filteredStudies.filter(s => s.books?.title?.toLowerCase().includes(lower));
+        else if (filter === 'author') filteredStudies = filteredStudies.filter(s => s.books?.author?.toLowerCase().includes(lower));
+        else if (filter === 'study') filteredStudies = filteredStudies.filter(s => s.title?.toLowerCase().includes(lower));
+        else filteredStudies = filteredStudies.filter(s => {
+          const studyTitle = s.title?.toLowerCase() || '';
+          const bookTitle = s.books?.title?.toLowerCase() || '';
+          const bookAuthor = s.books?.author?.toLowerCase() || '';
+          return studyTitle.includes(lower) || bookTitle.includes(lower) || bookAuthor.includes(lower);
+        });
       }
-
-      // 3. 기간 필터링 (1m, 3m, 6m, 6m+)
+      // 기간 필터
       if (duration && duration !== 'duration_all') {
         filteredStudies = filteredStudies.filter((s) => {
           const start = new Date(s.start_date);
           const end = new Date(s.end_date);
-          if (isNaN(start) || isNaN(end)) return false; // 필터 대상 제외
+          if (isNaN(start) || isNaN(end)) return false;
           const durationInDays = (end - start) / (1000 * 60 * 60 * 24);
           if (duration === '1m') return durationInDays < 31;
           if (duration === '3m') return durationInDays < 92;
@@ -210,27 +277,12 @@ export default function StudyHome() {
           return true;
         });
       }
-
-
-      // 4. 카테고리 필터링
-      if (
-        typeof category === 'string' &&
-        category !== 'category_all' &&
-        category !== '카테고리 전체' &&
-        categoryList.includes(category)
-      ) {
-        filteredStudies = filteredStudies.filter(
-          (s) => s.books?.book_categories?.title === category
-        );
+      // 카테고리 필터
+      if (typeof category === 'string' && category !== 'category_all' && category !== '카테고리 전체' && categoryList.includes(category)) {
+        filteredStudies = filteredStudies.filter(s => s.books?.book_categories?.title === category);
       }
-
-
-
-      // 5. 참여자 수 조회 → participantCount 계산
-      const { data: participants, error: pError } = await supabase
-        .from('study_participants')
-        .select('study_id');
-
+      // 참여자 수 계산하기
+      const { data: participants, error: pError } = await supabase.from('study_participants').select('study_id');
       if (pError || !participants) throw new Error('참여자 수 불러오기 실패');
 
       const participantCountMap = {};
@@ -238,47 +290,29 @@ export default function StudyHome() {
         participantCountMap[p.study_id] = (participantCountMap[p.study_id] || 0) + 1;
       }
 
-      // 6. 참여자 수 추가 및 정렬 기준에 따라 정렬
-      const studiesWithCounts = filteredStudies.map((study) => {
+      const studiesWithCounts = filteredStudies.map(study => {
         const participantCount = participantCountMap[study.id] || 0;
         const remain = (study.capacity || 0) - participantCount;
         return { ...study, participantCount, remain };
       });
+      // 정렬
+      if (sort === 'latest') studiesWithCounts.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
+      else if (sort === 'popular') studiesWithCounts.sort((a, b) => a.remain - b.remain);
+      else if (sort === 'alphabetical') studiesWithCounts.sort((a, b) => a.title.localeCompare(b.title));
 
-      if (sort === 'latest') {
-        studiesWithCounts.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
-      } else if (sort === 'popular') {
-        studiesWithCounts.sort((a, b) => {
-          if (a.remain === b.remain) {
-            return new Date(b.start_date) - new Date(a.start_date);
-          }
-          return a.remain - b.remain; // 잔여 인원 오름차순
-        });
-      } else if (sort === 'alphabetical') {
-        studiesWithCounts.sort((a, b) => a.title.localeCompare(b.title));
-      }
-
-      // 7. 페이징 적용
       setStudies(studiesWithCounts.slice(from, to + 1));
       setTotalPages(Math.ceil(studiesWithCounts.length / itemsPerPage));
     } catch (err) {
-      console.err('스터디 목록을 불러오는 중 오류가 발생했습니다.');
+      console.error('스터디 목록을 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   }
 
-  // 최초 렌더링 시에도 검색 실행
-  useEffect(() => {
-    if (studyCount > 0 && searchOptions && typeof searchOptions.keyword !== 'undefined') {
-      fetchStudies(searchOptions);
-    }
-  }, [searchOptions, currentPage, studyCount]);
-
   return (
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
-      {/* 추천 도서 영역 */}
+      {/* 추천 도서 */}
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 my-12'>
         {books.slice(0, isDesktop ? 4 : isTablet ? 3 : 2).map((book, index) => (
           <div key={index} className='w-full flex justify-center'>
@@ -292,8 +326,7 @@ export default function StudyHome() {
           </div>
         ))}
       </div>
-
-      {/* 검색바 */}
+      {/* 검색 바 / 필터 */}
       <SearchBar
         search={search}
         setSearch={setSearch}
@@ -306,53 +339,55 @@ export default function StudyHome() {
         openDropdown={openDropdown}
         setOpenDropdown={setOpenDropdown}
       />
-
-      {/* 필터 & 정렬 */}
-      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-2 mt-4'>
-        <Filters
-          duration={duration}
-          setDuration={setDuration}
-          category={category}
-          setCategory={setCategory}
-          openDropdown={openDropdown}
-          setOpenDropdown={setOpenDropdown}
-          categoryList={categoryList}
-        />
-        <div className='md:ml-auto'>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-4'>
+        <div className='flex flex-wrap md:flex-row items-center gap-8'>
           <SortDropdown
             sort={sort}
             setSort={setSort}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
             sortOptions={SORT_OPTIONS}
-            buttonClassName='bg-primary-200 text-white border-primary-300'
+            buttonClassName='bg-primary-200 text-white border-primary-300 pl-4 py-2 text-sm sm:text-base md:text-lg w-32 min-w-[96px]'
             menuClassName='border-primary-300'
             itemClassName='rounded-none hover:text-white'
-            widthClass='w-48'
+            widthClass='w-32'
+          />
+          <Filters
+            duration={duration}
+            setDuration={setDuration}
+            category={category}
+            setCategory={setCategory}
+            openDropdown={openDropdown}
+            setOpenDropdown={setOpenDropdown}
+            categoryList={categoryList}
           />
         </div>
+        <Button
+          size={null}
+          type={null}
+          className='bg-primary-200 border-2 border-primary-300/50 hover:bg-primary-300 text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 min-w-[96px]'
+          onClick={handleResetSearch}>
+          검색 초기화
+        </Button>
       </div>
-
-      {/* 스터디 리스트 */}
+      {/* 스터디 목록 */}
       <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12'>
-        {loading ? (
-          <div className="col-span-full flex justify-center items-center h-72">
-            {/* spinner 사용으로 UI 개선 */}
-            <ClipLoader color="#AFC8AD" size={100} />
+        {/* 아직 데이터가 준비되지 않았다면 로딩 스피너만 보여줌
+        StudyNoResults 깜빡이는 문제 해결 */}
+        {!isReady ? (
+          <div className='col-span-full flex justify-center items-center h-72'>
+            <ClipLoader color='#AFC8AD' size={100} />
           </div>
         ) : studies.length === 0 ? (
           <StudyNoResults keyword={searchOptions?.keyword} />
         ) : (
-          studies.map((study) => (
-            <StudyItem key={study.id} study={study} />
-          ))
+          studies.map((study) => <StudyItem key={study.id} study={study} />)
         )}
       </div>
-
       {/* 페이지네이션 */}
       <Pagination
         currentPage={currentPage}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
         currentGroup={currentGroup}
         hasPrev={hasPrev}
         hasNext={hasNext}
