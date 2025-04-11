@@ -195,6 +195,22 @@ export default function StudyHome() {
         sort,
         page: '1',
       });
+    } else {
+      // ✅ 검색어가 있는 상태에서 정렬만 바뀐 경우 반영
+      const updated = {
+        ...searchOptions,
+        sort,
+      };
+
+      setSearchOptions(updated);
+
+      setQueryParams({
+        ...Object.fromEntries(queryParams.entries()),
+        sort,
+        page: '1',
+      });
+
+      setCurrentPage(1);
     }
   }, [sort]);
 
