@@ -35,7 +35,7 @@ export default function SearchBar({
       <div className='relative' ref={filterRef}>
         <button
           onClick={() => setOpenDropdown(isFilterOpen ? null : 'search-filter')}
-          className={`bg-primary-200 border-2 border-primary-400/50 text-white text-base sm:text-lg md:text-xl px-4 py-3 rounded-lg text-left ${dropdownWidth}`}
+          className={`bg-primary-200 border-2 border-primary-400/50 text-white text-base sm:text-lg md:text-xl px-4 py-3 rounded-lg text-left cursor-pointer ${dropdownWidth}`}
         >
           {selectedLabel}
         </button>
@@ -79,7 +79,7 @@ export default function SearchBar({
               onSearch(); // ✅ 입력값이 있을 때만 실행
             }
           }}
-          className='bg-primary-200 rounded-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14'
+          className='bg-primary-200 rounded-lg flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 cursor-pointer'
         >
           <img src={SearchIcon} alt='검색' className='w-6 h-6 sm:w-7 sm:h-7' />
         </button>

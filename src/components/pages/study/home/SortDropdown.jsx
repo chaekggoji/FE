@@ -31,7 +31,7 @@ export default function SortDropdown({
         onClick={toggleDropdown}
         className={`
           border-2 px-4 py-2 w-full rounded-lg text-left
-          text-sm sm:text-base md:text-lg lg:text-xl
+          text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer
           ${buttonClassName}
         `}
       >

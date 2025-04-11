@@ -28,10 +28,10 @@ export default function Filters({
   return (
     <div className='flex flex-wrap gap-4'>
       {/* 기간 드롭다운 */}
-      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={durationRef}>
+      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0 cursor-pointer' ref={durationRef}>
         <button
           onClick={() => setOpenDropdown(isDurationOpen ? null : 'duration')}
-          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
+          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 cursor-pointer ${dropdownWidth} rounded-lg text-left ${isDurationOpen ? 'bg-primary-200' : ''}`}
         >
           {DURATION_FILTERS.find(opt => opt.value === duration)?.label || '기간 선택'}
         </button>
@@ -55,10 +55,10 @@ export default function Filters({
       </div>
 
       {/* 카테고리 드롭다운 */}
-      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0' ref={categoryRef}>
+      <div className='relative min-w-[8rem] sm:min-w-[9rem] md:min-w-[10rem] lg:min-w-[11rem] shrink-0 cursor-pointer' ref={categoryRef}>
         <button
           onClick={() => setOpenDropdown(isCategoryOpen ? null : 'category')}
-          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 ${dropdownWidth} rounded-lg text-left ${isCategoryOpen ? 'bg-primary-200' : ''}`}
+          className={`border text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 cursor-pointer ${dropdownWidth} rounded-lg text-left ${isCategoryOpen ? 'bg-primary-200' : ''}`}
         >
           {category || '카테고리 선택'}
         </button>

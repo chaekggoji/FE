@@ -334,7 +334,7 @@ export default function StudyHome() {
       </div>
 
       {/* 스터디 리스트 */}
-      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12'>
+      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12 cursor-pointer'>
         {loading ? (
           <div className="col-span-full flex justify-center items-center h-72">
             {/* spinner 사용으로 UI 개선 */}
