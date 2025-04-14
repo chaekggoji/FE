@@ -1,8 +1,10 @@
 import Button from '@components/common/Button';
+import Editor from '@components/common/Editor';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import { writePost } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
@@ -30,7 +32,7 @@ const PostWrite = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { studyId, boardType } = useParams();
-  const { register, handleSubmit } = useForm();
+  const { register, watch, setValue, handleSubmit } = useForm();
 
   const mutation = useMutation({
     mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
@@ -55,14 +57,26 @@ const PostWrite = () => {
   };
 
   const onSubmit = (formData) => {
-    mutation.mutate({
-      studyId,
-      loggedInUserId,
-      type: boardType,
-      title: formData.title,
-      content: formData.content,
-    });
+    console.log(formData);
+    // mutation.mutate({
+    //   studyId,
+    //   loggedInUserId,
+    //   type: boardType,
+    //   title: formData.title,
+    //   content: formData.content,
+    // });
   };
+
+  useEffect(() => {
+    register('content', { required: true });
+  }, [register]);
+
+  const onHtmlContentChange = (htmlContent) => {
+    setValue('content', htmlContent);
+  };
+
+  // content가 변경될때 마다 htmlContent를 업데이트 시킴 (리렌더링 발생)
+  const htmlContent = watch('content');
 
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
@@ -77,10 +91,16 @@ const PostWrite = () => {
           placeholder={titlePlaceholder[boardType]}
           {...register('title')}
         />
-        <textarea
+        {/* <textarea
           className="w-full ring-2 ring-slate-300 focus:outline-none focus:ring-primary-400 rounded-2xl resize-none px-4 py-3 min-h-[360px]"
           placeholder={contentPlaceholder[boardType]}
           {...register('content')}
+        /> */}
+
+        <Editor
+          value={htmlContent}
+          onChange={onHtmlContentChange}
+          height={400}
         />
         <div className="flex ml-auto gap-4">
           <Button type="CTA Lined" onClick={handleCancle}>

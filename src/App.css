@@ -89,4 +89,17 @@
   table {
     @apply border-collapse border-spacing-0;
   }
+
+  /* 텍스트 에디터 스타일 */
+
+  .ql-toolbar {
+    border-radius: 16px 16px 0 0;
+    border: 3px solid #cad5e2 !important;
+  }
+
+  .ql-container {
+    border-radius: 0 0 16px 16px;
+    border: 3px solid #cad5e2 !important;
+    border-top: 0 !important;
+  }
 }
