@@ -8,9 +8,7 @@ import supabase from '@libs/supabase';
 export const getStudyById = (studyId) => {
   return supabase
     .from('studies')
-    .select(
-      `*,study_participants(*,users(id, nickname, img_url, intro)),books(*)`,
-    )
+    .select(`*,books(*)`)
     .eq('id', studyId)
     .single();
 };

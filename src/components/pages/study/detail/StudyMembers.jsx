@@ -2,26 +2,22 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router';
 import profileDefaultIcon from '@assets/icons/icon_profile_default_36.svg';
 
-const StudyMembers = ({ participantData }) => {
+const StudyMembers = ({ memberData }) => {
   const navigate = useNavigate();
   return (
     <div className="flex cursor-pointer">
-      {participantData.map((participant) => {
+      {memberData.map((member) => {
         return (
           <img
             src={
-              participant.users.img_url
-                ? participant.users.img_url
-                : profileDefaultIcon
+              member.users.img_url ? member.users.img_url : profileDefaultIcon
             }
-            key={participant.users.id}
+            key={member.users.id}
             className={`relative group lg:size-12 size-10 -mr-2 rounded-full object-cover`}
             title={
-              participant.users.nickname
-                ? participant.users.nickname
-                : '탈퇴한 사용자'
+              member.users.nickname ? member.users.nickname : '탈퇴한 사용자'
             }
-            onClick={() => navigate(`/profile/${participant.users.id}`)}
+            onClick={() => navigate(`/profile/${member.users.id}`)}
           />
         );
       })}
@@ -30,7 +26,7 @@ const StudyMembers = ({ participantData }) => {
 };
 
 StudyMembers.propTypes = {
-  participantData: PropTypes.array.isRequired,
+  memberData: PropTypes.array.isRequired,
 };
 
 export default StudyMembers;
