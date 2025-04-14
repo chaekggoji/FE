@@ -16,7 +16,7 @@ import Button from '@components/common/Button';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
 import { StudyNoResults } from '@components/pages/study/home/StudyNoResults';
-import RecommendedBookSlider from '@pages/study/detail/RecommendedBookSlider';
+import RecommendedBookSlider from '@components/pages/study/home/RecommendedBookSlider';
 
 export default function StudyHome() {
   // 스터디 & 책 목록 상태
@@ -315,7 +315,9 @@ export default function StudyHome() {
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       {/* 추천 도서 */}
       {books.length > 0 && (
-        <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={true} />
+        <div className="w-full my-12">
+          <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={false} />
+        </div>
       )}
 
       {/* 검색 바 / 필터 */}
