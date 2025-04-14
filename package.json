@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.0.11",
     "@tanstack/react-query": "^5.66.5",
     "@tanstack/react-query-devtools": "^5.66.5",
+    "@xeger/quill-image-actions": "^0.7.2",
     "axios": "^1.7.9",
     "dompurify": "^3.2.5",
     "prop-types": "^15.8.1",
