@@ -18,6 +18,7 @@ const formats = [
   'list',
   'indent',
   'link',
+  'color',
 ];
 
 const Editor = ({ value, onChange, placeholder, height }) => {
@@ -28,7 +29,13 @@ const Editor = ({ value, onChange, placeholder, height }) => {
         container: [
           [{ header: [1, 2, false] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-          [{ list: 'ordered' }, { indent: '-1' }, { indent: '+1' }],
+          [
+            { list: 'bullet' },
+            { list: 'ordered' },
+            { indent: '-1' },
+            { indent: '+1' },
+          ],
+          [{ color: [] }],
           ['link'],
           ['clean'],
         ],
