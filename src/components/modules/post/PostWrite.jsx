@@ -4,14 +4,11 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import { writePost } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import imageUploadIcon from '@assets/icons/icon_plus_white_24.svg';
-
-// 리팩토링 목록
-// - 텍스트 에디터 사용
-// - 사진 등록
+import supabase from '@libs/supabase';
 
 const title = {
   notice: '공지사항 글 작성',
@@ -33,13 +30,14 @@ const PostWrite = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { studyId, boardType } = useParams();
-  const { register, watch, setValue, handleSubmit } = useForm();
-  const [postImages, setPostImages] = useState([]);
-  const [previewImages, setPreviewImages] = useState([]);
+  const { register, control, handleSubmit } = useForm();
+  const [postImages, setPostImages] = useState([]); // 스토리지에 등록할 이미지 파일
+  const [previewImages, setPreviewImages] = useState([]); // 이미지 미리보기에 표시할 이미지 (base64 인코딩)
 
+  // 게시글 작성 함수
   const mutation = useMutation({
-    mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
-      return writePost(studyId, loggedInUserId, type, title, content);
+    mutationFn: ({ studyId, loggedInUserId, type, title, content, imgUrl }) => {
+      return writePost(studyId, loggedInUserId, type, title, content, imgUrl);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['posts', boardType]);
@@ -53,41 +51,63 @@ const PostWrite = () => {
     },
   });
 
+  // 게시글 작성 취소
   const handleCancle = (event) => {
     event.preventDefault();
     alert('글 작성이 취소되었습니다.');
     navigate(-1, { replace: true });
   };
 
-  const onSubmit = (formData) => {
-    console.log(formData);
-    // mutation.mutate({
-    //   studyId,
-    //   loggedInUserId,
-    //   type: boardType,
-    //   title: formData.title,
-    //   content: formData.content,
-    // });
+  // 수퍼베이스 스토리지에 파일 업로드
+  const handleUploadStorage = async (files) => {
+    const uploadedImgUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      // 파일 이름 생성
+      const fileName = `post_${Date.now()}_${i}.${files[i].type.split('/')[1]}`;
+
+      // 스토리지 업로드
+      const { data, error } = await supabase.storage
+        .from('post-images')
+        .upload(fileName, files[i]);
+
+      if (error) {
+        console.log('이미지 업로드에 실패하였습니다.');
+        return;
+      }
+
+      // storage에 담긴 이미지의 publicUrl 가져오기
+      const res = supabase.storage.from('post-images').getPublicUrl(data.path);
+      uploadedImgUrls.push(res.data.publicUrl);
+    }
+    return uploadedImgUrls;
   };
 
-  useEffect(() => {
-    register('content', { required: true });
-  }, [register]);
-
-  const onHtmlContentChange = (htmlContent) => {
-    setValue('content', htmlContent);
+  // 폼 제출 핸들러
+  const onSubmit = async (formData) => {
+    // console.log(formData);
+    let uploadedImgUrls = [];
+    if (postImages.length > 0) {
+      uploadedImgUrls = await handleUploadStorage(postImages);
+    }
+    mutation.mutate({
+      studyId,
+      loggedInUserId,
+      type: boardType,
+      title: formData.title,
+      content: formData.content,
+      imgUrl: uploadedImgUrls,
+    });
   };
 
-  // content가 변경될때 마다 htmlContent를 업데이트 시킴 (리렌더링 발생)
-  const htmlContent = watch('content');
-
+  // 이미지 추가, 미리보기
   const uploadImage = (e) => {
     const fileList = Array.from(e.target.files);
 
     for (const file of fileList) {
       if (file.size > 3 * 1024 * 1024) {
-        // 5MB를 바이트로 변환
-        alert('파일 크기는 3MB 이하로 업로드해 주세요.');
+        // 3MB를 바이트로 변환
+        alert('업로드 할 수 있는 최대 파일의 크기는 3MB 입니다.');
         return;
       }
     }
@@ -115,7 +135,8 @@ const PostWrite = () => {
     });
   };
 
-  const handldeImageDelete = (index) => {
+  // 이미지 제거
+  const handleImageDelete = (index) => {
     setPostImages((prev) => prev.filter((_, i) => i !== index));
     setPreviewImages((prev) => prev.filter((_, i) => i !== index));
   };
@@ -133,11 +154,18 @@ const PostWrite = () => {
           placeholder={titlePlaceholder[boardType]}
           {...register('title')}
         />
-        <Editor
-          placeholder={contentPlaceholder[boardType]}
-          value={htmlContent}
-          onChange={onHtmlContentChange}
-          height={300}
+        {/* react-hook-form의 Controller로 외부 인풋 라이브러리를 비제어 컴포넌트로 관리  */}
+        <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <Editor
+              placeholder={contentPlaceholder[boardType]}
+              value={field.value}
+              onChange={field.onChange}
+              height={300}
+            />
+          )}
         />
         <div className="w-full border-3 border-slate-300 rounded-2xl flex p-2 md:mt-0 mt-6">
           <label
@@ -166,7 +194,7 @@ const PostWrite = () => {
                     <div className="absolute inset-0 bg-slate-800 opacity-0 group-hover:opacity-40 rounded-xl"></div>
                     <div
                       className="absolute inset-0 flex justify-center items-center text-xl text-white opacity-0 group-hover:opacity-100 cursor-pointer"
-                      onClick={() => handldeImageDelete(index)}
+                      onClick={() => handleImageDelete(index)}
                     >
                       삭제
                     </div>
