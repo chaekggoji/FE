@@ -20,7 +20,7 @@ const formats = [
   'link',
 ];
 
-const Editor = ({ value, onChange, height }) => {
+const Editor = ({ value, onChange, placeholder, height }) => {
   // 에디터에 표시할 기능
   const modules = useMemo(() => {
     return {
@@ -43,6 +43,7 @@ const Editor = ({ value, onChange, height }) => {
     >
       <ReactQuill
         theme="snow"
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         modules={modules}
@@ -57,6 +58,7 @@ Editor.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   height: PropTypes.number,
+  placeholder: PropTypes.string,
 };
 
 export default Editor;

@@ -4,7 +4,7 @@ import BoardTitle from '@components/modules/board/BoardTitle';
 import { writePost } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import imageUploadIcon from '@assets/icons/icon_plus_white_24.svg';
@@ -34,6 +34,8 @@ const PostWrite = () => {
   const navigate = useNavigate();
   const { studyId, boardType } = useParams();
   const { register, watch, setValue, handleSubmit } = useForm();
+  const [postImages, setPostImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
 
   const mutation = useMutation({
     mutationFn: ({ studyId, loggedInUserId, type, title, content }) => {
@@ -79,6 +81,45 @@ const PostWrite = () => {
   // content가 변경될때 마다 htmlContent를 업데이트 시킴 (리렌더링 발생)
   const htmlContent = watch('content');
 
+  const uploadImage = (e) => {
+    const fileList = Array.from(e.target.files);
+
+    for (const file of fileList) {
+      if (file.size > 3 * 1024 * 1024) {
+        // 5MB를 바이트로 변환
+        alert('파일 크기는 3MB 이하로 업로드해 주세요.');
+        return;
+      }
+    }
+
+    if (postImages.length + fileList.length > 3) {
+      alert('이미지는 최대 3개까지 업로드할 수 있습니다.');
+      return;
+    }
+
+    setPostImages((prev) => [...prev, ...fileList]);
+
+    const fileUrls = [];
+
+    fileList.forEach((file, index) => {
+      const reader = new FileReader();
+      // 콜백 함수 등록 (read후 실행)
+      reader.onload = () => {
+        fileUrls[index] = reader.result;
+        // 모든 파일을 다 읽었을 때만 setPreviewImages 실행 (falsy 값 제거)
+        if (fileUrls.filter(Boolean).length === fileList.length) {
+          setPreviewImages((prev) => [...prev, ...fileUrls]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handldeImageDelete = (index) => {
+    setPostImages((prev) => prev.filter((_, i) => i !== index));
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
@@ -93,6 +134,7 @@ const PostWrite = () => {
           {...register('title')}
         />
         <Editor
+          placeholder={contentPlaceholder[boardType]}
           value={htmlContent}
           onChange={onHtmlContentChange}
           height={300}
@@ -100,7 +142,7 @@ const PostWrite = () => {
         <div className="w-full border-3 border-slate-300 rounded-2xl flex p-2 md:mt-0 mt-6">
           <label
             htmlFor="image-upload"
-            className="cursor-pointer w-20 h-20 bg-primary-200 rounded-xl flex justify-center items-center"
+            className="cursor-pointer w-20 h-20 bg-primary-200 rounded-xl flex justify-center items-center mr-2 hover:bg-primary-300"
           >
             <img src={imageUploadIcon} className="size-8" />
           </label>
@@ -108,8 +150,31 @@ const PostWrite = () => {
             id="image-upload"
             type="file"
             accept="image/*"
+            multiple
             className="hidden"
+            onChange={uploadImage}
           />
+          {previewImages.length > 0 && (
+            <div className="flex gap-2">
+              {previewImages.map((src, index) => {
+                return (
+                  <div key={index} className="relative group">
+                    <img
+                      src={src}
+                      className="size-20 rounded-xl cursor-pointer object-cover"
+                    />
+                    <div className="absolute inset-0 bg-slate-800 opacity-0 group-hover:opacity-40 rounded-xl"></div>
+                    <div
+                      className="absolute inset-0 flex justify-center items-center text-xl text-white opacity-0 group-hover:opacity-100 cursor-pointer"
+                      onClick={() => handldeImageDelete(index)}
+                    >
+                      삭제
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
         <div className="flex ml-auto gap-4">
           <Button type="CTA Lined" onClick={handleCancle}>
