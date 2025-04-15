@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import imageUploadIcon from '@assets/icons/icon_plus_white_24.svg';
 
 // 리팩토링 목록
 // - 텍스트 에디터 사용
@@ -86,22 +87,30 @@ const PostWrite = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <input
-          className="w-full ring-2 ring-slate-300 focus:outline-none focus:ring-primary-400 rounded-2xl px-4 py-3"
+          className="w-full border-3 border-slate-300 focus:outline-none rounded-2xl px-4 py-3"
           type="text"
           placeholder={titlePlaceholder[boardType]}
           {...register('title')}
         />
-        {/* <textarea
-          className="w-full ring-2 ring-slate-300 focus:outline-none focus:ring-primary-400 rounded-2xl resize-none px-4 py-3 min-h-[360px]"
-          placeholder={contentPlaceholder[boardType]}
-          {...register('content')}
-        /> */}
-
         <Editor
           value={htmlContent}
           onChange={onHtmlContentChange}
-          height={400}
+          height={300}
         />
+        <div className="w-full border-3 border-slate-300 rounded-2xl flex p-2 md:mt-0 mt-6">
+          <label
+            htmlFor="image-upload"
+            className="cursor-pointer w-20 h-20 bg-primary-200 rounded-xl flex justify-center items-center"
+          >
+            <img src={imageUploadIcon} className="size-8" />
+          </label>
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+          />
+        </div>
         <div className="flex ml-auto gap-4">
           <Button type="CTA Lined" onClick={handleCancle}>
             취소

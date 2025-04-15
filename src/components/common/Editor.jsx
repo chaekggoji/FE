@@ -24,7 +24,6 @@ const Editor = ({ value, onChange, height }) => {
   // 에디터에 표시할 기능
   const modules = useMemo(() => {
     return {
-      imageActions: {},
       toolbar: {
         container: [
           [{ header: [1, 2, false] }],
@@ -33,9 +32,6 @@ const Editor = ({ value, onChange, height }) => {
           ['link'],
           ['clean'],
         ],
-        ImageResize: {
-          modules: ['Resize'],
-        },
       },
     };
   }, []);
