@@ -1,10 +1,11 @@
 import Button from '@components/common/Button';
+import Editor from '@components/common/Editor';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import useMediaQuery from '@hooks/useMediaQuery';
 import { editPost } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 const title = {
@@ -17,7 +18,7 @@ const PostEdit = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { boardType } = useParams();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm();
   const location = useLocation();
   const md = useMediaQuery('(min-width: 768px)');
 
@@ -64,10 +65,22 @@ const PostEdit = () => {
           {...register('title')}
           defaultValue={location.state.title}
         />
-        <textarea
+        {/* <textarea
           className="w-full ring-2 ring-slate-300 focus:outline-none focus:ring-primary-400 rounded-2xl resize-none px-4 py-3 min-h-[360px] font-gowunbatang"
           {...register('content')}
           defaultValue={location.state.content}
+        /> */}
+        <Controller
+          name="content"
+          defaultValue={location.state.content}
+          control={control}
+          render={({ field }) => (
+            <Editor
+              value={field.value}
+              onChange={field.onChange}
+              height={300}
+            />
+          )}
         />
         <div className="flex ml-auto gap-4">
           <Button

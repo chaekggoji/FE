@@ -130,7 +130,6 @@ const PostDetail = () => {
 
   const lastItemRef = useIntersectionObserver(handleIntersect);
 
-  console.log(postData);
   return (
     <>
       {!postIsLoading && (
@@ -176,7 +175,7 @@ const PostDetail = () => {
                   __html: DOMPurify.sanitize(postData.content),
                 }}
               />
-              {postData.img_url.length > 0 && (
+              {postData.img_url?.length > 0 && (
                 <div>
                   {postData.img_url.map((src, index) => {
                     return <img key={index} src={src} />;
