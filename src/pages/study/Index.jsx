@@ -6,7 +6,7 @@ import { SORT_OPTIONS } from '@/constants/bookSearch';
 import { useQueryParams } from '@hooks/useQueryParams.jsx';
 // 외부 API 및 라이브러리
 import supabase from '@/libs/supabase';
-import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from 'react-spinners/ClipLoader';
 // 컴포넌트
 import Pagination from '@components/common/Pagination';
 import SortDropdown from '@components/pages/study/home/SortDropdown';
@@ -315,8 +315,8 @@ export default function StudyHome() {
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       {/* 추천 도서 */}
       {books.length > 0 && (
-        <div className="w-full my-12">
-          <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={false} />
+        <div className='w-full my-12'>
+          <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={true} />
         </div>
       )}
 
@@ -368,9 +368,9 @@ export default function StudyHome() {
       {/* 스터디 리스트 */}
       <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12 cursor-pointer'>
         {loading ? (
-          <div className="col-span-full flex justify-center items-center h-72">
+          <div className='col-span-full flex justify-center items-center h-72'>
             {/* spinner 사용으로 UI 개선 */}
-            <ClipLoader color="#AFC8AD" size={100} />
+            <ClipLoader color='#AFC8AD' size={100} />
           </div>
         ) : studies.length === 0 ? (
           <StudyNoResults keyword={searchOptions?.keyword} />
@@ -391,7 +391,7 @@ export default function StudyHome() {
         isMobile && (
           <button
             onClick={() => window.location.href = '/study/create'}
-            className="fixed bottom-8 right-8 bg-primary-200 hover:bg-primary-300 text-white text-5xl w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50"
+            className='fixed bottom-8 right-8 bg-primary-200 hover:bg-primary-300 text-white text-5xl w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50'
           >
             +
           </button>
