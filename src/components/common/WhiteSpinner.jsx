@@ -1,9 +1,9 @@
-import { BeatLoader } from 'react-spinners';
+import { PulseLoader } from 'react-spinners';
 
 export default function WhiteSpinner() {
   return (
     <div className="flex justify-center items-center h-screen">
-      <BeatLoader color="white" />
+      <PulseLoader color="white" />
     </div>
   );
 }
