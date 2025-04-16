@@ -143,9 +143,9 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
                   key={index}
                   className='flex-1'
                   style={{
-                    maxWidth: isMobile ? '160px' : isTablet ? '180px' : '240px',
-                    minWidth: isMobile ? '140px' : isTablet ? '160px' : '200px',
-                    margin: '0 0.5rem'
+                    maxWidth: isMobile ? '165px' : isTablet ? '180px' : '240px',
+                    minWidth: isMobile ? '145px' : isTablet ? '160px' : '200px',
+                    margin: isMobile ? '0 0.05rem' : '0 0.5rem'
                   }}
                 >
                   {book ? (
@@ -158,7 +158,7 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
                     />
                   ) : (
                     <div className='invisible' style={{
-                      width: isMobile ? '120px' : isTablet ? '180px' : '240px',
+                      width: isMobile ? '145px' : isTablet ? '180px' : '240px',
                       height: isMobile ? '174px' : isTablet ? '261px' : '348px'
                     }} />
                   )}
@@ -172,13 +172,13 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
       {/* 좌우 네비게이션 버튼 */}
       <button
         onClick={handlePrev}
-        className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-primary-200 hover:bg-primary-300 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md'
+        className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-primary-200 hover:bg-primary-300 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md cursor-pointer'
       >
         ◀
       </button>
       <button
         onClick={handleNext}
-        className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-primary-200 hover:bg-primary-300 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md'
+        className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-primary-200 hover:bg-primary-300 text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-md cursor-pointer'
       >
         ▶
       </button>

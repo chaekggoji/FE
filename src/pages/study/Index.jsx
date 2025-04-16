@@ -334,7 +334,7 @@ export default function StudyHome() {
         setOpenDropdown={setOpenDropdown}
       />
       <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-4'>
-        <div className='flex flex-wrap md:flex-row items-center gap-8'>
+        <div className='flex flex-nowrap md:flex-row items-center gap-2 md:gap-8'>
           <SortDropdown
             sort={sort}
             setSort={setSort}
