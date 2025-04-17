@@ -15,11 +15,12 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
 
   // 디바이스 타입에 따른 한 슬라이드당 표시할 도서 수
   const groupSize = isMobile ? 2 : isTablet ? 3 : 4;
+  const size = isMobile ? 'small' : isTablet ? 'medium' : 'large';
 
   // 슬라이드 상태 관리
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 표시 중인 슬라이드 인덱스
-  const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 진행 중 여부
-  const [noTransition, setNoTransition] = useState(false); // transition 효과 제어
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [noTransition, setNoTransition] = useState(false);
 
   // 총 12권의 도서를 맞추기 위해 부족한 경우 null로 채움
   const filledBooks = [...books];
@@ -118,6 +119,26 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
     }
   }, [currentIndex, isAnimating]);
 
+  // 슬라이드 크기 클래스
+  const slideClass = {
+    small: 'w-[7.5rem] h-[10.875rem]',
+    medium: 'w-[11.25rem] h-[16.3125rem]',
+    large: 'w-[15rem] h-[21.75rem]',
+  }[size];
+
+  const slideGroupClass = {
+    small: 'w-[15rem] h-[10.875rem]',
+    medium: 'w-[33.75rem] h-[16.3125rem]',
+    large: 'w-[60rem] h-[21.75rem]',
+  }[size];
+
+  // 슬라이드 간격
+  const slideGap = {
+    small: 'gap-2',
+    medium: 'gap-4',
+    large: 'gap-6',
+  }[size];
+
   return (
     <div className='relative w-full my-12'>
       {/* 슬라이드 컨테이너 */}
@@ -133,7 +154,7 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
           {extendedGroups.map((group, groupIdx) => (
             <div
               key={groupIdx}
-              className='flex justify-between shrink-0 w-full'
+              className={`flex justify-between shrink-0 w-full ${slideGap}`}
               style={{
                 width: `${100 / extendedGroups.length}%`,
               }}
@@ -142,11 +163,6 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
                 <div
                   key={index}
                   className='flex-1'
-                  style={{
-                    maxWidth: isMobile ? '165px' : isTablet ? '180px' : '240px',
-                    minWidth: isMobile ? '145px' : isTablet ? '160px' : '200px',
-                    margin: isMobile ? '0 0.05rem' : '0 0.5rem'
-                  }}
                 >
                   {book ? (
                     <BookItem
@@ -154,13 +170,10 @@ const RecommendedBookSlider = ({ books = [], autoSlide = true }) => {
                       author={book.authors?.[0] || '작자 미상'}
                       thumbnail={book.thumbnail}
                       link={book.url}
-                      size={isMobile ? 'small' : isTablet ? 'medium' : 'large'}
+                      size={size}
                     />
                   ) : (
-                    <div className='invisible' style={{
-                      width: isMobile ? '145px' : isTablet ? '180px' : '240px',
-                      height: isMobile ? '174px' : isTablet ? '261px' : '348px'
-                    }} />
+                    <div className='invisible' />
                   )}
                 </div>
               ))}
