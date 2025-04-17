@@ -97,7 +97,7 @@ const ProfileHome = () => {
         user={{
           id: userId,
           nickname: userInfo.nickname,
-          intro: userInfo.intro || '나를 표현하는 짧은 한 문장을 적어주세요😊',
+          intro: userInfo.intro || '간단하게 나를 소개해주세요😊',
           img_url: userInfo.img_url,
           categories: userInterestCategories,
         }}
