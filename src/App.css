@@ -107,13 +107,27 @@
 
   .ql-editor h1 {
     font-size: 32px;
+    font-weight: 600;
   }
 
   .ql-editor h2 {
     font-size: 24px;
+    font-weight: 600;
+  }
+
+  .ql-editor blockquote {
+    border-left: 4px solid #ccc;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px !important;
   }
 
   .ql-editor h3 {
     font-size: 16px;
+  }
+
+  .ql-editor a {
+    color: blue;
+    text-decoration: underline;
   }
 }

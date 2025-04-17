@@ -7,8 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
-import imageUploadIcon from '@assets/icons/icon_plus_white_24.svg';
 import supabase from '@libs/supabase';
+import ImageUploadBox from '@components/modules/post/ImageUploadBox';
 
 const title = {
   notice: '공지사항 글 작성',
@@ -36,8 +36,22 @@ const PostWrite = () => {
 
   // 게시글 작성 함수
   const mutation = useMutation({
-    mutationFn: ({ studyId, loggedInUserId, type, title, content, imgUrl }) => {
-      return writePost(studyId, loggedInUserId, type, title, content, imgUrl);
+    mutationFn: ({
+      studyId,
+      loggedInUserId,
+      type,
+      title,
+      content,
+      imgUrlList,
+    }) => {
+      return writePost(
+        studyId,
+        loggedInUserId,
+        type,
+        title,
+        content,
+        imgUrlList,
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['posts', boardType]);
@@ -58,9 +72,9 @@ const PostWrite = () => {
     navigate(-1, { replace: true });
   };
 
-  // 수퍼베이스 스토리지에 파일 업로드
+  // 수퍼베이스 스토리지에 파일 업로드 후 public url 이미지 배열을 반환
   const handleUploadStorage = async (files) => {
-    const uploadedImgUrls = [];
+    const uploadedImageLists = [];
 
     for (let i = 0; i < files.length; i++) {
       // 파일 이름 생성
@@ -78,17 +92,16 @@ const PostWrite = () => {
 
       // storage에 담긴 이미지의 publicUrl 가져오기
       const res = supabase.storage.from('post-images').getPublicUrl(data.path);
-      uploadedImgUrls.push(res.data.publicUrl);
+      uploadedImageLists.push(res.data.publicUrl);
     }
-    return uploadedImgUrls;
+    return uploadedImageLists;
   };
 
   // 폼 제출 핸들러
   const onSubmit = async (formData) => {
-    // console.log(formData);
-    let uploadedImgUrls = [];
+    let uploadedImageUrlList = [];
     if (postImages.length > 0) {
-      uploadedImgUrls = await handleUploadStorage(postImages);
+      uploadedImageUrlList = await handleUploadStorage(postImages);
     }
     mutation.mutate({
       studyId,
@@ -96,12 +109,12 @@ const PostWrite = () => {
       type: boardType,
       title: formData.title,
       content: formData.content,
-      imgUrl: uploadedImgUrls,
+      imgUrl: uploadedImageUrlList,
     });
   };
 
   // 이미지 추가, 미리보기
-  const uploadImage = (e) => {
+  const handleImageUpload = (e) => {
     const fileList = Array.from(e.target.files);
 
     for (const file of fileList) {
@@ -119,16 +132,16 @@ const PostWrite = () => {
 
     setPostImages((prev) => [...prev, ...fileList]);
 
-    const fileUrls = [];
+    const fileUrlList = [];
 
     fileList.forEach((file, index) => {
       const reader = new FileReader();
       // 콜백 함수 등록 (read후 실행)
       reader.onload = () => {
-        fileUrls[index] = reader.result;
+        fileUrlList[index] = reader.result;
         // 모든 파일을 다 읽었을 때만 setPreviewImages 실행 (falsy 값 제거)
-        if (fileUrls.filter(Boolean).length === fileList.length) {
-          setPreviewImages((prev) => [...prev, ...fileUrls]);
+        if (fileUrlList.filter(Boolean).length === fileList.length) {
+          setPreviewImages((prev) => [...prev, ...fileUrlList]);
         }
       };
       reader.readAsDataURL(file);
@@ -167,43 +180,11 @@ const PostWrite = () => {
             />
           )}
         />
-        <div className="w-full border-3 border-slate-300 rounded-2xl flex p-2 md:mt-0 mt-6">
-          <label
-            htmlFor="image-upload"
-            className="cursor-pointer w-20 h-20 bg-primary-200 rounded-xl flex justify-center items-center mr-2 hover:bg-primary-300"
-          >
-            <img src={imageUploadIcon} className="size-8" />
-          </label>
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={uploadImage}
-          />
-          {previewImages.length > 0 && (
-            <div className="flex gap-2">
-              {previewImages.map((src, index) => {
-                return (
-                  <div key={index} className="relative group">
-                    <img
-                      src={src}
-                      className="size-20 rounded-xl cursor-pointer object-cover"
-                    />
-                    <div className="absolute inset-0 bg-slate-800 opacity-0 group-hover:opacity-40 rounded-xl"></div>
-                    <div
-                      className="absolute inset-0 flex justify-center items-center text-xl text-white opacity-0 group-hover:opacity-100 cursor-pointer"
-                      onClick={() => handleImageDelete(index)}
-                    >
-                      삭제
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+        <ImageUploadBox
+          previewImages={previewImages}
+          onImageUpload={handleImageUpload}
+          onImageDelete={handleImageDelete}
+        />
         <div className="flex ml-auto gap-4">
           <Button type="CTA Lined" onClick={handleCancle}>
             취소

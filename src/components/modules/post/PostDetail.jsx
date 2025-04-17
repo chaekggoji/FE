@@ -22,9 +22,6 @@ import useUserStore from '@store/useUserStore';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import DOMPurify from 'dompurify';
 
-// 리팩토링 목록
-// - 텍스트 에디터 사용한 데이터 뿌리기
-
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
   debate: '토론 주제에 대한 자신의 생각을 남겨보세요.',
@@ -84,6 +81,7 @@ const PostDetail = () => {
         postId: postData.id,
         title: postData.title,
         content: postData.content,
+        imgUrlList: postData.img_url,
       },
     });
   };
