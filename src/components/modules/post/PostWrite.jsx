@@ -112,7 +112,7 @@ const PostWrite = () => {
       type: boardType,
       title: formData.title,
       content: formData.content,
-      imgUrl: uploadedImageUrlList,
+      imgUrlList: uploadedImageUrlList,
     });
   };
 

@@ -176,7 +176,7 @@ const PostDetail = () => {
               {postData.img_url?.length > 0 && (
                 <div>
                   {postData.img_url.map((src, index) => {
-                    return <img key={index} src={src} />;
+                    return <img key={index} src={src} className="mb-4" />;
                   })}
                 </div>
               )}
