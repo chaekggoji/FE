@@ -14,6 +14,7 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 // Todo
 // 1. preview image base64 decode 해보기
 // 2. preview에서 이미지 제거 시 스토리지에서 파일 제거
+// 3. 커스텀 훅으로 코드 정리
 
 const title = {
   notice: '공지사항 글 수정',

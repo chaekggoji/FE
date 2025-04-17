@@ -10,6 +10,9 @@ import { useNavigate, useParams } from 'react-router';
 import supabase from '@libs/supabase';
 import ImageUploadBox from '@components/modules/post/ImageUploadBox';
 
+// Todo
+// 1. 커스텀 훅으로 코드 정리
+
 const title = {
   notice: '공지사항 글 작성',
   debate: '토론 글 작성',
