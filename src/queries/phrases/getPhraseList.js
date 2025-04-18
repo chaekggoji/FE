@@ -48,6 +48,5 @@ export const getPhraseList = async (studyId, cursor, sortBy) => {
 
   const { data, error } = await query;
   if (error) throw error;
-  console.log(data);
   return data;
 };

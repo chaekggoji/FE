@@ -5,7 +5,7 @@ import useUserStore from '@store/useUserStore';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet, useParams } from 'react-router';
 
-const pages = [
+const defaultPages = [
   {
     route: 'home',
     title: '스터디 홈',
@@ -35,12 +35,23 @@ const StudyDetailLayout = () => {
 
   // member중 로그인한 유저 id와 같고, role이 leader인 요소 있으면 true 반환
   const isLeader = data?.some((member) => {
-    return member.id === loggedInUserId && member.role === 'leader';
+    return member.users.id === loggedInUserId && member.role === 'leader';
   });
 
-  const visiblePages = isLeader
-    ? [...pages, { route: 'manage', title: '스터디원 관리' }]
-    : pages;
+  const isMember = data?.some((member) => {
+    return member.users.id === loggedInUserId && member.role === 'member';
+  });
+
+  const visiblePages = isMember
+    ? defaultPages
+    : isLeader
+      ? [...defaultPages, { route: 'manage', title: '스터디원 관리' }]
+      : [
+          {
+            route: 'home',
+            title: '스터디 홈',
+          },
+        ];
 
   return (
     <div className="flex lg:-mx-10 min-h-[calc(100vh-74px)]">

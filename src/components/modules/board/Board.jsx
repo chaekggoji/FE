@@ -10,9 +10,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getPostListByType } from '@queries/posts';
 import usePagination from '@hooks/usePagination';
 
-// 리팩토링 목록
-// - 페이지 이동,정렬시 깜빡임 최소화
-
 const title = {
   notice: '공지사항',
   debate: '토론 나눠요',
