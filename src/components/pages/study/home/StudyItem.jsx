@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 const StudyItem = ({ study, size = 'large' }) => {
   // study가 없을 경우 아무것도 렌더링하지 않음
   if (!study) return null;
-  console.log('스터디 데이터:', study);
 
   // 부모가 주는 너비만큼 알아서 맞추기
   const sizeClass = {
