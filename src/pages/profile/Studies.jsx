@@ -1,15 +1,21 @@
 import Pagination from '@components/common/Pagination';
-import StudyCardList from '@components/pages/profile/StudyCardList';
+import StudyCard from '@components/pages/profile/StudyCard'; // StudyCardList 대신 StudyCard 임포트
 import SortDropdown from '@components/pages/study/home/SortDropdown';
 import { STATUS_FILTER } from '@/constants/bookSearch';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import { getJoinedStudies } from '@queries/profile/getJoinedStudies';
+import WhiteSpinner from '@components/common/WhiteSpinner';
 
 const Studies = () => {
+  const { userId } = useParams(); // URL에서 사용자 ID 가져오기
+  const parsedUserId = parseInt(userId, 10);
+
   const [sort, setSort] = useState('all');
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [filteredStudies, setFilteredStudies] = useState([]);
 
-  // TODO: 현재는 데이터 로직 없이 UI만 먼저 구현 -> 데이터 로직과 함께 구현하기
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -22,16 +28,70 @@ const Studies = () => {
 
   const [currentPage, setCurrentPage] = useState(getPageFromURL());
 
-  // 기본 페이지네이션 정보 (임시)
-  const currentGroup = [1, 2, 3]; // 현재 표시할 페이지 그룹
-  const hasPrev = currentPage > 1; // 이전 페이지 있음 여부
-  const hasNext = currentPage < 10; // 다음 페이지 있음 여부 (임시로 10페이지까지 있다고 가정)
+  // React Query로 스터디 목록 가져오기
+  const {
+    data: studies,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['userStudies', parsedUserId],
+    queryFn: () => getJoinedStudies(parsedUserId),
+    enabled: !!parsedUserId,
+  });
+
+  // 정렬 옵션 변경 시 스터디 목록 필터링
+  useEffect(() => {
+    if (!studies) return;
+
+    if (sort === 'all') {
+      setFilteredStudies(studies);
+    } else {
+      setFilteredStudies(studies.filter((study) => study.status === sort));
+    }
+
+    // 필터 변경 시 첫 페이지로 이동
+    setCurrentPage(1);
+    navigate('?page=1', { replace: true });
+  }, [sort, studies, navigate]);
+
+  // 페이지네이션 계산
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil((filteredStudies?.length || 0) / itemsPerPage);
+
+  // 현재 페이지에 표시할 스터디 목록
+  const currentStudies = filteredStudies.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
+
+  // 현재 페이지 그룹 계산 (5개씩 표시)
+  const groupSize = 5;
+  const currentGroupIndex = Math.floor((currentPage - 1) / groupSize);
+  const currentGroup = Array.from(
+    { length: Math.min(groupSize, totalPages - currentGroupIndex * groupSize) },
+    (_, i) => currentGroupIndex * groupSize + i + 1,
+  );
+
+  const hasPrev = currentPage > 1;
+  const hasNext = currentPage < totalPages;
 
   // 페이지 변경 핸들러
   const handlePageChange = (page) => {
     setCurrentPage(page);
     navigate(`?page=${page}`);
   };
+
+  if (isLoading) {
+    return <WhiteSpinner />;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        스터디 목록을 불러오는데 실패했습니다.
+      </div>
+    );
+  }
 
   return (
     <div className="lg:p-20 md:p-16 sm:p-10">
@@ -50,16 +110,33 @@ const Studies = () => {
             widthClass="w-30"
           />
         </div>
-        <StudyCardList />
-        <div className="py-7.5">
-          <Pagination
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            currentGroup={currentGroup}
-            hasPrev={hasPrev}
-            hasNext={hasNext}
-          />
-        </div>
+
+        {/* StudyCardList 대신 개별 StudyCard 사용 */}
+        {currentStudies.length > 0 ? (
+          <div className="grid lg:grid-cols-2 gap-5">
+            {currentStudies.map((study) => (
+              <StudyCard key={study.id} study={study} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 py-10">
+            {sort === 'all'
+              ? '참여 중인 스터디가 없습니다.'
+              : `${sort === 'inProgress' ? '진행 중인' : '완료된'} 스터디가 없습니다.`}
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <div className="py-7.5">
+            <Pagination
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              currentGroup={currentGroup}
+              hasPrev={hasPrev}
+              hasNext={hasNext}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
