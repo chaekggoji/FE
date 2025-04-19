@@ -50,6 +50,8 @@
   --breakpoint-md: 48rem; /* 768px */
   --breakpoint-lg: 90rem; /* 1440px */
 
+  --breakpoint-editor: 32.75rem; /* 524px */
+
   /* 폰트 설정 */
   --font-ownglyph: 'Ownglyph_StudyHard-Rg', sans-serif;
   --font-gowunbatang: 'GowunBatang-Regular', sans-serif;
@@ -88,6 +90,45 @@
   /* 테이블 스타일 초기화 */
   table {
     @apply border-collapse border-spacing-0;
+  }
+
+  /* 텍스트 에디터 스타일 */
+
+  .ql-toolbar {
+    border-radius: 16px 16px 0 0;
+    border: 3px solid #cad5e2 !important;
+  }
+
+  .ql-container {
+    border-radius: 0 0 16px 16px;
+    border: 3px solid #cad5e2 !important;
+    border-top: 0 !important;
+  }
+
+  .ql-editor h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .ql-editor h2 {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .ql-editor blockquote {
+    border-left: 4px solid #ccc;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px !important;
+  }
+
+  .ql-editor h3 {
+    font-size: 16px;
+  }
+
+  .ql-editor a {
+    color: blue;
+    text-decoration: underline;
   }
 }
 

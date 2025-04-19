@@ -20,9 +20,7 @@ import {
 } from '@queries/posts';
 import useUserStore from '@store/useUserStore';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
-
-// 리팩토링 목록
-// - 텍스트 에디터 사용한 데이터 뿌리기
+import DOMPurify from 'dompurify';
 
 const commentPlaceholder = {
   notice: '게시글에 댓글을 남겨 보세요.',
@@ -83,6 +81,7 @@ const PostDetail = () => {
         postId: postData.id,
         title: postData.title,
         content: postData.content,
+        imgUrlList: postData.img_url,
       },
     });
   };
@@ -167,7 +166,21 @@ const PostDetail = () => {
               )}
             </div>
             {/* 글 내용 */}
-            <div className=" font-gowunbatang mb-8">{postData.content}</div>
+            <div className="mb-8">
+              <div
+                className="ql-editor font-gowunbatang"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(postData.content),
+                }}
+              />
+              {postData.img_url?.length > 0 && (
+                <div>
+                  {postData.img_url.map((src, index) => {
+                    return <img key={index} src={src} className="mb-4" />;
+                  })}
+                </div>
+              )}
+            </div>
             {/* 댓글 */}
             <div>
               {/* 댓글 작성 */}

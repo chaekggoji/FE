@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useUserStore from '@store/useUserStore';
 import { joinStudy } from '@queries/study';
 
-const StudyInfo = ({ studyData }) => {
+const StudyInfo = ({ studyData, memberData }) => {
   const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
   const queryClient = useQueryClient();
   const { studyId } = useParams();
@@ -15,8 +15,8 @@ const StudyInfo = ({ studyData }) => {
   const md = useMediaQuery('(min-width: 768px)');
   const { pathname } = useLocation();
 
-  const isParticipant = studyData.study_participants
-    .map((participant) => participant.users.id)
+  const isParticipant = memberData
+    .map((member) => member.users.id)
     .includes(loggedInUserId);
 
   const mutation = useMutation({
@@ -61,7 +61,7 @@ const StudyInfo = ({ studyData }) => {
         <>
           <div>
             <p className="text-2xl mb-4">현재 스터디원</p>
-            <StudyMembers participantData={studyData.study_participants} />
+            <StudyMembers memberData={memberData} />
           </div>
           {!isParticipant && (
             <div className="ml-auto">
@@ -81,6 +81,7 @@ const StudyInfo = ({ studyData }) => {
 
 StudyInfo.propTypes = {
   studyData: PropTypes.object,
+  memberData: PropTypes.array.isRequired,
 };
 
 export default StudyInfo;
