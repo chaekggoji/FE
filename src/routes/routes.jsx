@@ -1,4 +1,4 @@
-import Layout from '@components/Index';
+import Layout from '@components/layouts/Index';
 import Create from '@pages/study/Create';
 import Guide from '@pages/Guide';
 import SignUp from '@pages/auth/SignUp';
