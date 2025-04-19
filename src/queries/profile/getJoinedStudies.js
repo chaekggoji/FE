@@ -48,23 +48,17 @@ export const getJoinedStudies = async (userId) => {
 
     if (studyDetailsError) throw studyDetailsError;
 
-    // 3단계: 모든 스터디의 참여자 수를 한 번에 조회
-    const { data: studyMemberCounts, error: memberCountsError } = await supabase
-      .from('study_participants')
-      .select('study_id, count(*)') // 각 스터디별로 참여자 수를 계산해달라고 요청
-      .in('study_id', studyIds) // 내가 참여 중인 스터디만 대상으로 함
-      .group('study_id'); // 스터디별로 그룹화하여 각각 몇 명이 참여중인지 계산
-
-    // 참여자 수 조회 과정에서 에러가 발생한 경우 예외 처리
-    if (memberCountsError) throw memberCountsError;
-
-    // 참여자 수 정보를 빠르게 찾을 수 있는 형태로 변환
-    // 예: [{ study_id: 1, count: 5 }, { study_id: 2, count: 8 }] → { 1: 5, 2: 8 }
-    // 이렇게 하면 특정 스터디의 참여자 수를 찾을 때 배열을 순회할 필요 없이 바로 접근 가능
+    // 3단계: 각 스터디별 참여자 수를 개별적으로 조회 - group 메서드가 지원되지 않아 각 스터디별로 별도 쿼리 실행
     const memberCountMap = {};
-    studyMemberCounts.forEach((item) => {
-      memberCountMap[item.study_id] = item.count; // 스터디 ID를 키로, 참여자 수를 값으로 저장
-    });
+    for (const studyId of studyIds) {
+      const { count, error: countError } = await supabase
+        .from('study_participants')
+        .select('*', { count: 'exact', head: true })
+        .eq('study_id', studyId);
+
+      if (countError) throw countError;
+      memberCountMap[studyId] = count || 0;
+    }
 
     // 4단계: 스터디 데이터와 참여자 수를 합쳐서 최종 결과 만들기
     const studiesWithParticipants = studyDetails.map((study) => {
