@@ -1,12 +1,12 @@
 // React 라이브러리
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // 사용자 정의 훅 및 상수
 import useMediaQuery from '@hooks/useMediaQuery';
 import { SORT_OPTIONS } from '@/constants/bookSearch';
 import { useQueryParams } from '@hooks/useQueryParams.jsx';
 // 외부 API 및 라이브러리
 import supabase from '@/libs/supabase';
-import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from 'react-spinners/ClipLoader';
 // 컴포넌트
 import Pagination from '@components/common/Pagination';
 import SortDropdown from '@components/pages/study/home/SortDropdown';
@@ -16,6 +16,7 @@ import Button from '@components/common/Button';
 import BookItem from '@components/common/BookItem';
 import StudyItem from '@components/pages/study/home/StudyItem';
 import { StudyNoResults } from '@components/pages/study/home/StudyNoResults';
+import RecommendedBookSlider from '@components/pages/study/home/RecommendedBookSlider';
 
 export default function StudyHome() {
   // 스터디 & 책 목록 상태
@@ -313,19 +314,12 @@ export default function StudyHome() {
     <div className='p-10 lg:-mx-10 md:-mx-8 sm:-mx-6'>
       <h1 className='text-4xl my-4'>📚 어떤 책이 인기가 많을까요?</h1>
       {/* 추천 도서 */}
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 my-12'>
-        {books.slice(0, isDesktop ? 4 : isTablet ? 3 : 2).map((book, index) => (
-          <div key={index} className='w-full flex justify-center'>
-            <BookItem
-              title={book.title}
-              author={book.authors?.[0] || '작자 미상'}
-              thumbnail={book.thumbnail}
-              link={book.url}
-              size='large'
-            />
-          </div>
-        ))}
-      </div>
+      {books.length > 0 && (
+        <div className='w-full my-12'>
+          <RecommendedBookSlider books={books.slice(0, 12)} autoSlide={true} />
+        </div>
+      )}
+
       {/* 검색 바 / 필터 */}
       <SearchBar
         search={search}
@@ -340,7 +334,7 @@ export default function StudyHome() {
         setOpenDropdown={setOpenDropdown}
       />
       <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-4'>
-        <div className='flex flex-wrap md:flex-row items-center gap-8'>
+        <div className='flex flex-nowrap md:flex-row items-center gap-2 md:gap-8'>
           <SortDropdown
             sort={sort}
             setSort={setSort}
@@ -370,12 +364,12 @@ export default function StudyHome() {
           검색 초기화
         </Button>
       </div>
-      {/* 스터디 목록 */}
-      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12'>
-        {/* 아직 데이터가 준비되지 않았다면 로딩 스피너만 보여줌
-        StudyNoResults 깜빡이는 문제 해결 */}
-        {!isReady ? (
+
+      {/* 스터디 리스트 */}
+      <div className='study-list grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-x-16 gap-y-12 my-12 cursor-pointer'>
+        {loading ? (
           <div className='col-span-full flex justify-center items-center h-72'>
+            {/* spinner 사용으로 UI 개선 */}
             <ClipLoader color='#AFC8AD' size={100} />
           </div>
         ) : studies.length === 0 ? (
@@ -392,6 +386,17 @@ export default function StudyHome() {
         hasPrev={hasPrev}
         hasNext={hasNext}
       />
-    </div>
+      {/* 모바일에서 스터디 생성 + 버튼 */}
+      {
+        isMobile && (
+          <button
+            onClick={() => window.location.href = '/study/create'}
+            className='fixed bottom-8 right-8 bg-primary-200 hover:bg-primary-300 text-white text-5xl w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50'
+          >
+            +
+          </button>
+        )
+      }
+    </div >
   );
 }

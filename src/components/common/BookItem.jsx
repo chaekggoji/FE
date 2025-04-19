@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import bookCoverPlaceholder from '@assets/images/book_cover_placeholder.jpg';
 const BookItem = ({
-  size = 'medium',
+  size,
   title,
   author,
   thumbnail = null,
@@ -37,7 +37,7 @@ const BookItem = ({
   return (
     <>
       <div
-        className={`rounded-tr-2xl rounded-br-2xl relative shadow-book cursor-pointer ${sizeClass} ${className}`}
+        className={`rounded-tr-2xl rounded-br-2xl relative shadow-book cursor-pointer ${size ? size[sizeClass] : ''} ${className}`}
         onClick={handleClick}
         {...props}
       >
