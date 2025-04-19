@@ -35,6 +35,7 @@ const StudyDetailLayout = () => {
 
   // member, leader 또는 anon(undefined)
   const role = data?.find((member) => member.users.id === loggedInUserId)?.role;
+  console.log(role);
 
   const visiblePages = (() => {
     if (role === 'leader') {

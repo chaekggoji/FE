@@ -37,7 +37,7 @@ const BookItem = ({
   return (
     <>
       <div
-        className={`rounded-tr-2xl rounded-br-2xl relative shadow-book cursor-pointer ${size ? size[sizeClass] : ''} ${className}`}
+        className={`rounded-tr-2xl rounded-br-2xl relative shadow-book cursor-pointer ${size ? sizeClass : ''} ${className}`}
         onClick={handleClick}
         {...props}
       >
