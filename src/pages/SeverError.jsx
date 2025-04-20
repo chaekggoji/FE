@@ -1,4 +1,4 @@
-import SeverErrorImg from '@assets/images/Dataerror.png';
+import SeverErrorImg from '@assets/images/DataError.png';
 import Button from '@components/common/Button';
 import { useNavigate } from 'react-router';
 
