@@ -1,10 +1,8 @@
 import StudyNavLink from '@components/pages/study/detail/StudyNavLink';
-import supabase from '@libs/supabase';
 import FloatNavButton from '@pages/study/detail/FloatNavButton';
 import { getStudyMemberList } from '@queries/study';
 import useUserStore from '@store/useUserStore';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router';
 
 const defaultPages = [
@@ -34,17 +32,6 @@ const StudyDetailLayout = () => {
     queryFn: () => getStudyMemberList(studyId),
     select: (res) => res.data,
   });
-
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      console.log(user);
-    };
-
-    getUser();
-  }, []);
 
   // member, leader 또는 anon(undefined)
   const role = data?.find((member) => member.users.id === loggedInUserId)?.role;
