@@ -51,12 +51,16 @@ const StudyDetailLayout = () => {
 
   const visiblePages = (() => {
     if (role === 'leader') {
+      console.log('leader');
       return [...defaultPages, { route: 'manage', title: '스터디원 관리' }];
     }
     if (role === 'member') {
+      console.log('member');
       return defaultPages;
+    } else {
+      console.log('anon');
+      return [{ route: 'home', title: '스터디 홈' }];
     }
-    return [{ route: 'home', title: '스터디 홈' }];
   })();
 
   return (
