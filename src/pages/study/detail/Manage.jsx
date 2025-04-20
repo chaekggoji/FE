@@ -32,11 +32,9 @@ const Manage = () => {
     },
   });
 
-  //
   useEffect(() => {
     const isLeader = memberList?.some((member) => {
-      console.log(member);
-      return member.id === loggedInUserId && member.role === 'leader';
+      return member.users.id === loggedInUserId && member.role === 'leader';
     });
 
     if (!isLeader) {
@@ -48,7 +46,7 @@ const Manage = () => {
     <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'스터디원 관리'} />
       <ul>
-        {memberList.slice(1).map((member) => (
+        {memberList?.slice(1).map((member) => (
           <StudyMemberListItem
             key={member.users.id}
             memberData={member.users}
