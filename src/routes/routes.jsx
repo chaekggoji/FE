@@ -10,8 +10,6 @@ import StudyDetailHome from '@pages/study/detail/Index';
 import Manage from '@pages/study/detail/Manage';
 import Phrases from '@pages/study/detail/Phrases';
 import StudyHome from '@pages/study/Index';
-import Supabase from '@pages/Supabase';
-import Test from '@pages/Test';
 import ProtectedRoute from '@routes/ProtectedRoute';
 import ProfileHome from '@pages/profile/Index';
 import Error from '@pages/error/Error';
