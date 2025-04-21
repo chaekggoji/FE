@@ -14,7 +14,7 @@ import Supabase from '@pages/Supabase';
 import Test from '@pages/Test';
 import ProtectedRoute from '@routes/ProtectedRoute';
 import ProfileHome from '@pages/profile/Index';
-import Error from '@pages/Error';
+import Error from '@pages/error/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
 import { createBrowserRouter, Navigate } from 'react-router';
 import PostWrite from '@components/modules/post/PostWrite';
@@ -117,21 +117,6 @@ const router = createBrowserRouter([
             ],
           },
         ],
-      },
-
-      // 테스팅 라우트
-      {
-        path: 'test',
-        element: <Test />,
-      },
-      { path: 'users/login', element: <Login /> },
-      { path: 'users/signup', element: <SignUp /> },
-      {
-        path: 'supabase',
-        element: <Supabase />,
-      },
-      {
-        path: 'study/:id',
       },
     ],
   },
