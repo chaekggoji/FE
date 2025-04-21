@@ -4,11 +4,12 @@ import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMediaQuery from '@hooks/useMediaQuery';
+import useRequireRole from '@hooks/useRequireRole';
 import NoResults from '@pages/error/NoResults';
 import { getPhraseList } from '@queries/phrases';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useOutletContext, useParams } from 'react-router';
 
 const options = [
   { name: '좋아요 많은 순', value: 'mostLiked' },
@@ -20,6 +21,7 @@ const Phrases = () => {
   const navigate = useNavigate();
   const { studyId } = useParams();
   const md = useMediaQuery('(min-width: 768px)');
+  const { memberList } = useOutletContext();
 
   const getSortOptionFromURL = () => {
     const params = new URLSearchParams(location.search);
@@ -90,6 +92,10 @@ const Phrases = () => {
 
   // 🌀 페이징 처리된 데이터 구조를 확인해 보세요
   // console.log(data);
+
+  // member, leader만 phrases 페이지 이용 가능
+  useRequireRole(memberList, ['member', 'leader']);
+
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'구절 공유해요'} />

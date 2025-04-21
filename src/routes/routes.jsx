@@ -19,6 +19,7 @@ import PostWrite from '@components/modules/post/PostWrite';
 import PostDetail from '@components/modules/post/PostDetail';
 import Board from '@components/modules/board/Board';
 import PostEdit from '@components/modules/post/PostEdit';
+import NoPermission from '@pages/error/NoPermission';
 
 const router = createBrowserRouter([
   {
@@ -116,6 +117,9 @@ const router = createBrowserRouter([
           },
         ],
       },
+
+      /* 에러 페이지 */
+      { path: '403', element: <NoPermission /> },
     ],
   },
 ]);

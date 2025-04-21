@@ -1,7 +1,12 @@
 import Button from '@components/common/Button';
 import Pagination from '@components/common/Pagination';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
@@ -10,6 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPostListByType } from '@queries/posts';
 import usePagination from '@hooks/usePagination';
 import NoResults from '@pages/error/NoResults';
+import useRequireRole from '@hooks/useRequireRole';
 
 const title = {
   notice: '공지사항',
@@ -28,6 +34,7 @@ const Board = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const md = useMediaQuery('(min-width: 768px)');
+  const { memberList } = useOutletContext();
 
   // 정렬 관련 로직
   // ⭐ 표시된 코드는 정렬 관련 코드입니다.
@@ -114,6 +121,9 @@ const Board = () => {
     params.set('page', page); // url에서 page와 sortBy 파라미터 동시 적용
     navigate(`?${params.toString()}`);
   };
+
+  // member, leader만 board 페이지 이용 가능
+  useRequireRole(memberList, ['member, leader']);
 
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
