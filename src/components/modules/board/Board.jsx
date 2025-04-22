@@ -123,7 +123,7 @@ const Board = () => {
   };
 
   // member, leader만 board 페이지 이용 가능
-  useRequireRole(memberList, ['member, leader']);
+  useRequireRole(memberList, ['member', 'leader']);
 
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
