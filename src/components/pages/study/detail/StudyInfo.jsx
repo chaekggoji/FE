@@ -24,7 +24,6 @@ const StudyInfo = ({ studyData, memberData }) => {
       return joinStudy(studyId, userId);
     },
     onSuccess: () => {
-      console.log('inserted');
       queryClient.invalidateQueries(['study', studyId]); // study 상세 재조회
       window.alert('스터디에 참여하였습니다.');
     },
