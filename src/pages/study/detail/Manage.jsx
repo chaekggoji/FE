@@ -28,7 +28,7 @@ const Manage = () => {
   });
 
   // leader만 확인할 수 있는 페이지
-  useRequireRole(memberList, ['leaer']);
+  useRequireRole(memberList, ['leader']);
 
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
