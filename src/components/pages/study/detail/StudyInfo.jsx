@@ -16,7 +16,7 @@ const StudyInfo = ({ studyData, memberData }) => {
   const { pathname } = useLocation();
 
   const isParticipant = memberData
-    .map((member) => member.users.id)
+    ?.map((member) => member.users.id)
     .includes(loggedInUserId);
 
   const mutation = useMutation({
@@ -40,7 +40,7 @@ const StudyInfo = ({ studyData, memberData }) => {
   return (
     <div className="flex-3/5 flex flex-col gap-4 md:border-none border-b-1 border-slate-200 md:pb-0 pb-6 pr-4">
       <h2 className="lg:text-3xl text-2xl mb-4 text-center">스터디 정보</h2>
-      <h3 className="lg:text-3xl text-2xl">{studyData.title}</h3>
+      <h3 className="lg:text-3xl text-2xl">{studyData?.title}</h3>
       <div className="flex">
         <div className="flex-1/3 flex flex-col gap-4 lg:text-2xl text-xl">
           <p>스터디 진행 도서</p>
@@ -48,11 +48,11 @@ const StudyInfo = ({ studyData, memberData }) => {
           <p>모집 인원</p>
         </div>
         <div className="flex-2/3 flex flex-col gap-4 lg:text-2xl text-xl">
-          <p>{studyData.books.title}</p>
+          <p>{studyData?.books.title}</p>
           <p>
-            {studyData.start_date} ~ {studyData.end_date}
+            {studyData?.start_date} ~ {studyData?.end_date}
           </p>
-          <p>{studyData.capacity}</p>
+          <p>{studyData?.capacity}</p>
         </div>
       </div>
       {pathname !== '/study/create' && (
