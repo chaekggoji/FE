@@ -1,7 +1,12 @@
 import Button from '@components/common/Button';
 import Pagination from '@components/common/Pagination';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router';
 import BoardTitle from '@components/modules/board/BoardTitle';
 import BoardListItem from '@components/modules/board/BoardListItem';
 import DropdownBox from '@components/common/DropdownBox';
@@ -9,6 +14,8 @@ import useMediaQuery from '@hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
 import { getPostListByType } from '@queries/posts';
 import usePagination from '@hooks/usePagination';
+import NoResults from '@pages/error/NoResults';
+import useRequireRole from '@hooks/useRequireRole';
 
 const title = {
   notice: '공지사항',
@@ -27,6 +34,7 @@ const Board = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const md = useMediaQuery('(min-width: 768px)');
+  const { memberList } = useOutletContext();
 
   // 정렬 관련 로직
   // ⭐ 표시된 코드는 정렬 관련 코드입니다.
@@ -114,59 +122,69 @@ const Board = () => {
     navigate(`?${params.toString()}`);
   };
 
+  // member, leader만 board 페이지 이용 가능
+  useRequireRole(memberList, ['member', 'leader']);
+
   return (
     <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={title[boardType]} />
-      <div className="flex flex-col">
-        {!isLoading && (
-          <>
-            <div className="flex items-center px-6 h-12">
-              {/* ⭐ DropdownBox에 sort 관련 로직을 props로 전달합니다. (드롭박스는 UI만 관리하도록 로직 분리)  */}
-              <DropdownBox
-                selectedOption={sortOption}
-                options={options}
-                onChange={handleSortOptionChange}
-                size={md ? 'medium' : 'small'}
-              />
-              <Button
-                size={md ? 'medium' : 'small'}
-                className="ml-auto"
-                onClick={() => navigate(`/study/${studyId}/${boardType}/write`)}
-              >
-                글 작성
-              </Button>
-            </div>
 
-            <div className="font-gowunbatang min-h-[calc(100vh-264px)]">
-              <div className="border-[#835F45] border-b-1 border-t-1  text-[#835F45] hidden md:block">
-                <div className="lg:px-6 px-4 h-12 flex items-center">
-                  <div className="flex-3/5 text-center">제목</div>
-                  <div className="flex-2/5 flex text-center">
-                    <div className="flex-1">참여자</div>
-                    <div className="flex-1">댓글</div>
-                    <div className="flex-1">조회수</div>
-                    <div className="flex-1">최근 활동</div>
+      {data?.posts.length === 0 ? (
+        <NoResults message={'게시글이 존재하지 않습니다.'} />
+      ) : (
+        <div className="flex flex-col">
+          {!isLoading && (
+            <>
+              <div className="flex items-center px-6 h-12">
+                {/* ⭐ DropdownBox에 sort 관련 로직을 props로 전달합니다. (드롭박스는 UI만 관리하도록 로직 분리)  */}
+                <DropdownBox
+                  selectedOption={sortOption}
+                  options={options}
+                  onChange={handleSortOptionChange}
+                  size={md ? 'medium' : 'small'}
+                />
+                <Button
+                  size={md ? 'medium' : 'small'}
+                  className="ml-auto"
+                  onClick={() =>
+                    navigate(`/study/${studyId}/${boardType}/write`)
+                  }
+                >
+                  글 작성
+                </Button>
+              </div>
+
+              <div className="font-gowunbatang min-h-[calc(100vh-264px)]">
+                <div className="border-[#835F45] border-b-1 border-t-1  text-[#835F45] hidden md:block">
+                  <div className="lg:px-6 px-4 h-12 flex items-center">
+                    <div className="flex-3/5 text-center">제목</div>
+                    <div className="flex-2/5 flex text-center">
+                      <div className="flex-1">참여자</div>
+                      <div className="flex-1">댓글</div>
+                      <div className="flex-1">조회수</div>
+                      <div className="flex-1">최근 활동</div>
+                    </div>
                   </div>
                 </div>
+                <hr className="md:hidden h-px border-0 bg-slate-500" />
+                {data?.posts.map((item) => (
+                  <BoardListItem key={item.id} postData={item} />
+                ))}
               </div>
-              <hr className="md:hidden h-px border-0 bg-slate-500" />
-              {data?.posts.map((item) => (
-                <BoardListItem key={item.id} postData={item} />
-              ))}
-            </div>
-            <div className="h-[64px] flex items-center justify-center">
-              {/* 🚩 Pagination 컴포넌트에 알맞은 props를 전달합니다. */}
-              <Pagination
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-                currentGroup={pagination.currentGroup}
-                hasPrev={pagination.hasPrev}
-                hasNext={pagination.hasNext}
-              />
-            </div>
-          </>
-        )}
-      </div>
+              <div className="h-[64px] flex items-center justify-center">
+                {/* 🚩 Pagination 컴포넌트에 알맞은 props를 전달합니다. */}
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                  currentGroup={pagination.currentGroup}
+                  hasPrev={pagination.hasPrev}
+                  hasNext={pagination.hasNext}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

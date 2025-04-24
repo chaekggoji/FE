@@ -10,10 +10,10 @@ const StudyBook = ({ bookData }) => {
       <h2 className="lg:text-3xl text-2xl mb-5 text-center">도서 정보</h2>
       <BookItem
         size={md ? 'large' : 'medium'}
-        title={bookData.title}
-        author={bookData.author}
-        thumbnail={bookData.thumb_url}
-        link={bookData.url}
+        title={bookData?.title}
+        author={bookData?.author}
+        thumbnail={bookData?.thumb_url}
+        link={bookData?.url}
       />
     </div>
   );

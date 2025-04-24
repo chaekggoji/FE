@@ -10,7 +10,7 @@ const StudyLeader = ({ leaderData, className }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/profile/${leaderData.id}`);
+    navigate(`/profile/${leaderData?.id}`);
   };
   return (
     <div
@@ -19,13 +19,13 @@ const StudyLeader = ({ leaderData, className }) => {
     >
       <img
         className="lg:size-16 size-12 rounded-full object-cover"
-        src={leaderData.img_url ? leaderData.img_url : defaultProfile}
+        src={leaderData?.img_url ? leaderData.img_url : defaultProfile}
       />
       <div>
         <h4 className="text-xl lg:mr-0 mr-5">
-          스터디 리더 : {leaderData.nickname}
+          스터디 리더 : {leaderData?.nickname}
         </h4>
-        <p className="text-gray-500">{leaderData.intro}</p>
+        <p className="text-gray-500">{leaderData?.intro}</p>
       </div>
       <div className="ml-auto hidden lg:block shrink-0">
         <Button className="" onClick={handleNavigate}>
