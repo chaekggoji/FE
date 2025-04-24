@@ -4,14 +4,12 @@ import PhraseItem from '@components/modules/phrase/PhraseItem';
 import PhraseWrite from '@components/modules/phrase/PhraseWrite';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMediaQuery from '@hooks/useMediaQuery';
+import useRequireRole from '@hooks/useRequireRole';
+import NoResults from '@pages/error/NoResults';
 import { getPhraseList } from '@queries/phrases';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-
-// 리팩토링 목록
-// - 정렬
-// - 무한 스크롤 ✅
+import { useNavigate, useOutletContext, useParams } from 'react-router';
 
 const options = [
   { name: '좋아요 많은 순', value: 'mostLiked' },
@@ -23,6 +21,7 @@ const Phrases = () => {
   const navigate = useNavigate();
   const { studyId } = useParams();
   const md = useMediaQuery('(min-width: 768px)');
+  const { memberList } = useOutletContext();
 
   const getSortOptionFromURL = () => {
     const params = new URLSearchParams(location.search);
@@ -93,34 +92,44 @@ const Phrases = () => {
 
   // 🌀 페이징 처리된 데이터 구조를 확인해 보세요
   // console.log(data);
+
+  // member, leader만 phrases 페이지 이용 가능
+  useRequireRole(memberList, ['member', 'leader']);
+
   return (
-    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
+    <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'구절 공유해요'} />
-      <div className="flex items-center max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 h-12 relative">
-        <DropdownBox
-          selectedOption={sortOption}
-          options={options}
-          onChange={handleSortOptionChange}
-          size={md ? 'medium' : 'small'}
-        />
-        <PhraseWrite />
-      </div>
-      <div className="max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
-        {/* 🌀 페이징 처리된 데이터 구조에 맞게 map */}
-        {!isLoading &&
-          data?.pages.map((page, i) => (
-            <div key={i} className="flex flex-col gap-4">
-              {page.map((phrase, i, pages) => (
-                //🌀 각 페이지의 마지막 데이터를 관찰 대상으로 지정
-                <PhraseItem
-                  key={phrase.id}
-                  phraseData={phrase}
-                  ref={i === pages.length - 1 ? lastItemRef : null}
-                />
+      {data?.pages[0].length === 0 ? (
+        <NoResults message={'작성된 구절이 존재하지 않습니다.'} />
+      ) : (
+        <>
+          <div className="flex items-center max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 h-12 relative">
+            <DropdownBox
+              selectedOption={sortOption}
+              options={options}
+              onChange={handleSortOptionChange}
+              size={md ? 'medium' : 'small'}
+            />
+            <PhraseWrite />
+          </div>
+          <div className="pb-8 max-w-[1000px] mx-auto lg:px-10 md:px-8 px-6 flex flex-col gap-4">
+            {/* 🌀 페이징 처리된 데이터 구조에 맞게 map */}
+            {!isLoading &&
+              data?.pages.map((page, i) => (
+                <div key={i} className="flex flex-col gap-4">
+                  {page.map((phrase, i, pages) => (
+                    //🌀 각 페이지의 마지막 데이터를 관찰 대상으로 지정
+                    <PhraseItem
+                      key={phrase.id}
+                      phraseData={phrase}
+                      ref={i === pages.length - 1 ? lastItemRef : null}
+                    />
+                  ))}
+                </div>
               ))}
-            </div>
-          ))}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

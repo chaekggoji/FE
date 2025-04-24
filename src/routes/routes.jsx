@@ -10,17 +10,17 @@ import StudyDetailHome from '@pages/study/detail/Index';
 import Manage from '@pages/study/detail/Manage';
 import Phrases from '@pages/study/detail/Phrases';
 import StudyHome from '@pages/study/Index';
-import Supabase from '@pages/Supabase';
-import Test from '@pages/Test';
 import ProtectedRoute from '@routes/ProtectedRoute';
 import ProfileHome from '@pages/profile/Index';
-import Error from '@pages/Error';
+import Error from '@pages/error/Error';
 import StudyDetailLayout from '@pages/study/detail/StudyDetailLayout';
 import { createBrowserRouter, Navigate } from 'react-router';
 import PostWrite from '@components/modules/post/PostWrite';
 import PostDetail from '@components/modules/post/PostDetail';
 import Board from '@components/modules/board/Board';
 import PostEdit from '@components/modules/post/PostEdit';
+import NoPermission from '@pages/error/NoPermission';
+import WrongRequest from '@pages/error/WrongRequest';
 
 const router = createBrowserRouter([
   {
@@ -119,20 +119,9 @@ const router = createBrowserRouter([
         ],
       },
 
-      // 테스팅 라우트
-      {
-        path: 'test',
-        element: <Test />,
-      },
-      { path: 'users/login', element: <Login /> },
-      { path: 'users/signup', element: <SignUp /> },
-      {
-        path: 'supabase',
-        element: <Supabase />,
-      },
-      {
-        path: 'study/:id',
-      },
+      /* 에러 페이지 */
+      { path: '403', element: <NoPermission /> },
+      { path: '406', element: <WrongRequest /> },
     ],
   },
 ]);

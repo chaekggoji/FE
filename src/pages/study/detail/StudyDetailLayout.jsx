@@ -43,8 +43,9 @@ const StudyDetailLayout = () => {
     }
     if (role === 'member') {
       return defaultPages;
+    } else {
+      return [{ route: 'home', title: '스터디 홈' }];
     }
-    return [{ route: 'home', title: '스터디 홈' }];
   })();
 
   return (

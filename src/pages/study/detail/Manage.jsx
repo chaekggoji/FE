@@ -1,17 +1,12 @@
 import BoardTitle from '@components/modules/board/BoardTitle';
 import StudyMemberListItem from '@components/pages/study/detail/StudyMemberListItem';
+import useRequireRole from '@hooks/useRequireRole';
+import NoResults from '@pages/error/NoResults';
 import { deleteStudyMember } from '@queries/study';
-import useUserStore from '@store/useUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router';
-
-// 리팩토링 목록
-// 403, 404 에러 페이지 연결
+import { useOutletContext, useParams } from 'react-router';
 
 const Manage = () => {
-  const loggedInUserId = useUserStore((state) => state.loggedInUser.id);
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { studyId } = useParams();
   const { memberList } = useOutletContext();
@@ -32,32 +27,27 @@ const Manage = () => {
     },
   });
 
-  //
-  useEffect(() => {
-    const isLeader = memberList?.some((member) => {
-      console.log(member);
-      return member.id === loggedInUserId && member.role === 'leader';
-    });
-
-    if (!isLeader) {
-      navigate('/403', { replace: true });
-    }
-  }, [memberList]);
+  // leader만 확인할 수 있는 페이지
+  useRequireRole(memberList, ['leader']);
 
   return (
-    <div className="pb-8 lg:mx-0 md:-mx-8 sm:-mx-6">
+    <div className="lg:mx-0 md:-mx-8 sm:-mx-6">
       <BoardTitle title={'스터디원 관리'} />
-      <ul>
-        {memberList.slice(1).map((member) => (
-          <StudyMemberListItem
-            key={member.users.id}
-            memberData={member.users}
-            onDelete={() =>
-              mutation.mutate({ userId: member.users.id, studyId })
-            }
-          />
-        ))}
-      </ul>
+      {memberList.length === 1 ? (
+        <NoResults message={'스터디원이 존재하지 않습니다.'} />
+      ) : (
+        <ul className="pb-8">
+          {memberList?.slice(1).map((member) => (
+            <StudyMemberListItem
+              key={member.users.id}
+              memberData={member.users}
+              onDelete={() =>
+                mutation.mutate({ userId: member.users.id, studyId })
+              }
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
